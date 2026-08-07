@@ -14,7 +14,7 @@ app.config["JWT_SECRET_KEY"] = os.environ.get(
     "batman-wayne-enterprises-secret-key-2026"
 )
 
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 jwt = JWTManager(app)
 
 # -------------------------------------------------------------------
@@ -83,11 +83,12 @@ proximo_id_recurso = 5
 # ROTAS DE AUTENTICAÇÃO (LOGIN & SEGURANÇA)
 # -------------------------------------------------------------------
 
-@app.route("/api/login", methods=["POST"])
+@app.route("/api/login", methods=['POST', 'OPTIONS'])
 def login():
+   if request.method == 'OPTIONS':
+        return '', 200
+
     dados = request.get_json()
-    if not dados:
-        return jsonify({"erro": "Corpo da requisição inválido."}), 400
 
     email = dados.get("email")
     senha = dados.get("senha")
