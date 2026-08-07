@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wayne Enterprises - Dashboard de Segurança</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦇</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">🦇 WAYNE ENTERPRISES</div>
+        <div class="user-info">
+            <span id="user-display">Carregando...</span>
+            <span id="role-display" class="role-badge">---</span>
+            <button onclick="logout()" class="btn-logout">Sair</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-content">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>TOTAL DE RECURSOS</h3>
+                <div id="stat-total" class="number">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>OPERACIONAIS</h3>
+                <div id="stat-operacionais" class="number" style="color: #10b981;">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>EM MANUTENÇÃO</h3>
+                <div id="stat-manutencao" class="number" style="color: #f59e0b;">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>EM ESTOQUE</h3>
+                <div id="stat-estoque" class="number" style="color: #3b82f6;">0</div>
+            </div>
+        </div>
+
+        <div class="panel" id="panel-cadastro">
+            <h3>Cadastrar Novo Recurso / Equipamento</h3>
+            <form id="form-recurso" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                <div class="form-group">
+                    <label>Nome do Recurso</label>
+                    <input type="text" id="nome" required placeholder="Ex: Bat-Drone">
+                </div>
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <select id="categoria">
+                        <option value="Equipamento">Equipamento</option>
+                        <option value="Veículo">Veículo</option>
+                        <option value="Dispositivo">Dispositivo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nível de Acesso</label>
+                    <select id="nivel_acesso">
+                        <option value="Restrito - Nível 1">Restrito - Nível 1</option>
+                        <option value="Restrito - Nível 2">Restrito - Nível 2</option>
+                        <option value="Restrito - Nível 3">Restrito - Nível 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="status">
+                        <option value="Operacional">Operacional</option>
+                        <option value="Manutenção">Manutenção</option>
+                        <option value="Estoque">Estoque</option>
+                    </select>
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <button type="submit" class="btn-primary">Adicionar ao Inventário</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <h3>Inventário de Segurança Gotham</h3>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Recurso</th>
+                            <th>Categoria</th>
+                            <th>Acesso</th>
+                            <th>Status</th>
+                            <th>Localização</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-recursos"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "http://127.0.0.1:5000/api";
+        const token = localStorage.getItem("wayne_token");
+        const usuario = JSON.parse(localStorage.getItem("wayne_user") || "{}");
+
+        if (!token) {
+            window.location.href = "index.html";
+        }
+
+        document.getElementById("user-display").innerText = usuario.nome || usuario.email;
+        document.getElementById("role-display").innerText = usuario.role || "Acesso";
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+
+        async function carregarDashboard() {
+            const res = await fetch(`${API_URL}/dashboard`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                document.getElementById("stat-total").innerText = data.estatisticas.total_recursos;
+                document.getElementById("stat-operacionais").innerText = data.estatisticas.operacionais;
+                document.getElementById("stat-manutencao").innerText = data.estatisticas.manutencao;
+                document.getElementById("stat-estoque").innerText = data.estatisticas.estoque;
+            }
+        }
+
+        async function carregarRecursos() {
+            const res = await fetch(`${API_URL}/recursos`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const recursos = await res.json();
+                const tbody = document.getElementById("tabela-recursos");
+                tbody.innerHTML = "";
+
+                recursos.forEach(r => {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td>#${r.id}</td>
+                        <td><strong>${r.nome}</strong></td>
+                        <td>${r.categoria}</td>
+                        <td>${r.nivel_acesso}</td>
+                        <td>${r.status}</td>
+                        <td>${r.localizacao}</td>
+                        <td>
+                            ${usuario.role === 'admin' 
+                                ? `<button onclick="deletarRecurso(${r.id})" class="btn-danger">Excluir</button>` 
+                                : '<span style="color:#6b7280; font-size:0.8rem;">Sem permissão</span>'}
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+
+        document.getElementById("form-recurso").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const novo = {
+                nome: document.getElementById("nome").value,
+                categoria: document.getElementById("categoria").value,
+                nivel_acesso: document.getElementById("nivel_acesso").value,
+                status: document.getElementById("status").value,
+                localizacao: "Torre Wayne - Setor Central"
+            };
+
+            const res = await fetch(`${API_URL}/recursos`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(novo)
+            });
+
+            if (res.ok) {
+                document.getElementById("form-recurso").reset();
+                carregarDashboard();
+                carregarRecursos();
+            } else {
+                alert("Erro ao cadastrar recurso. Verifique suas permissões.");
+            }
+        });
+
+        async function deletarRecurso(id) {
+            if (!confirm("Tem certeza que deseja remover este recurso de Gotham?")) return;
+
+            const res = await fetch(`${API_URL}/recursos/${id}`, {
+                method: "DELETE",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            if (res.ok) {
+                carregarDashboard();
+                carregarRecursos();
+            } else {
+                alert("Apenas Administradores (Bruce Wayne) podem excluir recursos!");
+            }
+        }
+
+        carregarDashboard();
+        carregarRecursos();
+    </script>
+</body>
+</html>
