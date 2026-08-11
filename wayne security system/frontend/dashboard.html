@@ -4,118 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wayne Tech - Painel de Controle</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f59e0b'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-1.84.63-3.53 1.69-4.88 1.48 1.83 3.97 3.38 6.31 3.38s4.83-1.55 6.31-3.38C19.37 8.47 20 10.16 20 12c0 4.41-3.59 8-8 8z'/></svg>">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #0b0e14;
-            color: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* BARRA SUPERIOR */
-        .navbar {
-            background-color: #121824;
-            border-bottom: 1px solid #1e293b;
-            padding: 16px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .brand h1 {
-            font-size: 1.25rem;
-            color: #f59e0b;
-            letter-spacing: 1px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .user-name {
-            font-size: 0.9rem;
-            color: #cbd5e1;
-        }
-
-        .btn-logout {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid #ef4444;
-            color: #fca5a5;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-logout:hover {
-            background: #ef4444;
-            color: #ffffff;
-        }
-
-        /* CONTEÚDO PRINCIPAL */
-        .container {
-            padding: 32px;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .welcome-card {
-            background: #121824;
-            border: 1px solid #1e293b;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-
-        .welcome-card h2 {
-            color: #ffffff;
-            font-size: 1.5rem;
-            margin-bottom: 8px;
-        }
-
-        .welcome-card p {
-            color: #94a3b8;
-            font-size: 0.95rem;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background: #121824;
-            border: 1px solid #1e293b;
-            border-radius: 8px;
-            padding: 20px;
-        }
-
-        .card h3 {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-        }
-
-        .card .status {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #10b981;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0b0e14; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        .navbar { background-color: #121824; border-bottom: 1px solid #1e293b; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
+        .brand h1 { font-size: 1.25rem; color: #f59e0b; letter-spacing: 1px; }
+        .user-info { display: flex; align-items: center; gap: 16px; }
+        .user-name { font-size: 0.9rem; color: #cbd5e1; }
+        .btn-logout { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; padding: 6px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; cursor: pointer; }
+        
+        .container { padding: 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
+        .welcome-card { background: #121824; border: 1px solid #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .welcome-card h2 { color: #ffffff; font-size: 1.5rem; margin-bottom: 8px; }
+        .welcome-card p { color: #94a3b8; font-size: 0.95rem; }
+        
+        .actions-bar { margin-bottom: 24px; display: flex; gap: 12px; }
+        .btn-action { background: #f59e0b; color: #000; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        
+        .resources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .resource-card { background: #121824; border: 1px solid #1e293b; border-radius: 8px; padding: 20px; position: relative; }
+        .resource-card h3 { font-size: 1.1rem; color: #f59e0b; margin-bottom: 8px; }
+        .resource-card p { font-size: 0.85rem; color: #cbd5e1; margin-bottom: 12px; }
+        .resource-card .tag { display: inline-block; background: #1e293b; color: #94a3b8; font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; }
+        
+        .btn-delete { position: absolute; top: 16px; right: 16px; background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; }
+        .modal-content { background: #121824; border: 1px solid #1e293b; padding: 24px; border-radius: 8px; width: 100%; max-width: 400px; }
+        .modal-content input { width: 100%; padding: 10px; margin: 8px 0 16px; background: #1a2332; border: 1px solid #334155; color: #fff; border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -132,65 +51,139 @@
 
     <main class="container">
         <section class="welcome-card">
-            <h2>Bem-vindo ao Sistema de Segurança</h2>
-            <p>Acesso autorizado. Monitoramento e diretrizes ativas.</p>
+            <h2 id="tituloBoasVindas">Bem-vindo ao Sistema</h2>
+            <p id="descricaoPermissao">Nível de acesso em verificação...</p>
         </section>
 
-        <section class="grid">
-            <div class="card">
-                <h3>Status do Servidor API</h3>
-                <div class="status">● OPERACIONAL</div>
-            </div>
-            <div class="card">
-                <h3>Autenticação JWT</h3>
-                <div class="status">ATIVADO</div>
-            </div>
-            <div class="card">
-                <h3>Nível de Acesso</h3>
-                <div class="status" id="cargoUsuario" style="color: #f59e0b;">AUTORIZADO</div>
-            </div>
+        <!-- Ações do Administrador e Gerente -->
+        <div class="actions-bar" id="actionsBar" style="display: none;">
+            <button class="btn-action" id="btnNovoRecurso">+ Criar Novo Recurso</button>
+        </div>
+
+        <h3 style="margin-bottom: 16px; color: #cbd5e1;">Recursos das Empresas Wayne</h3>
+        <section class="resources-grid" id="resourcesGrid">
+            <!-- Cards injetados via JS -->
         </section>
     </main>
 
+    <!-- Modal de Criação -->
+    <div class="modal" id="modalCriar">
+        <div class="modal-content">
+            <h3 style="color: #f59e0b; margin-bottom: 12px;">Novo Recurso</h3>
+            <input type="text" id="inputNome" placeholder="Nome do recurso (ex: Batmóvel MK-II)">
+            <input type="text" id="inputDesc" placeholder="Descrição curta">
+            <button class="btn-action" id="btnSalvarRecurso" style="width: 100%;">Salvar</button>
+        </div>
+    </div>
+
     <script>
-        // PROTEÇÃO DE ROTA (Executa antes do carregamento completo do HTML)
         (function verificarAutenticacao() {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                // Redireciona imediatamente para o login caso não encontre o token
+            if (!localStorage.getItem('token')) {
                 window.location.href = 'index.html';
             }
         })();
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Exibição dos dados do usuário logado
-            const usuarioSalvo = localStorage.getItem('usuario');
-            const nomeElemento = document.getElementById('nomeUsuario');
-            const cargoElemento = document.getElementById('cargoUsuario');
+        // Base Inicial de Dados
+        const recursosIniciais = [
+            { id: 1, nome: "Servidores da Batcaverna", desc: "Infraestrutura principal de processamento de dados e IA.", nivel: "admin" },
+            { id: 2, nome: "Projeto Batcóptero", desc: "Aeronave tática com modo furtivo avançado.", nivel: "admin" },
+            { id: 3, nome: "Rede de Câmeras de Gotham", desc: "Sistema de monitoramento urbano em tempo real.", nivel: "gerente" },
+            { id: 4, nome: "Relatórios Comerciais Wayne Enterprises", desc: "Demonstrativos financeiros do último trimestre.", nivel: "gerente" },
+            { id: 5, nome: "Estoque de Insumos Wayne Medical", desc: "Inventário de medicamentos e equipamentos hospitalares.", nivel: "funcionario" }
+        ];
 
-            if (usuarioSalvo) {
-                try {
-                    const usuario = JSON.parse(usuarioSalvo);
-                    nomeElemento.textContent = typeof usuario === 'object' ? (usuario.nome || usuario.email) : usuario;
-                    if (usuario.role && cargoElemento) {
-                        cargoElemento.textContent = usuario.role.toUpperCase();
-                    }
-                } catch (e) {
-                    nomeElemento.textContent = usuarioSalvo;
-                }
+        document.addEventListener('DOMContentLoaded', () => {
+            const usuarioSalvo = JSON.parse(localStorage.getItem('usuario') || '{}');
+            const role = (usuarioSalvo.role || 'funcionario').toLowerCase();
+
+            document.getElementById('nomeUsuario').textContent = `${usuarioSalvo.nome || 'Usuário'} (${role.toUpperCase()})`;
+
+            // Mensagens e Ações Personalizadas
+            const tituloBoasVindas = document.getElementById('tituloBoasVindas');
+            const descricaoPermissao = document.getElementById('descricaoPermissao');
+            const actionsBar = document.getElementById('actionsBar');
+
+            if (role === 'admin') {
+                tituloBoasVindas.textContent = "Painel de Controle Total (Administrador)";
+                descricaoPermissao.textContent = "Você possui acesso irrestrito para visualizar, criar e excluir qualquer recurso das Empresas Wayne.";
+                actionsBar.style.display = 'flex';
+            } else if (role === 'gerente') {
+                tituloBoasVindas.textContent = "Painel de Gestão (Gerente)";
+                descricaoPermissao.textContent = "Você possui permissão para visualizar e criar novos recursos nas Empresas Wayne.";
+                actionsBar.style.display = 'flex';
             } else {
-                nomeElemento.textContent = 'Usuário Autenticado';
+                tituloBoasVindas.textContent = "Painel Operacional (Funcionário)";
+                descricaoPermissao.textContent = "Acesso em modo de leitura para acompanhamento de recursos e métricas da empresa.";
             }
 
-            // Ação do Botão de Logout
-            const btnLogout = document.getElementById('btnLogout');
-            if (btnLogout) {
-                btnLogout.addEventListener('click', () => {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('usuario');
-                    window.location.href = 'index.html';
+            // Filtragem de Recursos Conforme a Função
+            function renderizarRecursos() {
+                const grid = document.getElementById('resourcesGrid');
+                grid.innerHTML = '';
+
+                let recursos = JSON.parse(localStorage.getItem('recursos_wayne')) || recursosIniciais;
+
+                // Filtragem por perfil
+                if (role === 'gerente') {
+                    recursos = recursos.filter(r => r.nivel !== 'admin');
+                } else if (role === 'funcionario') {
+                    recursos = recursos.filter(r => r.nivel === 'funcionario');
+                }
+
+                recursos.forEach(recurso => {
+                    const card = document.createElement('div');
+                    card.className = 'resource-card';
+                    card.innerHTML = `
+                        <h3>${recurso.nome}</h3>
+                        <p>${recurso.desc}</p>
+                        <span class="tag">Nível: ${recurso.nivel.toUpperCase()}</span>
+                        ${role === 'admin' ? `<button class="btn-delete" onclick="excluirRecurso(${recurso.id})">Excluir</button>` : ''}
+                    `;
+                    grid.appendChild(card);
                 });
             }
+
+            // Exclusão (Admin)
+            window.excluirRecurso = function(id) {
+                let recursos = JSON.parse(localStorage.getItem('recursos_wayne')) || recursosIniciais;
+                recursos = recursos.filter(r => r.id !== id);
+                localStorage.setItem('recursos_wayne', JSON.stringify(recursos));
+                renderizarRecursos();
+            };
+
+            // Modal de Criação (Admin / Gerente)
+            const modal = document.getElementById('modalCriar');
+            document.getElementById('btnNovoRecurso').addEventListener('click', () => modal.style.display = 'flex');
+            modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+
+            document.getElementById('btnSalvarRecurso').addEventListener('click', () => {
+                const nome = document.getElementById('inputNome').value;
+                const desc = document.getElementById('inputDesc').value;
+
+                if (!nome) return alert('Digite um nome para o recurso!');
+
+                let recursos = JSON.parse(localStorage.getItem('recursos_wayne')) || recursosIniciais;
+                recursos.push({
+                    id: Date.now(),
+                    nome,
+                    desc,
+                    nivel: role === 'admin' ? 'admin' : 'gerente'
+                });
+
+                localStorage.setItem('recursos_wayne', JSON.stringify(recursos));
+                modal.style.display = 'none';
+                document.getElementById('inputNome').value = '';
+                document.getElementById('inputDesc').value = '';
+                renderizarRecursos();
+            });
+
+            // Logout
+            document.getElementById('btnLogout').addEventListener('click', () => {
+                localStorage.clear();
+                window.location.href = 'index.html';
+            });
+
+            renderizarRecursos();
         });
     </script>
 </body>
