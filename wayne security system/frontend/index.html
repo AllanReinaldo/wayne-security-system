@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wayne Tech - Login</title>
-    <!-- FAVICON DO MORCEGO CLÁSSICO -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f59e0b'><path d='M12 2c-.6.3-1.2.6-1.7 1.1-.6-.5-1.2-.8-1.8-1.1-.6-.2-1.2-.4-1.8-.4C3.8 1.6 1.4 4 1.4 6.9c0 4.4 7.2 9.5 10.6 12.3 3.4-2.8 10.6-7.9 10.6-12.3 0-2.9-2.4-5.3-5.3-5.3-.6 0-1.2.2-1.8.4-.6.3-1.2.6-1.8 1.1-.6-.5-1.1-.8-1.7-1.1z'/></svg>">
+    <!-- FAVICON COM A SUA IMAGEM -->
+    <link rel="icon" type="image/jpeg" href="batman-icon.jpg">
     <style>
         * {
             box-sizing: border-box;
@@ -24,7 +24,7 @@
             align-items: center;
 
             /* IMAGEM DE FUNDO WAYNE ENTERPRISES */
-            background-image: linear-gradient(rgba(11, 14, 20, 0.85), rgba(11, 14, 20, 0.85)), url('wayne enterprises.jpg');
+            background-image: linear-gradient(rgba(11, 14, 20, 0.85), rgba(11, 14, 20, 0.85)), url('wayne-enterprises.jpg');
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
@@ -51,8 +51,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 8px;
+        }
+
+        /* ESTILO DO LOGO NO CABEÇALHO */
+        .logo-batman {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            filter: invert(1); /* Inverte o fundo branco para preto e o símbolo para branco */
         }
 
         .header h1 {
@@ -130,10 +139,7 @@
     <div class="login-container">
         <div class="header">
             <div class="header-brand">
-                <!-- ÍCONE DO MORCEGO EM SVG -->
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="#f59e0b">
-                    <path d="M12 2c-.6.3-1.2.6-1.7 1.1-.6-.5-1.2-.8-1.8-1.1-.6-.2-1.2-.4-1.8-.4C3.8 1.6 1.4 4 1.4 6.9c0 4.4 7.2 9.5 10.6 12.3 3.4-2.8 10.6-7.9 10.6-12.3 0-2.9-2.4-5.3-5.3-5.3-.6 0-1.2.2-1.8.4-.6.3-1.2.6-1.8 1.1-.6-.5-1.1-.8-1.7-1.1z"/>
-                </svg>
+                <img src="batman-icon.jpg" alt="Logo Batman" class="logo-batman">
                 <h1>WAYNE TECH</h1>
             </div>
             <p>Sistema de Gerenciamento de Segurança</p>
