@@ -3,205 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wayne Enterprises - Dashboard de Segurança</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦇</text></svg>">
-    <link rel="stylesheet" href="style.css">
+    <title>Wayne Tech - Painel de Controle</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0e14;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* BARRA SUPERIOR */
+        .navbar {
+            background-color: #121824;
+            border-bottom: 1px solid #1e293b;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand h1 {
+            font-size: 1.25rem;
+            color: #f59e0b;
+            letter-spacing: 1px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-name {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: #ef4444;
+            color: #ffffff;
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+        .container {
+            padding: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .welcome-card {
+            background: #121824;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .welcome-card h2 {
+            color: #ffffff;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .welcome-card p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #121824;
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .card h3 {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .card .status {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #10b981;
+        }
+    </style>
 </head>
 <body>
+
     <nav class="navbar">
-        <div class="brand">🦇 WAYNE ENTERPRISES</div>
+        <div class="brand">
+            <h1>🦇 WAYNE TECH</h1>
+        </div>
         <div class="user-info">
-            <span id="user-display">Carregando...</span>
-            <span id="role-display" class="role-badge">---</span>
-            <button onclick="logout()" class="btn-logout">Sair</button>
+            <span class="user-name" id="nomeUsuario">Carregando...</span>
+            <button class="btn-logout" id="btnLogout">SAIR</button>
         </div>
     </nav>
 
-    <div class="dashboard-content">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>TOTAL DE RECURSOS</h3>
-                <div id="stat-total" class="number">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>OPERACIONAIS</h3>
-                <div id="stat-operacionais" class="number" style="color: #10b981;">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>EM MANUTENÇÃO</h3>
-                <div id="stat-manutencao" class="number" style="color: #f59e0b;">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>EM ESTOQUE</h3>
-                <div id="stat-estoque" class="number" style="color: #3b82f6;">0</div>
-            </div>
-        </div>
+    <main class="container">
+        <section class="welcome-card">
+            <h2>Bem-vindo ao Sistema de Segurança</h2>
+            <p>Acesso autorizado. Monitoramento e diretrizes ativas.</p>
+        </section>
 
-        <div class="panel" id="panel-cadastro">
-            <h3>Cadastrar Novo Recurso / Equipamento</h3>
-            <form id="form-recurso" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
-                <div class="form-group">
-                    <label>Nome do Recurso</label>
-                    <input type="text" id="nome" required placeholder="Ex: Bat-Drone">
-                </div>
-                <div class="form-group">
-                    <label>Categoria</label>
-                    <select id="categoria">
-                        <option value="Equipamento">Equipamento</option>
-                        <option value="Veículo">Veículo</option>
-                        <option value="Dispositivo">Dispositivo</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Nível de Acesso</label>
-                    <select id="nivel_acesso">
-                        <option value="Restrito - Nível 1">Restrito - Nível 1</option>
-                        <option value="Restrito - Nível 2">Restrito - Nível 2</option>
-                        <option value="Restrito - Nível 3">Restrito - Nível 3</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Status</label>
-                    <select id="status">
-                        <option value="Operacional">Operacional</option>
-                        <option value="Manutenção">Manutenção</option>
-                        <option value="Estoque">Estoque</option>
-                    </select>
-                </div>
-                <div class="form-group" style="grid-column: 1 / -1;">
-                    <button type="submit" class="btn-primary">Adicionar ao Inventário</button>
-                </div>
-            </form>
-        </div>
-
-        <div class="panel">
-            <div class="panel-header">
-                <h3>Inventário de Segurança Gotham</h3>
+        <section class="grid">
+            <div class="card">
+                <h3>Status do Servidor API</h3>
+                <div class="status">● OPERACIONAL</div>
             </div>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Recurso</th>
-                            <th>Categoria</th>
-                            <th>Acesso</th>
-                            <th>Status</th>
-                            <th>Localização</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabela-recursos"></tbody>
-                </table>
+            <div class="card">
+                <h3>Autenticação JWT</h3>
+                <div class="status">ATIVADO</div>
             </div>
-        </div>
-    </div>
+            <div class="card">
+                <h3>Nível de Acesso</h3>
+                <div class="status" id="cargoUsuario" style="color: #f59e0b;">AUTORIZADO</div>
+            </div>
+        </section>
+    </main>
 
     <script>
-        const API_URL = "https://wayne-tech-api.onrender.com";
-        const token = localStorage.getItem("wayne_token");
-        const usuario = JSON.parse(localStorage.getItem("wayne_user") || "{}");
-
-        if (!token) {
-            window.location.href = "index.html";
-        }
-
-        document.getElementById("user-display").innerText = usuario.nome || usuario.email;
-        document.getElementById("role-display").innerText = usuario.role || "Acesso";
-
-        function logout() {
-            localStorage.clear();
-            window.location.href = "index.html";
-        }
-
-        async function carregarDashboard() {
-            const res = await fetch(`${API_URL}/dashboard`, {
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (res.ok) {
-                const data = await res.json();
-                document.getElementById("stat-total").innerText = data.estatisticas.total_recursos;
-                document.getElementById("stat-operacionais").innerText = data.estatisticas.operacionais;
-                document.getElementById("stat-manutencao").innerText = data.estatisticas.manutencao;
-                document.getElementById("stat-estoque").innerText = data.estatisticas.estoque;
+        // PROTEÇÃO DE ROTA (Executa antes do carregamento completo do HTML)
+        (function verificarAutenticacao() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                // Redireciona imediatamente para o login caso não encontre o token
+                window.location.href = 'index.html';
             }
-        }
+        })();
 
-        async function carregarRecursos() {
-            const res = await fetch(`${API_URL}/recursos`, {
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (res.ok) {
-                const recursos = await res.json();
-                const tbody = document.getElementById("tabela-recursos");
-                tbody.innerHTML = "";
+        document.addEventListener('DOMContentLoaded', () => {
+            // Exibição dos dados do usuário logado
+            const usuarioSalvo = localStorage.getItem('usuario');
+            const nomeElemento = document.getElementById('nomeUsuario');
+            const cargoElemento = document.getElementById('cargoUsuario');
 
-                recursos.forEach(r => {
-                    const tr = document.createElement("tr");
-                    tr.innerHTML = `
-                        <td>#${r.id}</td>
-                        <td><strong>${r.nome}</strong></td>
-                        <td>${r.categoria}</td>
-                        <td>${r.nivel_acesso}</td>
-                        <td>${r.status}</td>
-                        <td>${r.localizacao}</td>
-                        <td>
-                            ${usuario.role === 'admin' 
-                                ? `<button onclick="deletarRecurso(${r.id})" class="btn-danger">Excluir</button>` 
-                                : '<span style="color:#6b7280; font-size:0.8rem;">Sem permissão</span>'}
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
+            if (usuarioSalvo) {
+                try {
+                    const usuario = JSON.parse(usuarioSalvo);
+                    nomeElemento.textContent = typeof usuario === 'object' ? (usuario.nome || usuario.email) : usuario;
+                    if (usuario.role && cargoElemento) {
+                        cargoElemento.textContent = usuario.role.toUpperCase();
+                    }
+                } catch (e) {
+                    nomeElemento.textContent = usuarioSalvo;
+                }
+            } else {
+                nomeElemento.textContent = 'Usuário Autenticado';
+            }
+
+            // Ação do Botão de Logout
+            const btnLogout = document.getElementById('btnLogout');
+            if (btnLogout) {
+                btnLogout.addEventListener('click', () => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('usuario');
+                    window.location.href = 'index.html';
                 });
             }
-        }
-
-        document.getElementById("form-recurso").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const novo = {
-                nome: document.getElementById("nome").value,
-                categoria: document.getElementById("categoria").value,
-                nivel_acesso: document.getElementById("nivel_acesso").value,
-                status: document.getElementById("status").value,
-                localizacao: "Torre Wayne - Setor Central"
-            };
-
-            const res = await fetch(`${API_URL}/recursos`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify(novo)
-            });
-
-            if (res.ok) {
-                document.getElementById("form-recurso").reset();
-                carregarDashboard();
-                carregarRecursos();
-            } else {
-                alert("Erro ao cadastrar recurso. Verifique suas permissões.");
-            }
         });
-
-        async function deletarRecurso(id) {
-            if (!confirm("Tem certeza que deseja remover este recurso de Gotham?")) return;
-
-            const res = await fetch(`${API_URL}/recursos/${id}`, {
-                method: "DELETE",
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-
-            if (res.ok) {
-                carregarDashboard();
-                carregarRecursos();
-            } else {
-                alert("Apenas Administradores (Bruce Wayne) podem excluir recursos!");
-            }
-        }
-
-        carregarDashboard();
-        carregarRecursos();
     </script>
 </body>
 </html>
