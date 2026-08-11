@@ -82,17 +82,18 @@ proximo_id_recurso = 5
 # -------------------------------------------------------------------
 # ROTAS DE AUTENTICAÇÃO (LOGIN & SEGURANÇA)
 # -------------------------------------------------------------------
-
 @app.route("/api/login", methods=['POST', 'OPTIONS'])
 def login():
-   if request.method == 'OPTIONS':
+    if request.method == 'OPTIONS':
         return '', 200
+
     dados = request.get_json()
 
     email = dados.get("email")
     senha = dados.get("senha")
 
     usuario = USUARIOS.get(email)
+
 
     # Validação segura da senha via Hash
     if not usuario or not check_password_hash(usuario["senha"], senha):
