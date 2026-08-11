@@ -39,22 +39,25 @@
     const senha = document.getElementById('senha').value;
     const errorMessage = document.getElementById('errorMessage'); // ou a div que exibe o erro
 
-    try {
-        const response = await fetch('https://wayne-tech-api.onrender.com/api/login', {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json' 
-            },
-            body: JSON.stringify({ email, senha })
-        });
+    const response = await fetch('https://wayne-tech-api.onrender.com/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, senha })
+});
 
-        const data = await response.json();
+const data = await response.json();
 
-        if (!response.ok) {
-            // Se o status for 401 (senha incorreta) ou outro erro
-            alert(data.erro || 'Credenciais inválidas!');
-            return;
-        }
+if (response.ok) {
+    // 1. Salva o token JWT e as informações do usuário
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('usuario', JSON.stringify(data.usuario));
+
+    // 2. Redireciona para o painel principal
+    window.location.href = 'dashboard.html'; 
+} else {
+    // Exibe a mensagem de erro retornada pela API Flask
+    alert(data.erro || 'Erro ao realizar login.');
+}
 
         // Sucesso no login
         localStorage.setItem('token', data.token);
