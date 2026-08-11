@@ -87,7 +87,6 @@ proximo_id_recurso = 5
 def login():
    if request.method == 'OPTIONS':
         return '', 200
-
     dados = request.get_json()
 
     email = dados.get("email")
