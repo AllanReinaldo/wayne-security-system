@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wayne Tech - Painel de Controle</title>
-    <!-- FAVICON DO MORCEGO CLÁSSICO -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f59e0b'><path d='M12 2c-.6.3-1.2.6-1.7 1.1-.6-.5-1.2-.8-1.8-1.1-.6-.2-1.2-.4-1.8-.4C3.8 1.6 1.4 4 1.4 6.9c0 4.4 7.2 9.5 10.6 12.3 3.4-2.8 10.6-7.9 10.6-12.3 0-2.9-2.4-5.3-5.3-5.3-.6 0-1.2.2-1.8.4-.6.3-1.2.6-1.8 1.1-.6-.5-1.1-.8-1.7-1.1z'/></svg>">
+    <!-- FAVICON COM A SUA IMAGEM -->
+    <link rel="icon" type="image/jpeg" href="batman-icon.jpg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
@@ -17,7 +17,7 @@
             flex-direction: column;
 
             /* IMAGEM DE FUNDO WAYNE ENTERPRISES */
-            background-image: linear-gradient(rgba(11, 14, 20, 0.85), rgba(11, 14, 20, 0.85)), url('wayne enterprises.jpg');
+            background-image: linear-gradient(rgba(11, 14, 20, 0.85), rgba(11, 14, 20, 0.85)), url('wayne-enterprises.jpg');
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
@@ -29,7 +29,16 @@
         .navbar-brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+        }
+
+        /* ESTILO DO LOGO NO CABEÇALHO */
+        .logo-batman {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            filter: invert(1); /* Inverte o fundo branco para preto e o símbolo para branco */
         }
 
         .navbar-brand h1 { font-size: 1.25rem; color: #f59e0b; letter-spacing: 1px; }
@@ -55,7 +64,7 @@
             font-size: 1.1rem; 
             color: #f59e0b; 
             margin-bottom: 8px; 
-            padding-right: 60px; /* Garante espaço livre para o botão Excluir */
+            padding-right: 60px;
         }
         
         .resource-card p { font-size: 0.85rem; color: #cbd5e1; margin-bottom: 12px; }
@@ -71,11 +80,7 @@
         .modal-content input { width: 100%; padding: 12px; margin-bottom: 16px; background: #1a2332; border: 1px solid #334155; color: #fff; border-radius: 6px; outline: none; }
         .modal-content input:focus { border-color: #f59e0b; }
         
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 12px; }
         
         .btn-cancel { background: #334155; color: #fff; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
         .btn-cancel:hover { background: #1e293b; }
@@ -85,10 +90,7 @@
 
     <nav class="navbar">
         <div class="navbar-brand">
-            <!-- ÍCONE DO MORCEGO EM SVG -->
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="#f59e0b">
-                <path d="M12 2c-.6.3-1.2.6-1.7 1.1-.6-.5-1.2-.8-1.8-1.1-.6-.2-1.2-.4-1.8-.4C3.8 1.6 1.4 4 1.4 6.9c0 4.4 7.2 9.5 10.6 12.3 3.4-2.8 10.6-7.9 10.6-12.3 0-2.9-2.4-5.3-5.3-5.3-.6 0-1.2.2-1.8.4-.6.3-1.2.6-1.8 1.1-.6-.5-1.1-.8-1.7-1.1z"/>
-            </svg>
+            <img src="batman-icon.jpg" alt="Logo Batman" class="logo-batman">
             <h1>WAYNE TECH</h1>
         </div>
         <div class="user-info">
@@ -149,7 +151,6 @@
 
             document.getElementById('nomeUsuario').textContent = `${usuarioSalvo.nome || 'Usuário'} (${role.toUpperCase()})`;
 
-            // Mensagens e Ações Personalizadas
             const tituloBoasVindas = document.getElementById('tituloBoasVindas');
             const descricaoPermissao = document.getElementById('descricaoPermissao');
             const actionsBar = document.getElementById('actionsBar');
@@ -167,7 +168,6 @@
                 descricaoPermissao.textContent = "Acesso em modo de leitura para acompanhamento de recursos e métricas da empresa.";
             }
 
-            // Filtragem e Renderização de Recursos
             function renderizarRecursos() {
                 const grid = document.getElementById('resourcesGrid');
                 grid.innerHTML = '';
@@ -179,7 +179,6 @@
                     localStorage.setItem('recursos_wayne', JSON.stringify(recursos));
                 }
 
-                // Filtragem por perfil
                 if (role === 'gerente') {
                     recursos = recursos.filter(r => r.nivel !== 'admin');
                 } else if (role === 'funcionario') {
@@ -199,7 +198,6 @@
                 });
             }
 
-            // Exclusão (Exclusiva para Admin)
             window.excluirRecurso = function(id) {
                 if (!confirm("Tem certeza que deseja excluir este recurso?")) return;
                 
@@ -209,7 +207,6 @@
                 renderizarRecursos();
             };
 
-            // Modal de Criação (Admin / Gerente)
             const modal = document.getElementById('modalCriar');
             const btnNovoRecurso = document.getElementById('btnNovoRecurso');
             const btnCancelarRecurso = document.getElementById('btnCancelarRecurso');
@@ -255,7 +252,6 @@
                 renderizarRecursos();
             });
 
-            // Logout
             document.getElementById('btnLogout').addEventListener('click', () => {
                 localStorage.clear();
                 window.location.href = 'index.html';
