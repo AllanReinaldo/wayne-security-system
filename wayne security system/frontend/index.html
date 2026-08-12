@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wayne Tech - Login</title>
-    <!-- FAVICON -->
-    <link rel="icon" type="image/jpeg" href="batman-icon.jpg">
+    <!-- FAVICON ATUALIZADO -->
+    <link rel="icon" type="image/png" href="w-azul.png">
     <style>
         * {
             box-sizing: border-box;
@@ -22,9 +22,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-
-            /* NOVO WALLPAPER WAYNE ENTERPRISES */
-            background-image: linear-gradient(rgba(11, 14, 20, 0.85), rgba(11, 14, 20, 0.85)), url('wayne-enterprises-wallpapers.jpg');
+            background-image: linear-gradient(rgba(11, 14, 20, 0.65), rgba(11, 14, 20, 0.65)), url('wayne-enterprises-wallpapers.jpg');
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
@@ -32,14 +30,15 @@
         }
 
         .login-container {
-            background: rgba(18, 24, 36, 0.95);
-            border: 1px solid #1e293b;
+            background: rgba(18, 24, 36, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 12px;
             padding: 40px;
             width: 90%;
             max-width: 400px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         .header {
@@ -58,20 +57,18 @@
         .logo-batman {
             width: 36px;
             height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-            filter: invert(1);
+            object-fit: contain;
         }
 
         .header h1 {
             font-size: 1.5rem;
-            color: #f59e0b;
+            color: #1ea1e1; /* AZUL ATUALIZADO */
             letter-spacing: 1px;
         }
 
         .header p {
             font-size: 0.85rem;
-            color: #94a3b8;
+            color: #cbd5e1;
         }
 
         .form-group {
@@ -82,34 +79,36 @@
             display: block;
             margin-bottom: 8px;
             font-size: 0.85rem;
-            color: #cbd5e1;
+            color: #e2e8f0;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-weight: 600;
         }
 
         .form-group input {
             width: 100%;
             padding: 12px;
-            background: #1a2332;
-            border: 1px solid #334155;
+            background: rgba(26, 35, 50, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 6px;
             color: #ffffff;
             font-size: 0.95rem;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
         }
 
         .form-group input:focus {
-            border-color: #f59e0b;
+            border-color: #1ea1e1; /* AZUL ATUALIZADO */
+            background: rgba(26, 35, 50, 0.9);
         }
 
         .btn-primary {
             width: 100%;
             padding: 12px;
-            background: #f59e0b;
+            background: #1ea1e1; /* AZUL ATUALIZADO */
             border: none;
             border-radius: 6px;
-            color: #000000;
+            color: #ffffff;
             font-weight: bold;
             font-size: 1rem;
             cursor: pointer;
@@ -117,12 +116,12 @@
         }
 
         .btn-primary:hover {
-            background: #d97706;
+            background: #1682b9; /* TOM MAIS ESCURO NO HOVER */
         }
 
         .error-message {
             display: none;
-            background: rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.3);
             border: 1px solid #ef4444;
             color: #fca5a5;
             padding: 10px;
@@ -138,7 +137,7 @@
     <div class="login-container">
         <div class="header">
             <div class="header-brand">
-                <img src="batman-icon.jpg" alt="Logo Batman" class="logo-batman">
+                <img src="w-azul.png" alt="Logo Wayne Tech" class="logo-batman">
                 <h1>WAYNE TECH</h1>
             </div>
             <p>Sistema de Gerenciamento de Segurança</p>
