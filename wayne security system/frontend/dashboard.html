@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wayne Tech - Dashboard</title>
     <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="w-azul.png">
+    <link rel="icon" type="image/jpeg" href="w-azul.jpeg">
     <style>
         * {
             box-sizing: border-box;
@@ -138,7 +138,7 @@
             gap: 12px;
         }
 
-        /* BOTÃO ADICIONAR RECURSO */
+        /* BOTÃO ADICIONAR RECURSO (BRUCE / LUCIUS) */
         .btn-create {
             background: #0284c7;
             color: white;
@@ -158,7 +158,7 @@
             background: #0369a1;
         }
 
-        /* BOTÃO USO REMOTO DE EMERGÊNCIA (EXCLUSIVO ALFRED/FUNCIONÁRIO) */
+        /* BOTÃO USO REMOTO DE EMERGÊNCIA (EXCLUSIVO ALFRED) */
         .btn-emergency {
             background: rgba(220, 38, 38, 0.85);
             color: white;
@@ -443,7 +443,7 @@
             window.location.href = 'index.html';
         }
 
-        // Obtém o nível de acesso independente do nome da chave retornada pela API
+        // Obtém o nível de acesso independente do formato do backend
         const nivelAcesso = (usuario.nivelAcesso || usuario.nivel || usuario.cargo || usuario.role || '').toUpperCase();
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -473,7 +473,7 @@
             }
         });
 
-        // Configuração visual por perfil de usuário
+        // Configuração visual e mensagens personalizadas por perfil
         function configurarUsuario() {
             const nomeEl = document.getElementById('nomeUsuario');
             const tituloEl = document.getElementById('tituloPainel');
@@ -482,27 +482,27 @@
             const btnEmergencia = document.getElementById('btnUsoRemoto');
 
             const nomeUsuario = usuario.nome || usuario.name || 'Usuário';
-            const nivelExibicao = nivelAcesso || 'ACESSO BÁSICO';
 
-            if (nomeEl) nomeEl.textContent = `${nomeUsuario} (${nivelExibicao})`;
+            // Topo da página (mantém o nome no canto superior)
+            if (nomeEl) nomeEl.textContent = `${nomeUsuario}`;
+
+            // Título fixo padronizado
+            tituloEl.textContent = 'Painel de Controle';
 
             if (nivelAcesso === 'ADMIN') {
                 // BRUCE WAYNE (ADMINISTRADOR)
-                tituloEl.textContent = 'Painel de Controle (Administrador)';
                 descEl.textContent = 'Bem-vindo, Sr. Wayne. Você possui controle total do sistema, autorização para novos projetos e desativação de recursos.';
                 if (btnCriar) btnCriar.style.display = 'inline-flex';
                 if (btnEmergencia) btnEmergencia.style.display = 'none';
 
             } else if (nivelAcesso === 'GERENTE') {
                 // LUCIUS FOX (GERENTE)
-                tituloEl.textContent = 'Painel de Controle (Gerência)';
                 descEl.textContent = 'Bem-vindo, Lucius. Você possui permissão para gerenciar a frota tecnológica, cadastrar e remover equipamentos.';
                 if (btnCriar) btnCriar.style.display = 'inline-flex';
                 if (btnEmergencia) btnEmergencia.style.display = 'none';
 
             } else {
                 // ALFRED PENNYWORTH (FUNCIONÁRIO)
-                tituloEl.textContent = 'Painel de Controle (Funcionário)';
                 descEl.textContent = 'Bem-vindo, Alfred. Modo de suporte de campo ativo. Utilize o controle remoto em caso de emergências na mansão ou na Batcaverna.';
                 if (btnCriar) btnCriar.style.display = 'none';
                 if (btnEmergencia) btnEmergencia.style.display = 'inline-flex';
@@ -546,19 +546,19 @@
                 const card = document.createElement('div');
                 card.className = 'resource-card';
 
-                // Tratamento para evitar 'undefined' caso as chaves do banco variem
+                // Tratamento contra 'undefined'
                 const nome = rec.nome || rec.title || 'Recurso Sem Nome';
                 const descricao = rec.descricao || rec.desc || rec.description || 'Sem descrição cadastrada.';
                 const nivel = (rec.nivelMinimo || rec.nivel || rec.level || 'GERAL').toUpperCase();
 
-                // Ações do Card de Acordo com o Perfil
+                // Definição do botão dentro dos cards
                 let botaoAcao = '';
 
                 if (nivelAcesso === 'ADMIN' || nivelAcesso === 'GERENTE') {
-                    // Bruce Wayne e Lucius Fox possuem o botão de Excluir
+                    // Bruce Wayne e Lucius Fox possuem Excluir
                     botaoAcao = `<button class="btn-delete" onclick="deletarRecurso(${rec.id})">Excluir</button>`;
                 } else {
-                    // Alfred (Funcionário) possui o botão de Uso Remoto de Emergência no card
+                    // Alfred (Funcionário) possui Uso Remoto de Emergência
                     botaoAcao = `<button class="btn-remote-card" onclick="acionarRemoto('${nome}')">Uso Remoto (Emergência)</button>`;
                 }
 
