@@ -3,27 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wayne Tech - Painel de Controle</title>
-    <!-- FAVICON ATUALIZADO -->
+    <title>Wayne Tech - Dashboard</title>
+    <!-- FAVICON -->
     <link rel="icon" type="image/png" href="w-azul.png">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         
-        body { 
-            background-color: #0b0e14; 
-            color: #ffffff; 
-            min-height: 100vh; 
-            display: flex; 
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
             flex-direction: column;
-            background-image: linear-gradient(rgba(11, 14, 20, 0.85), rgba(11, 14, 20, 0.85)), url('wayne-enterprises-wallpapers.jpg');
+            
+            
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('wayne-enterprises-wallpapers.jpg');
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
             background-attachment: fixed;
         }
+
         
-        .navbar { background-color: rgba(18, 24, 36, 0.95); border-bottom: 1px solid #1e293b; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(8px); }
-        
+        .navbar {
+            background: rgba(10, 15, 25, 0.85);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
         .navbar-brand {
             display: flex;
             align-items: center;
@@ -33,227 +52,512 @@
         .logo-wayne {
             width: 32px;
             height: 32px;
-            object-fit: contain;
+            border-radius: 50%;
+            object-fit: cover;
         }
 
-        .navbar-brand h1 { font-size: 1.25rem; color: #1ea1e1; letter-spacing: 1px; }
-        
-        .user-info { display: flex; align-items: center; gap: 16px; }
-        .user-name { font-size: 0.9rem; color: #cbd5e1; }
-        .btn-logout { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; padding: 6px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; cursor: pointer; transition: all 0.2s; }
-        .btn-logout:hover { background: #ef4444; color: #ffffff; }
-
-        .container { padding: 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
-        .welcome-card { background: rgba(18, 24, 36, 0.9); border: 1px solid #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 24px; backdrop-filter: blur(6px); }
-        .welcome-card h2 { color: #ffffff; font-size: 1.5rem; margin-bottom: 8px; }
-        .welcome-card p { color: #94a3b8; font-size: 0.95rem; }
-        
-        .actions-bar { margin-bottom: 24px; display: flex; gap: 12px; }
-        .btn-action { background: #1ea1e1; color: #fff; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
-        .btn-action:hover { background: #1682b9; }
-
-        .resources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .resource-card { background: rgba(18, 24, 36, 0.9); border: 1px solid #1e293b; border-radius: 8px; padding: 20px; position: relative; backdrop-filter: blur(6px); }
-        
-        .resource-card h3 { 
-            font-size: 1.1rem; 
-            color: #1ea1e1; 
-            margin-bottom: 8px; 
-            padding-right: 60px;
+        .navbar-brand h1 {
+            font-size: 1.3rem;
+            color: #1ea1e1;
+            letter-spacing: 1px;
+            font-weight: 700;
         }
-        
-        .resource-card p { font-size: 0.85rem; color: #cbd5e1; margin-bottom: 12px; }
-        .resource-card .tag { display: inline-block; background: #1e293b; color: #94a3b8; font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; }
-        
-        .btn-delete { position: absolute; top: 16px; right: 16px; background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s; }
-        .btn-delete:hover { background: #ef4444; color: #ffffff; }
 
-        /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: #121824; border: 1px solid #1e293b; padding: 24px; border-radius: 8px; width: 100%; max-width: 400px; }
-        .modal-content h3 { color: #1ea1e1; margin-bottom: 16px; }
-        .modal-content input { width: 100%; padding: 12px; margin-bottom: 16px; background: #1a2332; border: 1px solid #334155; color: #fff; border-radius: 6px; outline: none; }
-        .modal-content input:focus { border-color: #1ea1e1; }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-name {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: #ef4444;
+            color: #ffffff;
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            width: 100%;
+        }
+
+        /* CARD DE BOAS-VINDAS */
+        .welcome-card {
+            background: rgba(15, 20, 30, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        /* 1. PAINEL DE CONTROLE */
+        .welcome-card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .welcome-card p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        /* BARRA DE AÇÕES & 3. RECURSOS DISPONÍVEIS */
+        .actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .actions-bar h3 {
+            font-size: 1.2rem;
+            color: #f8fafc;
+        }
+
         
-        .modal-footer { display: flex; justify-content: flex-end; gap: 12px; }
-        
-        .btn-cancel { background: #334155; color: #fff; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
-        .btn-cancel:hover { background: #1e293b; }
+        .btn-create {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-create:hover {
+            background: #0369a1;
+        }
+
+        /* GRID DE CARDS DOS RECURSOS */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .resource-card {
+            background: rgba(15, 20, 30, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .resource-card:hover {
+            border-color: rgba(30, 161, 225, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            color: #1ea1e1;
+            font-weight: 600;
+        }
+
+        .card-desc {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge-level {
+            background: rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .btn-delete:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* MODAL DE CRIAÇÃO */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+        }
+
+        .modal h3 {
+            margin-bottom: 20px;
+            color: #1ea1e1;
+        }
+
+        .modal .form-group {
+            margin-bottom: 16px;
+        }
+
+        .modal label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+        }
+
+        .modal input, .modal select, .modal textarea {
+            width: 100%;
+            padding: 10px;
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: white;
+            outline: none;
+        }
+
+        .modal textarea {
+            resize: vertical;
+            height: 80px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #cbd5e1;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .loading-state, .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #94a3b8;
+            grid-column: 1 / -1;
+        }
     </style>
 </head>
 <body>
 
-   <nav class="navbar">
-    <div class="navbar-brand">
-        <img src="icone W.jpeg" alt="Logo Wayne Tech" class="logo-wayne" style="border-radius: 50%;">
-        <h1>WAYNE TECH</h1>
-    </div>
-    <div class="user-info">
-        <span class="user-name" id="nomeUsuario">Carregando...</span>
-        <button class="btn-logout" id="btnLogout">SAIR</button>
-    </div>
-</nav>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <img src="icone W.jpeg" alt="Logo Wayne Tech" class="logo-wayne">
+            <h1>WAYNE TECH</h1>
+        </div>
+        <div class="user-info">
+            <span class="user-name" id="nomeUsuario">Carregando...</span>
+            <button class="btn-logout" id="btnLogout">SAIR</button>
+        </div>
+    </nav>
 
-    <main class="container">
-        <section class="welcome-card">
-            <h2 id="tituloBoasVindas">Bem-vindo ao Sistema</h2>
-            <p id="descricaoPermissao">Nível de acesso em verificação...</p>
-        </section>
-
-        <!-- Ações do Administrador e Gerente -->
-        <div class="actions-bar" id="actionsBar" style="display: none;">
-            <button class="btn-action" id="btnNovoRecurso">+ Criar Novo Recurso</button>
+    <!-- PAINEL -->
+    <div class="container">
+        
+        <!-- 1. MENSAGEM DO PAINEL DE CONTROLE -->
+        <div class="welcome-card">
+            <h2 id="tituloPainel">Painel de Controle</h2>
+            <p id="descPainel">Carregando permissões do sistema...</p>
         </div>
 
-        <h3 style="margin-bottom: 16px; color: #cbd5e1; font-weight: 600;">Recursos das Empresas Wayne</h3>
-        <section class="resources-grid" id="resourcesGrid">
-            <!-- Cards injetados via JS -->
-        </section>
-    </main>
+        <!-- 3. RECURSOS DISPONÍVEIS -->
+        <div class="actions-bar">
+            <h3>Recursos Disponíveis</h3>
+            <!-- 2. BOTÃO COM NOVO TOM DE AZUL -->
+            <button class="btn-create" id="btnAbrirModal" style="display: none;">
+                + Criar Novo Recurso
+            </button>
+        </div>
 
-    <!-- Modal de Criação -->
-    <div class="modal" id="modalCriar">
-        <div class="modal-content">
-            <h3>Novo Recurso</h3>
-            <input type="text" id="inputNome" placeholder="Nome do recurso (ex: Batmóvel MK-II)" required>
-            <input type="text" id="inputDesc" placeholder="Descrição curta" required>
-            <div class="modal-footer">
-                <button class="btn-cancel" id="btnCancelarRecurso">Cancelar</button>
-                <button class="btn-action" id="btnSalvarRecurso">Salvar</button>
-            </div>
+        <!-- LISTA DE RECURSOS -->
+        <div class="resources-grid" id="gridRecursos">
+            <div class="loading-state">Acessando banco de dados confidencial...</div>
+        </div>
+
+    </div>
+
+    <!-- MODAL DE CRIAR RECURSO -->
+    <div class="modal-overlay" id="modalCriar">
+        <div class="modal">
+            <h3>Novo Recurso Wayne Tech</h3>
+            <form id="formNovoRecurso">
+                <div class="form-group">
+                    <label for="nomeRecurso">Nome do Recurso</label>
+                    <input type="text" id="nomeRecurso" required placeholder="Ex: Batmóvel Tático">
+                </div>
+                <div class="form-group">
+                    <label for="descRecurso">Descrição</label>
+                    <textarea id="descRecurso" required placeholder="Ex: Veículo blindado de alta performance."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="nivelMinimo">Nível de Acesso Mínimo</label>
+                    <select id="nivelMinimo" required>
+                        <option value="FUNCIONARIO">Funcionário</option>
+                        <option value="GERENTE">Gerente</option>
+                        <option value="ADMIN">Administrador</option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" id="btnFecharModal">Cancelar</button>
+                    <button type="submit" class="btn-create">Salvar Recurso</button>
+                </div>
+            </form>
         </div>
     </div>
 
+    <!-- JAVASCRIPT -->
     <script>
-        (function verificarAutenticacao() {
-            if (!localStorage.getItem('token')) {
-                window.location.href = 'index.html';
-            }
-        })();
+        const API_URL = 'https://wayne-tech-api.onrender.com/api';
+        const token = localStorage.getItem('token');
+        const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
 
-        // Base Inicial de Dados
-        const recursosIniciais = [
-            { id: 1, nome: "Servidores da Batcaverna", desc: "Infraestrutura principal de processamento de dados e IA.", nivel: "admin" },
-            { id: 2, nome: "Projeto Batcóptero", desc: "Aeronave tática com modo furtivo avançado.", nivel: "admin" },
-            { id: 3, nome: "Rede de Câmeras de Gotham", desc: "Sistema de monitoramento urbano em tempo real.", nivel: "gerente" },
-            { id: 4, nome: "Relatórios Comerciais Wayne Enterprises", desc: "Demonstrativos financeiros do último trimestre.", nivel: "gerente" },
-            { id: 5, nome: "Estoque de Insumos Wayne Medical", desc: "Inventário de medicamentos e equipamentos hospitalares.", nivel: "funcionario" }
-        ];
+        // Redireciona se não houver token
+        if (!token) {
+            window.location.href = 'index.html';
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const usuarioSalvo = JSON.parse(localStorage.getItem('usuario') || '{}');
-            const role = (usuarioSalvo.role || 'funcionario').toLowerCase();
+            configurarUsuario();
+            carregarRecursos();
 
-            document.getElementById('nomeUsuario').textContent = `${usuarioSalvo.nome || 'Usuário'} (${role.toUpperCase()})`;
-
-            const tituloBoasVindas = document.getElementById('tituloBoasVindas');
-            const descricaoPermissao = document.getElementById('descricaoPermissao');
-            const actionsBar = document.getElementById('actionsBar');
-
-            if (role === 'admin') {
-                tituloBoasVindas.textContent = "Painel de Controle Total (Administrador)";
-                descricaoPermissao.textContent = "Você possui acesso irrestrito para visualizar, criar e excluir qualquer recurso das Empresas Wayne.";
-                actionsBar.style.display = 'flex';
-            } else if (role === 'gerente') {
-                tituloBoasVindas.textContent = "Painel de Gestão (Gerente)";
-                descricaoPermissao.textContent = "Você possui permissão para visualizar e criar novos recursos nas Empresas Wayne.";
-                actionsBar.style.display = 'flex';
-            } else {
-                tituloBoasVindas.textContent = "Painel Operacional (Funcionário)";
-                descricaoPermissao.textContent = "Acesso em modo de leitura para acompanhamento de recursos e métricas da empresa.";
-            }
-
-            function renderizarRecursos() {
-                const grid = document.getElementById('resourcesGrid');
-                grid.innerHTML = '';
-
-                let recursos = JSON.parse(localStorage.getItem('recursos_wayne'));
-                
-                if (!recursos) {
-                    recursos = recursosIniciais;
-                    localStorage.setItem('recursos_wayne', JSON.stringify(recursos));
-                }
-
-                if (role === 'gerente') {
-                    recursos = recursos.filter(r => r.nivel !== 'admin');
-                } else if (role === 'funcionario') {
-                    recursos = recursos.filter(r => r.nivel === 'funcionario');
-                }
-
-                recursos.forEach(recurso => {
-                    const card = document.createElement('div');
-                    card.className = 'resource-card';
-                    card.innerHTML = `
-                        <h3>${recurso.nome}</h3>
-                        <p>${recurso.desc}</p>
-                        <span class="tag">Nível: ${recurso.nivel.toUpperCase()}</span>
-                        ${role === 'admin' ? `<button class="btn-delete" onclick="excluirRecurso(${recurso.id})">Excluir</button>` : ''}
-                    `;
-                    grid.appendChild(card);
-                });
-            }
-
-            window.excluirRecurso = function(id) {
-                if (!confirm("Tem certeza que deseja excluir este recurso?")) return;
-                
-                let recursos = JSON.parse(localStorage.getItem('recursos_wayne')) || recursosIniciais;
-                recursos = recursos.filter(r => r.id !== id);
-                localStorage.setItem('recursos_wayne', JSON.stringify(recursos));
-                renderizarRecursos();
-            };
-
+            // Eventos
+            document.getElementById('btnLogout').addEventListener('click', logout);
+            
+            const btnAbrir = document.getElementById('btnAbrirModal');
+            const btnFechar = document.getElementById('btnFecharModal');
             const modal = document.getElementById('modalCriar');
-            const btnNovoRecurso = document.getElementById('btnNovoRecurso');
-            const btnCancelarRecurso = document.getElementById('btnCancelarRecurso');
+            const form = document.getElementById('formNovoRecurso');
 
-            if (btnNovoRecurso) {
-                btnNovoRecurso.addEventListener('click', () => modal.style.display = 'flex');
+            if (btnAbrir) btnAbrir.addEventListener('click', () => modal.style.display = 'flex');
+            if (btnFechar) btnFechar.addEventListener('click', () => modal.style.display = 'none');
+
+            if (form) {
+                form.addEventListener('submit', criarRecurso);
             }
-
-            if (btnCancelarRecurso) {
-                btnCancelarRecurso.addEventListener('click', () => {
-                    modal.style.display = 'none';
-                    document.getElementById('inputNome').value = '';
-                    document.getElementById('inputDesc').value = '';
-                });
-            }
-
-            modal.addEventListener('click', (e) => { 
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                    document.getElementById('inputNome').value = '';
-                    document.getElementById('inputDesc').value = '';
-                }
-            });
-
-            document.getElementById('btnSalvarRecurso').addEventListener('click', () => {
-                const nome = document.getElementById('inputNome').value;
-                const desc = document.getElementById('inputDesc').value;
-
-                if (!nome || !desc) return alert('Por favor, preencha todos os campos!');
-
-                let recursos = JSON.parse(localStorage.getItem('recursos_wayne')) || recursosIniciais;
-                recursos.push({
-                    id: Date.now(),
-                    nome,
-                    desc,
-                    nivel: role === 'admin' ? 'admin' : 'gerente'
-                });
-
-                localStorage.setItem('recursos_wayne', JSON.stringify(recursos));
-                modal.style.display = 'none';
-                document.getElementById('inputNome').value = '';
-                document.getElementById('inputDesc').value = '';
-                renderizarRecursos();
-            });
-
-            document.getElementById('btnLogout').addEventListener('click', () => {
-                localStorage.clear();
-                window.location.href = 'index.html';
-            });
-
-            renderizarRecursos();
         });
+
+        // Configuração de perfil
+        function configurarUsuario() {
+            const nomeEl = document.getElementById('nomeUsuario');
+            const tituloEl = document.getElementById('tituloPainel');
+            const descEl = document.getElementById('descPainel');
+            const btnCriar = document.getElementById('btnAbrirModal');
+
+            if (nomeEl) nomeEl.textContent = `${usuario.nome} (${usuario.nivelAcesso})`;
+
+            // 1. TÍTULO ATUALIZADO PARA "Painel de Controle" PARA TODOS OS NÍVEIS
+            if (usuario.nivelAcesso === 'ADMIN') {
+                tituloEl.textContent = 'Painel de Controle (Administrador)';
+                descEl.textContent = 'Você possui acesso irrestrito para visualizar, criar e excluir qualquer recurso das Empresas Wayne.';
+                if (btnCriar) btnCriar.style.display = 'inline-flex';
+            } else if (usuario.nivelAcesso === 'GERENTE') {
+                tituloEl.textContent = 'Painel de Controle (Gerência)';
+                descEl.textContent = 'Você possui acesso a recursos operacionais e de nível gerencial.';
+            } else {
+                tituloEl.textContent = 'Painel de Controle (Funcionário)';
+                descEl.textContent = 'Você possui acesso aos recursos públicos e operacionais básicos.';
+            }
+        }
+
+        // Buscar recursos da API
+        async function carregarRecursos() {
+            const grid = document.getElementById('gridRecursos');
+
+            try {
+                const response = await fetch(`${API_URL}/recursos`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.status === 401 || response.status === 403) {
+                    logout();
+                    return;
+                }
+
+                const recursos = await response.json();
+                renderizarRecursos(recursos);
+
+            } catch (error) {
+                console.error('Erro ao buscar recursos:', error);
+                grid.innerHTML = '<div class="empty-state">Erro ao carregar dados do servidor.</div>';
+            }
+        }
+
+        // Renderizar Cards
+        function renderizarRecursos(recursos) {
+            const grid = document.getElementById('gridRecursos');
+            grid.innerHTML = '';
+
+            if (recursos.length === 0) {
+                grid.innerHTML = '<div class="empty-state">Nenhum recurso disponível para seu nível de acesso.</div>';
+                return;
+            }
+
+            recursos.forEach(rec => {
+                const card = document.createElement('div');
+                card.className = 'resource-card';
+
+                // Botão de Excluir visível apenas para ADMIN
+                const botaoExcluir = usuario.nivelAcesso === 'ADMIN' 
+                    ? `<button class="btn-delete" onclick="deletarRecurso(${rec.id})">Excluir</button>` 
+                    : '';
+
+                card.innerHTML = `
+                    <div>
+                        <div class="card-header">
+                            <h4 class="card-title">${rec.nome}</h4>
+                            ${botaoExcluir}
+                        </div>
+                        <p class="card-desc">${rec.descricao}</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge-level">Nível: ${rec.nivelMinimo}</span>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Criar Recurso (POST)
+        async function criarRecurso(e) {
+            e.preventDefault();
+
+            const nome = document.getElementById('nomeRecurso').value;
+            const descricao = document.getElementById('descRecurso').value;
+            const nivelMinimo = document.getElementById('nivelMinimo').value;
+
+            try {
+                const response = await fetch(`${API_URL}/recursos`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ nome, descricao, nivelMinimo })
+                });
+
+                if (response.ok) {
+                    document.getElementById('modalCriar').style.display = 'none';
+                    document.getElementById('formNovoRecurso').reset();
+                    carregarRecursos();
+                } else {
+                    const data = await response.json();
+                    alert(data.erro || 'Erro ao criar recurso.');
+                }
+            } catch (error) {
+                console.error('Erro ao criar recurso:', error);
+                alert('Erro de comunicação com o servidor.');
+            }
+        }
+
+        // Deletar Recurso (DELETE)
+        async function deletarRecurso(id) {
+            if (!confirm('Tem certeza que deseja excluir este recurso do sistema?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/recursos/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    carregarRecursos();
+                } else {
+                    const data = await response.json();
+                    alert(data.erro || 'Erro ao excluir recurso.');
+                }
+            } catch (error) {
+                console.error('Erro ao deletar recurso:', error);
+                alert('Erro de comunicação com o servidor.');
+            }
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('usuario');
+            window.location.href = 'index.html';
+        }
     </script>
 </body>
 </html>
