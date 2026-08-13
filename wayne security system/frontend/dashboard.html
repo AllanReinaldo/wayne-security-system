@@ -6,6 +6,7 @@
     <title>Wayne Tech - Dashboard</title>
     <!-- FAVICON -->
     <link rel="icon" type="image/png" href="w-azul.png">
+    
     <style>
         * {
             box-sizing: border-box;
@@ -27,6 +28,7 @@
             background-position: center;
             background-size: contain;
             background-attachment: fixed;
+            transition: background-color 0.4s ease, border-color 0.4s ease;
         }
 
         /* NAVBAR */
@@ -39,6 +41,7 @@
             align-items: center;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
         }
 
         .navbar-brand {
@@ -107,6 +110,7 @@
             margin-bottom: 30px;
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
+            transition: all 0.3s ease;
         }
 
         .welcome-card h2 {
@@ -120,12 +124,14 @@
             font-size: 0.95rem;
         }
 
-        /* BARRA DE AÇÕES & BOTOES */
+        /* BARRA DE AÇÕES & GRUPO DE BOTÕES */
         .actions-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .actions-bar h3 {
@@ -136,9 +142,84 @@
         .btn-group {
             display: flex;
             gap: 12px;
+            flex-wrap: wrap;
         }
 
-        /* BOTÃO ADICIONAR RECURSO (BRUCE / LUCIUS) */
+        /* BOTÃO DE ALTERNÂNCIA DE VISÃO (EXCLUSIVO BRUCE WAYNE) */
+        .btn-toggle-mode {
+            background: #0284c7; /* Azul padrão */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-toggle-mode:hover {
+            background: #0369a1;
+        }
+
+        /* ESTADO ATIVO DO MODO VIGILANTE (PRETO) */
+        .btn-toggle-mode.mode-vigilante {
+            background: #000000;
+            color: #38bdf8;
+            border: 1px solid #0284c7;
+            box-shadow: 0 0 12px rgba(2, 132, 199, 0.5);
+        }
+
+        .btn-toggle-mode.mode-vigilante:hover {
+            background: #0f172a;
+        }
+
+        /* BOTÃO CHAMAR ALFRED (DENTRO DO MODO VIGILANTE) */
+        .btn-alfred {
+            background: rgba(100, 116, 139, 0.2);
+            border: 1px solid #94a3b8;
+            color: #f1f5f9;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-alfred:hover {
+            background: #475569;
+        }
+
+        /* BOTÃO PROTOCOLO BATCAVERNA (DENTRO DO MODO VIGILANTE) */
+        .btn-batcave {
+            background: #eab308;
+            color: #000000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 0 10px rgba(234, 179, 8, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-batcave:hover {
+            background: #ca8a04;
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.6);
+        }
+
+        /* BOTÃO PADRÃO ADICIONAR RECURSO */
         .btn-create {
             background: #0284c7;
             color: white;
@@ -158,7 +239,7 @@
             background: #0369a1;
         }
 
-        /* BOTÃO USO REMOTO DE EMERGÊNCIA (EXCLUSIVO ALFRED) */
+        /* BOTÃO USO REMOTO DE EMERGÊNCIA (EXCLUSIVO ALFRED/FUNCIONÁRIO) */
         .btn-emergency {
             background: rgba(220, 38, 38, 0.85);
             color: white;
@@ -178,6 +259,19 @@
         .btn-emergency:hover {
             background: #dc2626;
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.7);
+        }
+
+        /* MODO TÁTICO BATCAVERNA (APLICADO AO BODY QUANDO ATIVADO) */
+        body.batcave-theme {
+            background-color: #030712 !important;
+            background-image: none !important;
+        }
+
+        body.batcave-theme .welcome-card,
+        body.batcave-theme .resource-card,
+        body.batcave-theme .navbar {
+            border-color: #eab308 !important;
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.15);
         }
 
         /* GRID DE CARDS DOS RECURSOS */
@@ -385,11 +479,25 @@
         <div class="actions-bar">
             <h3>Recursos Disponíveis</h3>
             <div class="btn-group">
-                <!-- Botão de Criar (Bruce e Lucius) -->
+                <!-- Botão Exclusivo Bruce Wayne -->
+                <button class="btn-toggle-mode" id="btnToggleVisao" style="display: none;">
+                    👁️ Visão: Corporativa
+                </button>
+
+                <!-- Botões do Modo Vigilante -->
+                <button class="btn-alfred" id="btnChamarAlfred" style="display: none;">
+                    🔔 Chamar Alfred
+                </button>
+                <button class="btn-batcave" id="btnProtocoloBatcaverna" style="display: none;">
+                    🦇 Protocolo Batcaverna
+                </button>
+
+                <!-- Botão Criar Recurso (Bruce / Lucius) -->
                 <button class="btn-create" id="btnAbrirModal" style="display: none;">
                     + Criar Novo Recurso
                 </button>
-                <!-- Botão de Emergência (Exclusivo Alfred/Funcionário) -->
+
+                <!-- Botão Emergência (Alfred / Funcionário) -->
                 <button class="btn-emergency" id="btnUsoRemoto" style="display: none;">
                     🚨 Acionar Uso Remoto de Emergência
                 </button>
@@ -403,7 +511,7 @@
 
     </div>
 
-    <!-- MODAL DE CRIAR RECURSO -->
+    <!-- MODAL DE CRIAÇÃO DE RECURSO -->
     <div class="modal-overlay" id="modalCriar">
         <div class="modal">
             <h3>Novo Recurso Wayne Tech</h3>
@@ -438,11 +546,14 @@
         const token = localStorage.getItem('token');
         const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
 
+        let modoVigilanteAtivo = false;
+
         if (!token) {
             window.location.href = 'index.html';
         }
 
         const nivelAcesso = (usuario.nivelAcesso || usuario.nivel || usuario.cargo || usuario.role || '').toUpperCase();
+        const nomeUsuario = usuario.nome || usuario.name || 'Usuário';
 
         document.addEventListener('DOMContentLoaded', () => {
             configurarUsuario();
@@ -450,6 +561,7 @@
 
             document.getElementById('btnLogout').addEventListener('click', logout);
             
+            // Controle do Modal
             const btnAbrir = document.getElementById('btnAbrirModal');
             const btnFechar = document.getElementById('btnFecharModal');
             const btnEmergencia = document.getElementById('btnUsoRemoto');
@@ -465,9 +577,10 @@
                 });
             }
 
-            if (form) {
-                form.addEventListener('submit', criarRecurso);
-            }
+            if (form) form.addEventListener('submit', criarRecurso);
+
+            // Botões do Bruce Wayne
+            setupBotoesEspeciais();
         });
 
         function configurarUsuario() {
@@ -476,26 +589,80 @@
             const descEl = document.getElementById('descPainel');
             const btnCriar = document.getElementById('btnAbrirModal');
             const btnEmergencia = document.getElementById('btnUsoRemoto');
-
-            const nomeUsuario = usuario.nome || usuario.name || 'Usuário';
+            const btnToggleVisao = document.getElementById('btnToggleVisao');
 
             if (nomeEl) nomeEl.textContent = `${nomeUsuario}`;
             tituloEl.textContent = 'Painel de Controle';
 
+            // O botão de alternância SÓ é ativado se for especificamente o Bruce Wayne
+            const isBruce = nomeUsuario.toLowerCase().includes('bruce');
+
+            if (isBruce) {
+                btnToggleVisao.style.display = 'inline-flex';
+            }
+
             if (nivelAcesso === 'ADMIN') {
                 descEl.textContent = 'Bem-vindo, Sr. Wayne. Você possui controle total do sistema, autorização para novos projetos e desativação de recursos.';
                 if (btnCriar) btnCriar.style.display = 'inline-flex';
-                if (btnEmergencia) btnEmergencia.style.display = 'none';
 
             } else if (nivelAcesso === 'GERENTE') {
                 descEl.textContent = 'Bem-vindo, Lucius. Você possui permissão para gerenciar a frota tecnológica, cadastrar e remover equipamentos.';
                 if (btnCriar) btnCriar.style.display = 'inline-flex';
-                if (btnEmergencia) btnEmergencia.style.display = 'none';
 
             } else {
                 descEl.textContent = 'Bem-vindo, Alfred. Modo de suporte de campo ativo. Utilize o controle remoto em caso de emergências na mansão ou na Batcaverna.';
-                if (btnCriar) btnCriar.style.display = 'none';
                 if (btnEmergencia) btnEmergencia.style.display = 'inline-flex';
+            }
+        }
+
+        function setupBotoesEspeciais() {
+            const btnToggleVisao = document.getElementById('btnToggleVisao');
+            const btnAlfred = document.getElementById('btnChamarAlfred');
+            const btnBatcave = document.getElementById('btnProtocoloBatcaverna');
+            const descPainel = document.getElementById('descPainel');
+
+            if (!btnToggleVisao) return;
+
+            // Alternar Visão Corporativa / Vigilante
+            btnToggleVisao.addEventListener('click', () => {
+                modoVigilanteAtivo = !modoVigilanteAtivo;
+
+                if (modoVigilanteAtivo) {
+                    btnToggleVisao.classList.add('mode-vigilante');
+                    btnToggleVisao.innerHTML = '🦇 Visão: Vigilante';
+                    
+                    btnAlfred.style.display = 'inline-flex';
+                    btnBatcave.style.display = 'inline-flex';
+
+                    descPainel.textContent = 'MODO VIGILANTE ATIVADO. Redirecionando feeds táticos da Batcaverna e frotas de combate.';
+                    alert('🚨 MODO VIGILANTE ATIVADO: Criptografia de canal nível 10 estabelecida.');
+                } else {
+                    btnToggleVisao.classList.remove('mode-vigilante');
+                    btnToggleVisao.innerHTML = '👁️ Visão: Corporativa';
+
+                    btnAlfred.style.display = 'none';
+                    btnBatcave.style.display = 'none';
+
+                    document.body.classList.remove('batcave-theme');
+
+                    descPainel.textContent = 'Bem-vindo, Sr. Wayne. Você possui controle total do sistema, autorização para novos projetos e desativação de recursos.';
+                    alert('💼 MODO CORPORATIVO RESTABELECIDO: Acesso restrito a relatórios da Wayne Enterprises.');
+                }
+            });
+
+            // Chamar Alfred
+            if (btnAlfred) {
+                btnAlfred.addEventListener('click', () => {
+                    alert('☕ ALFRED: "Pois não, Sr. Wayne? O chá está pronto e os diagnósticos do Batmóvel foram atualizados."');
+                });
+            }
+
+            // Protocolo Batcaverna
+            if (btnBatcave) {
+                btnBatcave.addEventListener('click', () => {
+                    document.body.classList.toggle('batcave-theme');
+                    alert('🦇 PROTOCOLO BATCAVERNA: Interface alterada para modo de operação tática noturna.');
+                });
             }
         }
 
@@ -574,7 +741,7 @@
             const descricao = document.getElementById('descRecurso').value.trim();
             const nivelMinimo = document.getElementById('nivelMinimo').value;
 
-            // Payload adaptativo que atende o backend que exige "categoria" e "nome"
+            // Envia o payload mapeando as variações aceitas pela API
             const payload = {
                 nome: nome,
                 name: nome,
