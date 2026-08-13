@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wayne Tech - Dashboard</title>
     <!-- FAVICON -->
-    <link rel="icon" type="image/jpeg" href="w-azul.jpeg">
+    <link rel="icon" type="image/png" href="w-azul.png">
     <style>
         * {
             box-sizing: border-box;
@@ -438,19 +438,16 @@
         const token = localStorage.getItem('token');
         const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
 
-        // Redireciona se não houver token
         if (!token) {
             window.location.href = 'index.html';
         }
 
-        // Obtém o nível de acesso independente do formato do backend
         const nivelAcesso = (usuario.nivelAcesso || usuario.nivel || usuario.cargo || usuario.role || '').toUpperCase();
 
         document.addEventListener('DOMContentLoaded', () => {
             configurarUsuario();
             carregarRecursos();
 
-            // Eventos
             document.getElementById('btnLogout').addEventListener('click', logout);
             
             const btnAbrir = document.getElementById('btnAbrirModal');
@@ -473,7 +470,6 @@
             }
         });
 
-        // Configuração visual e mensagens personalizadas por perfil
         function configurarUsuario() {
             const nomeEl = document.getElementById('nomeUsuario');
             const tituloEl = document.getElementById('tituloPainel');
@@ -483,33 +479,26 @@
 
             const nomeUsuario = usuario.nome || usuario.name || 'Usuário';
 
-            // Topo da página (mantém o nome no canto superior)
             if (nomeEl) nomeEl.textContent = `${nomeUsuario}`;
-
-            // Título fixo padronizado
             tituloEl.textContent = 'Painel de Controle';
 
             if (nivelAcesso === 'ADMIN') {
-                // BRUCE WAYNE (ADMINISTRADOR)
                 descEl.textContent = 'Bem-vindo, Sr. Wayne. Você possui controle total do sistema, autorização para novos projetos e desativação de recursos.';
                 if (btnCriar) btnCriar.style.display = 'inline-flex';
                 if (btnEmergencia) btnEmergencia.style.display = 'none';
 
             } else if (nivelAcesso === 'GERENTE') {
-                // LUCIUS FOX (GERENTE)
                 descEl.textContent = 'Bem-vindo, Lucius. Você possui permissão para gerenciar a frota tecnológica, cadastrar e remover equipamentos.';
                 if (btnCriar) btnCriar.style.display = 'inline-flex';
                 if (btnEmergencia) btnEmergencia.style.display = 'none';
 
             } else {
-                // ALFRED PENNYWORTH (FUNCIONÁRIO)
                 descEl.textContent = 'Bem-vindo, Alfred. Modo de suporte de campo ativo. Utilize o controle remoto em caso de emergências na mansão ou na Batcaverna.';
                 if (btnCriar) btnCriar.style.display = 'none';
                 if (btnEmergencia) btnEmergencia.style.display = 'inline-flex';
             }
         }
 
-        // Buscar recursos da API
         async function carregarRecursos() {
             const grid = document.getElementById('gridRecursos');
 
@@ -532,7 +521,6 @@
             }
         }
 
-        // Renderizar Cards de Acordo com as Permissões
         function renderizarRecursos(recursos) {
             const grid = document.getElementById('gridRecursos');
             grid.innerHTML = '';
@@ -546,19 +534,15 @@
                 const card = document.createElement('div');
                 card.className = 'resource-card';
 
-                // Tratamento contra 'undefined'
-                const nome = rec.nome || rec.title || 'Recurso Sem Nome';
+                const nome = rec.nome || rec.name || rec.title || 'Recurso Sem Nome';
                 const descricao = rec.descricao || rec.desc || rec.description || 'Sem descrição cadastrada.';
-                const nivel = (rec.nivelMinimo || rec.nivel || rec.level || 'GERAL').toUpperCase();
+                const nivel = (rec.nivelMinimo || rec.nivel || rec.categoria || rec.level || 'GERAL').toUpperCase();
 
-                // Definição do botão dentro dos cards
                 let botaoAcao = '';
 
                 if (nivelAcesso === 'ADMIN' || nivelAcesso === 'GERENTE') {
-                    // Bruce Wayne e Lucius Fox possuem Excluir
                     botaoAcao = `<button class="btn-delete" onclick="deletarRecurso(${rec.id})">Excluir</button>`;
                 } else {
-                    // Alfred (Funcionário) possui Uso Remoto de Emergência
                     botaoAcao = `<button class="btn-remote-card" onclick="acionarRemoto('${nome}')">Uso Remoto (Emergência)</button>`;
                 }
 
@@ -579,18 +563,29 @@
             });
         }
 
-        // Função do Botão de Emergência do Card do Alfred
         function acionarRemoto(nomeRecurso) {
             alert(`🚨 COMANDO REMOTO ENVIADO:\nConexão de emergência estabelecida com: "${nomeRecurso}". Sistemas alinhados.`);
         }
 
-        // Criar Recurso (POST)
         async function criarRecurso(e) {
             e.preventDefault();
 
-            const nome = document.getElementById('nomeRecurso').value;
-            const descricao = document.getElementById('descRecurso').value;
+            const nome = document.getElementById('nomeRecurso').value.trim();
+            const descricao = document.getElementById('descRecurso').value.trim();
             const nivelMinimo = document.getElementById('nivelMinimo').value;
+
+            // Payload adaptativo que atende o backend que exige "categoria" e "nome"
+            const payload = {
+                nome: nome,
+                name: nome,
+                descricao: descricao,
+                description: descricao,
+                categoria: nivelMinimo,
+                categoriaId: 1,
+                nivelMinimo: nivelMinimo,
+                nivel: nivelMinimo,
+                nivelAcesso: nivelMinimo
+            };
 
             try {
                 const response = await fetch(`${API_URL}/recursos`, {
@@ -599,7 +594,7 @@
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify({ nome, descricao, nivelMinimo })
+                    body: JSON.stringify(payload)
                 });
 
                 if (response.ok) {
@@ -608,7 +603,7 @@
                     carregarRecursos();
                 } else {
                     const data = await response.json();
-                    alert(data.erro || 'Erro ao criar recurso.');
+                    alert(data.erro || data.mensagem || data.message || 'Erro ao criar recurso.');
                 }
             } catch (error) {
                 console.error('Erro ao criar recurso:', error);
@@ -616,7 +611,6 @@
             }
         }
 
-        // Deletar Recurso (DELETE)
         async function deletarRecurso(id) {
             if (!confirm('Tem certeza que deseja excluir este recurso do sistema?')) return;
 
@@ -638,7 +632,6 @@
             }
         }
 
-        // Logout
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('usuario');
