@@ -152,7 +152,7 @@
             flex-wrap: wrap;
         }
 
-        /* BOTÃO DE ALTERNÂNCIA DE VISÃO */
+        /* BOTÕES DE MODO E AÇÃO */
         .btn-toggle-mode {
             background: #0284c7;
             color: white;
@@ -265,15 +265,16 @@
             box-shadow: 0 0 15px rgba(234, 179, 8, 0.15);
         }
 
-        /* GRID DE CARDS DOS RECURSOS */
+        /* GRID DE CARDS DOS RECURSOS (FORMATAÇÃO DE LINHAS CORRIGIDA) */
         .resources-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
+            align-items: stretch;
         }
 
         .resource-card {
-            background: rgba(15, 20, 30, 0.45);
+            background: rgba(15, 20, 30, 0.65);
             border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 10px;
             padding: 20px;
@@ -295,25 +296,31 @@
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 12px;
+            gap: 10px;
         }
 
         .card-title {
             font-size: 1.1rem;
             color: #1ea1e1;
             font-weight: 600;
+            word-break: break-word;
         }
 
         .card-desc {
             color: #cbd5e1;
             font-size: 0.9rem;
             margin-bottom: 20px;
-            line-height: 1.4;
+            line-height: 1.5;
+            word-break: break-word;
         }
 
         .card-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: auto;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .badge-level {
@@ -392,6 +399,9 @@
             padding: 40px;
             color: #94a3b8;
             grid-column: 1 / -1;
+            background: rgba(15, 20, 30, 0.45);
+            border-radius: 8px;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
         }
 
         /* RESPONSIVIDADE */
@@ -467,7 +477,7 @@
 
         <!-- LISTA DE RECURSOS -->
         <div class="resources-grid" id="gridRecursos">
-            <div class="loading-state">Acessando banco de dados confidencial...</div>
+            <div class="loading-state">Conectando aos servidores da Batcaverna...</div>
         </div>
 
     </div>
@@ -630,12 +640,21 @@
             }
         }
 
-        async function carregarRecursos() {
+        // CARREGAMENTO COM RETRY AUTOMÁTICO (CORREÇÃO DE ERRO DO RENDER)
+        async function carregarRecursos(tentativas = 3) {
             const grid = document.getElementById('gridRecursos');
 
             try {
+                if (tentativas === 3 && grid) {
+                    grid.innerHTML = '<div class="loading-state">Conectando aos servidores da Batcaverna...</div>';
+                }
+
                 const response = await fetch(`${API_URL}/recursos`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
                 });
 
                 if (response.status === 401 || response.status === 403) {
@@ -643,12 +662,30 @@
                     return;
                 }
 
+                if (!response.ok) {
+                    throw new Error(`Erro na resposta: Status ${response.status}`);
+                }
+
                 const recursos = await response.json();
                 renderizarRecursos(recursos);
 
             } catch (error) {
                 console.error('Erro ao buscar recursos:', error);
-                if (grid) grid.innerHTML = '<div class="empty-state">Erro ao carregar dados do servidor.</div>';
+
+                // Se o servidor do Render estiver inicializando, tenta de novo
+                if (tentativas > 1) {
+                    if (grid) grid.innerHTML = `<div class="loading-state">Servidor em inicialização... Reconectando em instantes (${tentativas - 1})...</div>`;
+                    setTimeout(() => carregarRecursos(tentativas - 1), 3000);
+                } else {
+                    if (grid) {
+                        grid.innerHTML = `
+                            <div class="empty-state">
+                                <p style="margin-bottom: 12px; color: #fca5a5;">Erro ao carregar dados do servidor.</p>
+                                <button onclick="carregarRecursos()" class="btn-create" style="padding: 6px 14px; font-size: 0.85rem;">Tentar Novamente</button>
+                            </div>
+                        `;
+                    }
+                }
             }
         }
 
@@ -669,11 +706,17 @@
 
                 const idRecurso = rec.id || rec._id;
                 const nome = rec.nome || rec.name || rec.title || 'Recurso Sem Nome';
-                const descricaoTexto = rec.descricao || rec.desc || rec.description || rec.detalhes || 'Sem descrição cadastrada.';
+                
+                // MAPEAMENTO ABRANGENTE DA DESCRIÇÃO
+                const descricaoTexto = rec.descricao || 
+                                      rec.desc || 
+                                      rec.description || 
+                                      rec.detalhes || 
+                                      'Sem descrição cadastrada.';
+                
                 const nivel = (rec.nivelMinimo || rec.nivel || rec.categoria || rec.level || 'GERAL').toUpperCase();
 
                 let botaoAcao = '';
-
                 if (nivelAcesso === 'ADMIN' || nivelAcesso === 'GERENTE') {
                     botaoAcao = `<button class="btn-delete" onclick="deletarRecurso('${idRecurso}')">Excluir</button>`;
                 } else {
@@ -686,7 +729,7 @@
                             <h4 class="card-title">${nome}</h4>
                             ${botaoAcao}
                         </div>
-                        <p class="card-desc">${descricao}</p>
+                        <p class="card-desc">${descricaoTexto}</p>
                     </div>
                     <div class="card-footer">
                         <span class="badge-level">Nível: ${nivel}</span>
@@ -714,8 +757,11 @@
                 descricao: descricao,
                 description: descricao,
                 desc: descricao,
+                categoria: nivelMinimo,
+                categoriaId: 1,
                 nivelMinimo: nivelMinimo,
                 nivel: nivelMinimo,
+                nivelAcesso: nivelMinimo
             };
 
             try {
@@ -734,7 +780,7 @@
                     carregarRecursos();
                 } else {
                     const data = await response.json();
-                    alert(data.erro || data.mensagem || 'Erro ao criar recurso.');
+                    alert(data.erro || data.mensagem || data.message || 'Erro ao criar recurso.');
                 }
             } catch (error) {
                 console.error('Erro ao criar recurso:', error);
