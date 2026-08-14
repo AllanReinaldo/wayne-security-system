@@ -692,14 +692,24 @@
             }
         }
 
-        function renderizarRecursos(recursos) {
-            const grid = document.getElementById('gridRecursos');
-            grid.innerHTML = '';
+        function criarCardRecurso(recurso) {
+        const descricaoTexto = recurso.descricao || recurso.description || recurso.detalhes || 'Sem descrição cadastrada.';
 
-            if (!Array.isArray(recursos) || recursos.length === 0) {
-                grid.innerHTML = '<div class="empty-state">Nenhum recurso disponível para seu nível de acesso.</div>';
-                return;
-            }
+        return `
+            <div class="resource-card">
+                <div>
+                    <div class="card-header">
+                        <h4 class="card-title">${recurso.nome || recurso.title}</h4>
+                        <button class="btn-delete" onclick="excluirRecurso('${recurso.id || recurso._id}')">Excluir</button>
+                    </div>
+                    <p class="card-desc">${descricaoTexto}</p>
+                </div>
+                <div class="card-footer">
+                    <span class="badge-level">Nível: ${(recurso.nivel || recurso.tipo || 'GERAL').toUpperCase()}</span>
+                </div>
+            </div>
+            `;
+        }
 
             recursos.forEach(rec => {
                 const card = document.createElement('div');
@@ -744,6 +754,8 @@
             const nome = document.getElementById('nomeRecurso').value.trim();
             const descricao = document.getElementById('descRecurso').value.trim();
             const nivelMinimo = document.getElementById('nivelMinimo').value;
+
+            const token = localStorage.getItem('token');
 
             // Envia o payload mapeando as variações aceitas pela API
             const payload = {
