@@ -669,7 +669,7 @@
 
                 const idRecurso = rec.id || rec._id;
                 const nome = rec.nome || rec.name || rec.title || 'Recurso Sem Nome';
-                const descricao = rec.descricao || rec.desc || rec.description || rec.detalhes || rec.texto || rec.observation || rec.observacao || (typeof rec.data === 'object' ? rec.data?.descricao : null) || 'Sem descrição cadastrada.';
+                const descricaoTexto = rec.descricao || rec.desc || rec.description || rec.detalhes || 'Sem descrição cadastrada.';
                 const nivel = (rec.nivelMinimo || rec.nivel || rec.categoria || rec.level || 'GERAL').toUpperCase();
 
                 let botaoAcao = '';
@@ -705,7 +705,6 @@
             e.preventDefault();
 
             const nome = document.getElementById('nomeRecurso').value.trim();
-            // Correção no ID para pegar a descrição do campo textarea
             const descricao = document.getElementById('descRecurso').value.trim();
             const nivelMinimo = document.getElementById('nivelMinimo').value;
 
@@ -714,11 +713,9 @@
                 name: nome,
                 descricao: descricao,
                 description: descricao,
-                categoria: nivelMinimo,
-                categoriaId: 1,
+                desc: descricao,
                 nivelMinimo: nivelMinimo,
                 nivel: nivelMinimo,
-                nivelAcesso: nivelMinimo
             };
 
             try {
@@ -737,7 +734,7 @@
                     carregarRecursos();
                 } else {
                     const data = await response.json();
-                    alert(data.erro || data.mensagem || data.message || 'Erro ao criar recurso.');
+                    alert(data.erro || data.mensagem || 'Erro ao criar recurso.');
                 }
             } catch (error) {
                 console.error('Erro ao criar recurso:', error);
