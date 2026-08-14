@@ -7,144 +7,154 @@
     <!-- FAVICON -->
     <link rel="icon" type="image/png" href="w-azul.png">
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-        body {
-            background-color: #000000;
-            color: #ffffff;
-            min-height: 100vh;
-            width: 100vw;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            
-            /* Imagem de Fundo */
-            background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('wayne-enterprises-wallpapers.jpg');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            background-attachment: fixed;
-        }
+    body {
+        background-color: #000000;
+        color: #ffffff;
+        min-height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px; /* Previne encostar na borda em telas pequenas */
+        
+        background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('wayne-enterprises-wallpapers.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-attachment: fixed;
+    }
 
-        /* CARD/QUADRO DE LOGIN CENTRALIZADO */
+    /* CARD DE LOGIN */
+    .login-card {
+        background: rgba(10, 15, 25, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 16px;
+        padding: 40px 35px;
+        width: 100%;
+        max-width: 420px;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 15px rgba(2, 132, 199, 0.1);
+        text-align: center;
+    }
+
+    .brand-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 8px;
+    }
+
+    .logo-batman {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .brand-header h1 {
+        font-size: 1.6rem;
+        color: #1ea1e1;
+        letter-spacing: 1.5px;
+        font-weight: 700;
+    }
+
+    .subtitle {
+        color: #94a3b8;
+        font-size: 0.85rem;
+        margin-bottom: 28px;
+        letter-spacing: 0.5px;
+    }
+
+    .form-group {
+        text-align: left;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.85rem;
+        color: #cbd5e1;
+        font-weight: 500;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px 14px;
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        color: #ffffff;
+        font-size: 0.95rem;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+        border-color: #0284c7;
+        box-shadow: 0 0 8px rgba(2, 132, 199, 0.4);
+        background: rgba(30, 41, 59, 0.9);
+    }
+
+    .btn-login {
+        width: 100%;
+        padding: 12px;
+        background: #0284c7;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+    }
+
+    .btn-login:hover {
+        background: #0369a1;
+        box-shadow: 0 0 12px rgba(2, 132, 199, 0.4);
+    }
+
+    .error-message {
+        margin-top: 15px;
+        color: #ef4444;
+        font-size: 0.85rem;
+        display: none;
+    }
+
+    /* =======================================
+       RESPONSIVIDADE (SMARTPHONES E TABLETS)
+       ======================================= */
+    @media (max-width: 480px) {
         .login-card {
-            background: rgba(10, 15, 25, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            padding: 40px 35px;
-            width: 100%;
-            max-width: 420px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 15px rgba(2, 132, 199, 0.1);
-            text-align: center;
-        }
-
-        /* LOGO E CABEÇALHO */
-        .brand-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 8px;
-        }
-
-        .logo-wayne {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
+            padding: 25px 20px; /* Reduz o espaçamento interno no celular */
         }
 
         .brand-header h1 {
-            font-size: 1.6rem;
-            color: #1ea1e1;
-            letter-spacing: 1.5px;
-            font-weight: 700;
+            font-size: 1.3rem; /* Diminui levemente o título */
         }
 
-        .subtitle {
-            color: #94a3b8;
-            font-size: 0.85rem;
-            margin-bottom: 28px;
-            letter-spacing: 0.5px;
+        .logo-batman {
+            width: 32px;
+            height: 32px;
         }
 
-        /* FORMULÁRIO */
-        .form-group {
-            text-align: left;
-            margin-bottom: 20px;
+        .form-group input, .btn-login {
+            padding: 10px; /* Facilita a digitação e o clique */
         }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.85rem;
-            color: #cbd5e1;
-            font-weight: 500;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 14px;
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            color: #ffffff;
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus {
-            border-color: #0284c7;
-            box-shadow: 0 0 8px rgba(2, 132, 199, 0.4);
-            background: rgba(30, 41, 59, 0.9);
-        }
-
-        .form-group input::placeholder {
-            color: #64748b;
-        }
-
-        /* BOTÃO DE LOGIN */
-        .btn-login {
-            width: 100%;
-            padding: 12px;
-            background: #0284c7;
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .btn-login:hover {
-            background: #0369a1;
-            box-shadow: 0 0 12px rgba(2, 132, 199, 0.4);
-        }
-
-        .btn-login:active {
-            transform: scale(0.98);
-        }
-
-        /* MENSAGEM DE ERRO */
-        .error-message {
-            margin-top: 15px;
-            color: #ef4444;
-            font-size: 0.85rem;
-            display: none;
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
 
