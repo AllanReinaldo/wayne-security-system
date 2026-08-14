@@ -7,461 +7,418 @@
     <!-- FAVICON -->
     <link rel="icon" type="image/png" href="w-azul.png">
     
-<style>
-       * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-        background-color: #000000;
-        color: #ffffff;
-        min-height: 100vh;
-        width: 100vw;
-        display: flex;
-        flex-direction: column;
-        
-        background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('wayne-enterprises-wallpapers.jpg');
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        background-attachment: fixed;
-        transition: background-color 0.4s ease, border-color 0.4s ease;
-    }
-
-    /* NAVBAR */
-    .navbar {
-        background: rgba(10, 15, 25, 0.85);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 15px 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        transition: all 0.3s ease;
-    }
-
-    .navbar-brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .logo-wayne {
-        width: 36px !important;
-        height: 36px !important;
-        max-width: 36px !important;
-        max-height: 36px !important;
-        min-width: 36px !important;
-        min-heigth: 36px !important;
-        border-radius: 50%;
-        object-fit: cover;
-        flex-shrink: 0;
-        mix-blend-mode: multiply;
-    }
-
-    .navbar-brand h1 {
-        font-size: 1.3rem;
-        color: #1ea1e1;
-        letter-spacing: 1px;
-        font-weight: 700;
-    }
-
-    .user-info {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .user-name {
-        font-size: 0.95rem;
-        color: #cbd5e1;
-        font-weight: 500;
-    }
-
-    .btn-logout {
-        background: rgba(239, 68, 68, 0.2);
-        border: 1px solid #ef4444;
-        color: #fca5a5;
-        padding: 8px 16px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 0.85rem;
-        transition: all 0.2s;
-    }
-
-    .btn-logout:hover {
-        background: #ef4444;
-        color: #ffffff;
-    }
-
-    /* CONTEÚDO PRINCIPAL */
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 30px 20px;
-        width: 100%;
-    }
-
-    /* CARD DE BOAS-VINDAS */
-    .welcome-card {
-        background: rgba(15, 20, 30, 0.45);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 12px;
-        padding: 24px;
-        margin-bottom: 30px;
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        transition: all 0.3s ease;
-    }
-
-    .welcome-card h2 {
-        font-size: 1.4rem;
-        margin-bottom: 8px;
-        color: #ffffff;
-    }
-
-    .welcome-card p {
-        color: #94a3b8;
-        font-size: 0.95rem;
-    }
-
-    /* BARRA DE AÇÕES & GRUPO DE BOTÕES */
-    .actions-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-        gap: 15px;
-    }
-
-    .actions-bar h3 {
-        font-size: 1.2rem;
-        color: #f8fafc;
-    }
-
-    .btn-group {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-    }
-
-    /* BOTÕES ESPECIAIS DO BRUCE WAYNE E DEMAIS */
-    .btn-toggle-mode {
-        background: #0284c7;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.9rem;
-    }
-
-    .btn-toggle-mode:hover { background: #0369a1; }
-
-    .btn-toggle-mode.mode-vigilante {
-        background: #000000;
-        color: #38bdf8;
-        border: 1px solid #0284c7;
-        box-shadow: 0 0 12px rgba(2, 132, 199, 0.5);
-    }
-
-    .btn-toggle-mode.mode-vigilante:hover { background: #0f172a; }
-
-    .btn-alfred {
-        background: rgba(100, 116, 139, 0.2);
-        border: 1px solid #94a3b8;
-        color: #f1f5f9;
-        padding: 10px 20px;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.9rem;
-    }
-
-    .btn-alfred:hover { background: #475569; }
-
-    .btn-batcave {
-        background: #eab308;
-        color: #000000;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 6px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.2s;
-        box-shadow: 0 0 10px rgba(234, 179, 8, 0.3);
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.9rem;
-    }
-
-    .btn-batcave:hover {
-        background: #ca8a04;
-        box-shadow: 0 0 15px rgba(234, 179, 8, 0.6);
-    }
-
-    .btn-create {
-        background: #0284c7;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.9rem;
-    }
-
-    .btn-create:hover { background: #0369a1; }
-
-    .btn-emergency {
-        background: rgba(220, 38, 38, 0.85);
-        color: white;
-        border: 1px solid #ef4444;
-        padding: 10px 20px;
-        border-radius: 6px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.2s;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.9rem;
-        box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
-    }
-
-    .btn-emergency:hover { background: #dc2626; }
-
-    /* MODO TÁTICO BATCAVERNA */
-    body.batcave-theme {
-        background-color: #030712 !important;
-        background-image: none !important;
-    }
-
-    body.batcave-theme .welcome-card,
-    body.batcave-theme .resource-card,
-    body.batcave-theme .navbar {
-        border-color: #eab308 !important;
-        box-shadow: 0 0 15px rgba(234, 179, 8, 0.15);
-    }
-
-    /* GRID DE CARDS DOS RECURSOS */
-    .resources-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
-    }
-
-    .resource-card {
-        background: rgba(15, 20, 30, 0.45);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 10px;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        transition: border-color 0.2s, transform 0.2s;
-    }
-
-    .resource-card:hover {
-        border-color: rgba(30, 161, 225, 0.4);
-        transform: translateY(-2px);
-    }
-
-    .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 12px;
-    }
-
-    .card-title {
-        font-size: 1.1rem;
-        color: #1ea1e1;
-        font-weight: 600;
-    }
-
-    .card-desc {
-        color: #cbd5e1;
-        font-size: 0.9rem;
-        margin-bottom: 20px;
-        line-height: 1.4;
-    }
-
-    .card-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .badge-level {
-        background: rgba(255, 255, 255, 0.08);
-        color: #94a3b8;
-        padding: 4px 10px;
-        border-radius: 4px;
-        font-size: 0.75rem;
-        font-weight: 600;
-    }
-
-    .btn-delete {
-        background: rgba(239, 68, 68, 0.15);
-        border: 1px solid rgba(239, 68, 68, 0.4);
-        color: #fca5a5;
-        padding: 5px 12px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.8rem;
-    }
-
-    .btn-remote-card {
-        background: rgba(234, 179, 8, 0.15);
-        border: 1px solid rgba(234, 179, 8, 0.5);
-        color: #fef08a;
-        padding: 5px 12px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.8rem;
-    }
-
-    /* MODAL DE CRIAÇÃO */
-    .modal-overlay {
-        display: none;
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(4px);
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        padding: 15px;
-    }
-
-    .modal {
-        background: #0f172a;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 12px;
-        padding: 30px;
-        width: 100%;
-        max-width: 450px;
-    }
-
-    .modal h3 { margin-bottom: 20px; color: #1ea1e1; }
-    .modal .form-group { margin-bottom: 16px; }
-    .modal label { display: block; margin-bottom: 6px; font-size: 0.85rem; color: #cbd5e1; }
-    .modal input, .modal select, .modal textarea {
-        width: 100%;
-        padding: 10px;
-        background: #1e293b;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 6px;
-        color: white;
-    }
-    .modal-buttons { display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; }
-    .btn-cancel { background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: #cbd5e1; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
-
-    /* =======================================
-       RESPONSIVIDADE (TABLETS E SMARTPHONES)
-       ======================================= */
-    
-    /* TABLETS (Telas até 768px) */
-    @media (max-width: 768px) {
-        .navbar {
-            padding: 12px 18px;
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .container {
-            padding: 20px 15px;
-        }
-
-        .actions-bar {
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('wayne-enterprises-wallpapers.jpg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed;
+            transition: background-color 0.4s ease, border-color 0.4s ease;
         }
 
-        .btn-group {
-            width: 100%;
-        }
-
-        .btn-group button {
-            flex: 1 1 auto; /* Botões ocupam espaço flexível */
-            justify-content me: center;
-            text-align: center;
-        }
-
-        .resources-grid {
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        }
-    }
-
-    /* SMARTPHONES (Telas até 480px) */
-    @media (max-width: 480px) {
+        /* NAVBAR */
         .navbar {
-            flex-direction: column;
-            gap: 12px;
-            align-items: flex-start;
-        }
-
-        .user-info {
-            width: 100%;
+            background: rgba(10, 15, 25, 0.85);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            display: flex;
             justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* LOGO FIXO */
+        .logo-wayne {
+            width: 36px !important;
+            height: 36px !important;
+            max-width: 36px !important;
+            max-height: 36px !important;
+            min-width: 36px !important;
+            min-height: 36px !important;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            mix-blend-mode: multiply;
         }
 
         .navbar-brand h1 {
-            font-size: 1.1rem;
+            font-size: 1.3rem;
+            color: #1ea1e1;
+            letter-spacing: 1px;
+            font-weight: 700;
         }
 
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-name {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: #ef4444;
+            color: #ffffff;
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            width: 100%;
+        }
+
+        /* CARD DE BOAS-VINDAS */
         .welcome-card {
-            padding: 16px;
+            background: rgba(15, 20, 30, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: all 0.3s ease;
         }
 
         .welcome-card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .welcome-card p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        /* BARRA DE AÇÕES & GRUPO DE BOTÕES */
+        .actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .actions-bar h3 {
             font-size: 1.2rem;
+            color: #f8fafc;
         }
 
         .btn-group {
-            flex-direction: column; /* Empilha os botões no celular */
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* BOTÃO DE ALTERNÂNCIA DE VISÃO */
+        .btn-toggle-mode {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
             gap: 8px;
+            font-size: 0.9rem;
         }
 
-        .btn-group button {
-            width: 100%; /* Botões ocupam a largura toda */
-            justify-content: center;
+        .btn-toggle-mode:hover { background: #0369a1; }
+
+        .btn-toggle-mode.mode-vigilante {
+            background: #000000;
+            color: #38bdf8;
+            border: 1px solid #0284c7;
+            box-shadow: 0 0 12px rgba(2, 132, 199, 0.5);
         }
 
+        .btn-toggle-mode.mode-vigilante:hover { background: #0f172a; }
+
+        .btn-alfred {
+            background: rgba(100, 116, 139, 0.2);
+            border: 1px solid #94a3b8;
+            color: #f1f5f9;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-alfred:hover { background: #475569; }
+
+        .btn-batcave {
+            background: #eab308;
+            color: #000000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 0 10px rgba(234, 179, 8, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-batcave:hover {
+            background: #ca8a04;
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.6);
+        }
+
+        .btn-create {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-create:hover { background: #0369a1; }
+
+        .btn-emergency {
+            background: rgba(220, 38, 38, 0.85);
+            color: white;
+            border: 1px solid #ef4444;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-emergency:hover { background: #dc2626; }
+
+        /* MODO TÁTICO BATCAVERNA */
+        body.batcave-theme {
+            background-color: #030712 !important;
+            background-image: none !important;
+        }
+
+        body.batcave-theme .welcome-card,
+        body.batcave-theme .resource-card,
+        body.batcave-theme .navbar {
+            border-color: #eab308 !important;
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.15);
+        }
+
+        /* GRID DE CARDS DOS RECURSOS */
         .resources-grid {
-            grid-template-columns: 1fr; /* Card de ponta a ponta */
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
-    }
-</style>
+
+        .resource-card {
+            background: rgba(15, 20, 30, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .resource-card:hover {
+            border-color: rgba(30, 161, 225, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            color: #1ea1e1;
+            font-weight: 600;
+        }
+
+        .card-desc {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge-level {
+            background: rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .btn-delete:hover { background: #ef4444; color: white; }
+
+        .btn-remote-card {
+            background: rgba(234, 179, 8, 0.15);
+            border: 1px solid rgba(234, 179, 8, 0.5);
+            color: #fef08a;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* MODAL DE CRIAÇÃO */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 15px;
+        }
+
+        .modal {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .modal h3 { margin-bottom: 20px; color: #1ea1e1; }
+        .modal .form-group { margin-bottom: 16px; }
+        .modal label { display: block; margin-bottom: 6px; font-size: 0.85rem; color: #cbd5e1; }
+        .modal input, .modal select, .modal textarea {
+            width: 100%;
+            padding: 10px;
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: white;
+            outline: none;
+        }
+        .modal textarea { resize: vertical; height: 80px; }
+        .modal-buttons { display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; }
+        .btn-cancel { background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: #cbd5e1; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+
+        .loading-state, .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #94a3b8;
+            grid-column: 1 / -1;
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            .navbar { padding: 12px 18px; }
+            .container { padding: 20px 15px; }
+            .actions-bar { flex-direction: column; align-items: flex-start; }
+            .btn-group { width: 100%; }
+            .btn-group button { flex: 1 1 auto; justify-content: center; }
+            .resources-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+        }
+
+        @media (max-width: 480px) {
+            .navbar { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .user-info { width: 100%; justify-content: space-between; }
+            .btn-group { flex-direction: column; gap: 8px; }
+            .btn-group button { width: 100%; justify-content: center; }
+            .resources-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="navbar-brand">
-            <img src="icone W.jpeg" alt="Logo Wayne Tech" class="logo-wayne">
+            <img src="icone W.jpeg" alt="Logo Wayne Tech" class="logo-wayne" width="36" height="36">
             <h1>WAYNE TECH</h1>
         </div>
         <div class="user-info">
@@ -496,12 +453,12 @@
                     🦇 Protocolo Batcaverna
                 </button>
 
-                <!-- Botão Criar Recurso (Bruce / Lucius) -->
+                <!-- Botão Criar Recurso -->
                 <button class="btn-create" id="btnAbrirModal" style="display: none;">
                     + Criar Novo Recurso
                 </button>
 
-                <!-- Botão Emergência (Alfred / Funcionário) -->
+                <!-- Botão Emergência -->
                 <button class="btn-emergency" id="btnUsoRemoto" style="display: none;">
                     🚨 Acionar Uso Remoto de Emergência
                 </button>
@@ -515,7 +472,7 @@
 
     </div>
 
-    <!-- MODAL DE CRIAÇÃO DE RECURSO -->
+    <!-- MODAL DE CRIAÇÃO -->
     <div class="modal-overlay" id="modalCriar">
         <div class="modal">
             <h3>Novo Recurso Wayne Tech</h3>
@@ -548,7 +505,13 @@
     <script>
         const API_URL = 'https://wayne-tech-api.onrender.com/api';
         const token = localStorage.getItem('token');
-        const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+        
+        let usuario = {};
+        try {
+            usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+        } catch (e) {
+            console.error('Erro ao ler usuario do localStorage:', e);
+        }
 
         let modoVigilanteAtivo = false;
 
@@ -563,7 +526,8 @@
             configurarUsuario();
             carregarRecursos();
 
-            document.getElementById('btnLogout').addEventListener('click', logout);
+            const btnLogout = document.getElementById('btnLogout');
+            if (btnLogout) btnLogout.addEventListener('click', logout);
             
             // Controle do Modal
             const btnAbrir = document.getElementById('btnAbrirModal');
@@ -577,7 +541,7 @@
             
             if (btnEmergencia) {
                 btnEmergencia.addEventListener('click', () => {
-                    alert('🚨 MODO DE EMERGÊNCIA ATIVADO:\nConexão remota estabelecida com a Batcaverna. Equipamentos operando sob protocolo de contenção.');
+                    alert('🚨 MODO DE EMERGÊNCIA ATIVADO:\nConexão remota estabelecida com a Batcaverna.');
                 });
             }
 
@@ -595,26 +559,25 @@
             const btnEmergencia = document.getElementById('btnUsoRemoto');
             const btnToggleVisao = document.getElementById('btnToggleVisao');
 
-            if (nomeEl) nomeEl.textContent = `${nomeUsuario}`;
-            tituloEl.textContent = 'Painel de Controle';
+            if (nomeEl) nomeEl.textContent = nomeUsuario;
+            if (tituloEl) tituloEl.textContent = 'Painel de Controle';
 
-            // O botão de alternância SÓ é ativado se for especificamente o Bruce Wayne
             const isBruce = nomeUsuario.toLowerCase().includes('bruce');
 
-            if (isBruce) {
+            if (isBruce && btnToggleVisao) {
                 btnToggleVisao.style.display = 'inline-flex';
             }
 
             if (nivelAcesso === 'ADMIN') {
-                descEl.textContent = 'Bem-vindo, Sr. Wayne. Você possui controle total do sistema, autorização para novos projetos e desativação de recursos.';
+                if (descEl) descEl.textContent = 'Bem-vindo, Sr. Wayne. Você possui controle total do sistema, autorização para novos projetos e desativação de recursos.';
                 if (btnCriar) btnCriar.style.display = 'inline-flex';
 
             } else if (nivelAcesso === 'GERENTE') {
-                descEl.textContent = 'Bem-vindo, Lucius. Você possui permissão para gerenciar a frota tecnológica, cadastrar e remover equipamentos.';
+                if (descEl) descEl.textContent = 'Bem-vindo, Lucius. Você possui permissão para gerenciar a frota tecnológica, cadastrar e remover equipamentos.';
                 if (btnCriar) btnCriar.style.display = 'inline-flex';
 
             } else {
-                descEl.textContent = 'Bem-vindo, Alfred. Modo de suporte de campo ativo. Utilize o controle remoto em caso de emergências na mansão ou na Batcaverna.';
+                if (descEl) descEl.textContent = 'Bem-vindo, Alfred. Modo de suporte de campo ativo. Utilize o controle remoto em caso de emergências na mansão ou na Batcaverna.';
                 if (btnEmergencia) btnEmergencia.style.display = 'inline-flex';
             }
         }
@@ -627,7 +590,6 @@
 
             if (!btnToggleVisao) return;
 
-            // Alternar Visão Corporativa / Vigilante
             btnToggleVisao.addEventListener('click', () => {
                 modoVigilanteAtivo = !modoVigilanteAtivo;
 
@@ -635,33 +597,31 @@
                     btnToggleVisao.classList.add('mode-vigilante');
                     btnToggleVisao.innerHTML = '🦇 Visão: Vigilante';
                     
-                    btnAlfred.style.display = 'inline-flex';
-                    btnBatcave.style.display = 'inline-flex';
+                    if (btnAlfred) btnAlfred.style.display = 'inline-flex';
+                    if (btnBatcave) btnBatcave.style.display = 'inline-flex';
 
-                    descPainel.textContent = 'MODO VIGILANTE ATIVADO. Redirecionando feeds táticos da Batcaverna e frotas de combate.';
+                    if (descPainel) descPainel.textContent = 'MODO VIGILANTE ATIVADO. Redirecionando feeds táticos da Batcaverna e frotas de combate.';
                     alert('🚨 MODO VIGILANTE ATIVADO: Criptografia de canal nível 10 estabelecida.');
                 } else {
                     btnToggleVisao.classList.remove('mode-vigilante');
                     btnToggleVisao.innerHTML = '👁️ Visão: Corporativa';
 
-                    btnAlfred.style.display = 'none';
-                    btnBatcave.style.display = 'none';
+                    if (btnAlfred) btnAlfred.style.display = 'none';
+                    if (btnBatcave) btnBatcave.style.display = 'none';
 
                     document.body.classList.remove('batcave-theme');
 
-                    descPainel.textContent = 'Bem-vindo, Sr. Wayne. Você possui controle total do sistema, autorização para novos projetos e desativação de recursos.';
+                    if (descPainel) descPainel.textContent = 'Bem-vindo, Sr. Wayne. Você possui controle total do sistema, autorização para novos projetos e desativação de recursos.';
                     alert('💼 MODO CORPORATIVO RESTABELECIDO: Acesso restrito a relatórios da Wayne Enterprises.');
                 }
             });
 
-            // Chamar Alfred
             if (btnAlfred) {
                 btnAlfred.addEventListener('click', () => {
                     alert('☕ ALFRED: "Pois não, Sr. Wayne? O chá está pronto e os diagnósticos do Batmóvel foram atualizados."');
                 });
             }
 
-            // Protocolo Batcaverna
             if (btnBatcave) {
                 btnBatcave.addEventListener('click', () => {
                     document.body.classList.toggle('batcave-theme');
@@ -688,41 +648,34 @@
 
             } catch (error) {
                 console.error('Erro ao buscar recursos:', error);
-                grid.innerHTML = '<div class="empty-state">Erro ao carregar dados do servidor.</div>';
+                if (grid) grid.innerHTML = '<div class="empty-state">Erro ao carregar dados do servidor.</div>';
             }
         }
 
-        function criarCardRecurso(recurso) {
-        const descricaoTexto = recurso.descricao || recurso.description || recurso.detalhes || 'Sem descrição cadastrada.';
+        function renderizarRecursos(recursos) {
+            const grid = document.getElementById('gridRecursos');
+            if (!grid) return;
 
-        return `
-            <div class="resource-card">
-                <div>
-                    <div class="card-header">
-                        <h4 class="card-title">${recurso.nome || recurso.title}</h4>
-                        <button class="btn-delete" onclick="excluirRecurso('${recurso.id || recurso._id}')">Excluir</button>
-                    </div>
-                    <p class="card-desc">${descricaoTexto}</p>
-                </div>
-                <div class="card-footer">
-                    <span class="badge-level">Nível: ${(recurso.nivel || recurso.tipo || 'GERAL').toUpperCase()}</span>
-                </div>
-            </div>
-            `;
-        }
+            grid.innerHTML = '';
+
+            if (!Array.isArray(recursos) || recursos.length === 0) {
+                grid.innerHTML = '<div class="empty-state">Nenhum recurso disponível para seu nível de acesso.</div>';
+                return;
+            }
 
             recursos.forEach(rec => {
                 const card = document.createElement('div');
                 card.className = 'resource-card';
 
+                const idRecurso = rec.id || rec._id;
                 const nome = rec.nome || rec.name || rec.title || 'Recurso Sem Nome';
-                const descricao = rec.descricao || rec.desc || rec.description || 'Sem descrição cadastrada.';
+                const descricao = rec.descricao || rec.desc || rec.description || rec.detalhes || 'Sem descrição cadastrada.';
                 const nivel = (rec.nivelMinimo || rec.nivel || rec.categoria || rec.level || 'GERAL').toUpperCase();
 
                 let botaoAcao = '';
 
                 if (nivelAcesso === 'ADMIN' || nivelAcesso === 'GERENTE') {
-                    botaoAcao = `<button class="btn-delete" onclick="deletarRecurso(${rec.id})">Excluir</button>`;
+                    botaoAcao = `<button class="btn-delete" onclick="deletarRecurso('${idRecurso}')">Excluir</button>`;
                 } else {
                     botaoAcao = `<button class="btn-remote-card" onclick="acionarRemoto('${nome}')">Uso Remoto (Emergência)</button>`;
                 }
@@ -745,19 +698,17 @@
         }
 
         function acionarRemoto(nomeRecurso) {
-            alert(`🚨 COMANDO REMOTO ENVIADO:\nConexão de emergência estabelecida com: "${nomeRecurso}". Sistemas alinhados.`);
+            alert(`🚨 COMANDO REMOTO ENVIADO:\nConexão de emergência estabelecida com: "${nomeRecurso}".`);
         }
 
         async function criarRecurso(e) {
             e.preventDefault();
 
             const nome = document.getElementById('nomeRecurso').value.trim();
+            // Correção no ID para pegar a descrição do campo textarea
             const descricao = document.getElementById('descRecurso').value.trim();
             const nivelMinimo = document.getElementById('nivelMinimo').value;
 
-            const token = localStorage.getItem('token');
-
-            // Envia o payload mapeando as variações aceitas pela API
             const payload = {
                 nome: nome,
                 name: nome,
