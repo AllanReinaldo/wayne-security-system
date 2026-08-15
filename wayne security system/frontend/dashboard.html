@@ -72,7 +72,7 @@
         .user-name {
             font-size: 0.95rem;
             color: #cbd5e1;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .btn-logout {
@@ -103,12 +103,91 @@
             border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 12px;
             padding: 24px;
-            margin-bottom: 35px;
+            margin-bottom: 25px;
             backdrop-filter: blur(8px);
         }
 
         .welcome-card h2 { font-size: 1.5rem; color: #ffffff; margin-bottom: 8px; }
         .welcome-card p { color: #94a3b8; font-size: 0.95rem; }
+
+        /* BARRA DE AÇÕES E BOTÕES ESPECIAIS */
+        .actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-toggle-mode {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-toggle-mode.mode-vigilante {
+            background: #000000;
+            color: #38bdf8;
+            border: 1px solid #0284c7;
+            box-shadow: 0 0 12px rgba(2, 132, 199, 0.5);
+        }
+
+        .btn-alfred {
+            background: rgba(100, 116, 139, 0.2);
+            border: 1px solid #94a3b8;
+            color: #f1f5f9;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn-alfred:hover { background: #475569; }
+
+        .btn-create {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn-create:hover { background: #0369a1; }
+
+        .btn-emergency {
+            background: rgba(220, 38, 38, 0.85);
+            color: white;
+            border: 1px solid #ef4444;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+        }
 
         /* SEÇÕES DO DASHBOARD */
         .section-header {
@@ -225,9 +304,7 @@
             transition: transform 0.4s ease;
         }
 
-        .villain-card:hover .villain-img {
-            transform: scale(1.06);
-        }
+        .villain-card:hover .villain-img { transform: scale(1.06); }
 
         .villain-danger-badge {
             position: absolute;
@@ -242,7 +319,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.6);
         }
 
-        /* Cores dos níveis de periculosidade */
         .danger-extrema { background: #7f1d1d; color: #fca5a5; border: 1px solid #ef4444; }
         .danger-alta { background: #7c2d12; color: #fdba74; border: 1px solid #f97316; }
         .danger-media { background: #713f12; color: #fde047; border: 1px solid #eab308; }
@@ -256,26 +332,9 @@
             flex-grow: 1;
         }
 
-        .villain-name {
-            font-size: 1.2rem;
-            color: #f8fafc;
-            font-weight: 700;
-        }
-
-        .villain-field {
-            font-size: 0.85rem;
-            color: #cbd5e1;
-            line-height: 1.4;
-        }
-
-        .villain-field span {
-            color: #64748b;
-            font-weight: 600;
-            display: block;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            margin-bottom: 2px;
-        }
+        .villain-name { font-size: 1.2rem; color: #f8fafc; font-weight: 700; }
+        .villain-field { font-size: 0.85rem; color: #cbd5e1; line-height: 1.4; }
+        .villain-field span { color: #64748b; font-weight: 600; display: block; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 2px; }
 
         .villain-status {
             margin-top: auto;
@@ -288,18 +347,39 @@
             gap: 6px;
         }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
         .status-ativo { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
         .status-preso { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
         .status-inativo { background: #eab308; box-shadow: 0 0 8px #eab308; }
 
-        /* RESPONSIVIDADE */
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            justify-content: center; align-items: center;
+            z-index: 1000; padding: 15px;
+        }
+        .modal {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px; padding: 30px;
+            width: 100%; max-width: 450px;
+        }
+        .modal h3 { margin-bottom: 20px; color: #1ea1e1; }
+        .modal .form-group { margin-bottom: 16px; }
+        .modal label { display: block; margin-bottom: 6px; font-size: 0.85rem; color: #cbd5e1; }
+        .modal input, .modal select, .modal textarea {
+            width: 100%; padding: 10px;
+            background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px; color: white; outline: none;
+        }
+        .modal textarea { resize: vertical; height: 80px; }
+        .modal-buttons { display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; }
+        .btn-cancel { background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: #cbd5e1; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+
         @media (max-width: 768px) {
             .navbar { padding: 12px 18px; }
             .container { padding: 20px 12px; }
@@ -316,7 +396,7 @@
             <h1>WAYNE TECH</h1>
         </div>
         <div class="user-info">
-            <span class="user-name" id="nomeUsuario">Bruce Wayne</span>
+            <span class="user-name" id="nomeUsuario">Carregando...</span>
             <button class="btn-logout" id="btnLogout">SAIR</button>
         </div>
     </nav>
@@ -325,8 +405,31 @@
         
         <!-- CARD BOAS VINDAS -->
         <div class="welcome-card">
-            <h2>Painel de Operações Táticas</h2>
-            <p>Monitoramento em tempo real dos recursos cadastrados na Wayne Tech e base de dados confidencial dos vilões de Gotham City.</p>
+            <h2 id="tituloPainel">Painel de Operações Táticas</h2>
+            <p id="descPainel">Carregando permissões do sistema...</p>
+        </div>
+
+        <!-- BARRA DE BOTOES ESPECIAIS -->
+        <div class="actions-bar">
+            <div class="btn-group">
+                <!-- Exclusivo Bruce Wayne -->
+                <button class="btn-toggle-mode" id="btnToggleVisao" style="display: none;">
+                    👁️ Visão: Corporativa
+                </button>
+                <button class="btn-alfred" id="btnChamarAlfred" style="display: none;">
+                    🔔 Chamar Alfred
+                </button>
+
+                <!-- Botões Gerente / Admin -->
+                <button class="btn-create" id="btnAbrirModal" style="display: none;">
+                    + Criar Novo Recurso
+                </button>
+
+                <!-- Botão Suporte / Funcionário -->
+                <button class="btn-emergency" id="btnUsoRemoto" style="display: none;">
+                    🚨 Acionar Uso Remoto de Emergência
+                </button>
+            </div>
         </div>
 
         <!-- SEÇÃO 1: RECURSOS WAYNE TECH -->
@@ -335,7 +438,6 @@
         </div>
 
         <div class="resources-grid" id="gridRecursosWayne">
-            <!-- Gadgets inseridos dinamicamente ou estáticos abaixo -->
             <div class="resource-card">
                 <div>
                     <div class="card-header-tech">
@@ -437,14 +539,12 @@
             </div>
         </div>
 
-        <!-- SEÇÃO 2: MONITOR DE AMEAÇAS E VILÕES -->
+        <!-- SEÇÃO 2: MONITOR DE VILÕES -->
         <div class="section-header">
             <h3>⚠️ Monitor de Ameaças: Vilões de Gotham</h3>
         </div>
 
         <div class="villains-grid">
-
-            <!-- Ra's al Ghul -->
             <div class="villain-card">
                 <div class="villain-img-container">
                     <img src="https://images.unsplash.com/photo-1514539079130-25950c84af65?auto=format&fit=crop&w=500&q=80" alt="Ra's al Ghul" class="villain-img">
@@ -463,7 +563,6 @@
                 </div>
             </div>
 
-            <!-- Coringa -->
             <div class="villain-card">
                 <div class="villain-img-container">
                     <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=500&q=80" alt="Coringa" class="villain-img">
@@ -482,7 +581,6 @@
                 </div>
             </div>
 
-            <!-- Bane -->
             <div class="villain-card">
                 <div class="villain-img-container">
                     <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=500&q=80" alt="Bane" class="villain-img">
@@ -501,7 +599,6 @@
                 </div>
             </div>
 
-            <!-- Corte das Corujas -->
             <div class="villain-card">
                 <div class="villain-img-container">
                     <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80" alt="Corte das Corujas" class="villain-img">
@@ -520,7 +617,6 @@
                 </div>
             </div>
 
-            <!-- Hera Venenosa -->
             <div class="villain-card">
                 <div class="villain-img-container">
                     <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=500&q=80" alt="Hera Venenosa" class="villain-img">
@@ -539,7 +635,6 @@
                 </div>
             </div>
 
-            <!-- Espantalho -->
             <div class="villain-card">
                 <div class="villain-img-container">
                     <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=500&q=80" alt="Espantalho" class="villain-img">
@@ -558,7 +653,6 @@
                 </div>
             </div>
 
-            <!-- Exterminador -->
             <div class="villain-card">
                 <div class="villain-img-container">
                     <img src="https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=500&q=80" alt="Exterminador" class="villain-img">
@@ -577,7 +671,6 @@
                 </div>
             </div>
 
-            <!-- Duas-Caras -->
             <div class="villain-card">
                 <div class="villain-img-container">
                     <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" alt="Duas-Caras" class="villain-img">
@@ -596,7 +689,6 @@
                 </div>
             </div>
 
-            <!-- Charada -->
             <div class="villain-card">
                 <div class="villain-img-container">
                     <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=500&q=80" alt="Charada" class="villain-img">
@@ -615,7 +707,6 @@
                 </div>
             </div>
 
-            <!-- Senhor Frio -->
             <div class="villain-card">
                 <div class="villain-img-container">
                     <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80" alt="Senhor Frio" class="villain-img">
@@ -634,7 +725,6 @@
                 </div>
             </div>
 
-            <!-- Pinguim -->
             <div class="villain-card">
                 <div class="villain-img-container">
                     <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=500&q=80" alt="Pinguim" class="villain-img">
@@ -653,7 +743,6 @@
                 </div>
             </div>
 
-            <!-- Mulher-Gato -->
             <div class="villain-card">
                 <div class="villain-img-container">
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" alt="Mulher-Gato" class="villain-img">
@@ -671,17 +760,188 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
     </div>
 
+    <!-- MODAL DE CRIAÇÃO -->
+    <div class="modal-overlay" id="modalCriar">
+        <div class="modal">
+            <h3>Novo Recurso Wayne Tech</h3>
+            <form id="formNovoRecurso">
+                <div class="form-group">
+                    <label for="nomeRecurso">Nome do Recurso</label>
+                    <input type="text" id="nomeRecurso" required placeholder="Ex: Batmóvel Tático">
+                </div>
+                <div class="form-group">
+                    <label for="descRecurso">Descrição</label>
+                    <textarea id="descRecurso" required placeholder="Ex: Veículo blindado de alta performance."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="nivelMinimo">Nível de Acesso Mínimo</label>
+                    <select id="nivelMinimo" required>
+                        <option value="FUNCIONARIO">Funcionário</option>
+                        <option value="GERENTE">Gerente</option>
+                        <option value="ADMIN">Administrador</option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" id="btnFecharModal">Cancelar</button>
+                    <button type="submit" class="btn-create">Salvar Recurso</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
     <script>
-        document.getElementById('btnLogout').addEventListener('click', () => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('usuario');
+        const API_URL = 'https://wayne-tech-api.onrender.com/api';
+        const token = localStorage.getItem('token');
+        
+        let usuario = {};
+        try {
+            usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+        } catch (e) {
+            console.error('Erro ao ler usuario do localStorage:', e);
+        }
+
+        let modoVigilanteAtivo = false;
+
+        if (!token) {
             window.location.href = 'index.html';
+        }
+
+        const nivelAcesso = (usuario.nivelAcesso || usuario.nivel || usuario.cargo || usuario.role || '').toUpperCase();
+        const nomeUsuario = usuario.nome || usuario.name || 'Usuário';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            configurarUsuario();
+
+            document.getElementById('btnLogout').addEventListener('click', () => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('usuario');
+                window.location.href = 'index.html';
+            });
+
+            // Controle de Modal
+            const btnAbrir = document.getElementById('btnAbrirModal');
+            const btnFechar = document.getElementById('btnFecharModal');
+            const modal = document.getElementById('modalCriar');
+            const form = document.getElementById('formNovoRecurso');
+
+            if (btnAbrir) btnAbrir.addEventListener('click', () => modal.style.display = 'flex');
+            if (btnFechar) btnFechar.addEventListener('click', () => modal.style.display = 'none');
+            if (form) form.addEventListener('submit', criarRecurso);
+
+            setupBotoesEspeciais();
         });
+
+        function configurarUsuario() {
+            const nomeEl = document.getElementById('nomeUsuario');
+            const tituloEl = document.getElementById('tituloPainel');
+            const descEl = document.getElementById('descPainel');
+            const btnCriar = document.getElementById('btnAbrirModal');
+            const btnEmergencia = document.getElementById('btnUsoRemoto');
+            const btnToggleVisao = document.getElementById('btnToggleVisao');
+
+            // Atualiza dinamicamente o nome no topo do Dashboard ao lado de SAIR
+            if (nomeEl) nomeEl.textContent = nomeUsuario;
+
+            const isBruce = nomeUsuario.toLowerCase().includes('bruce');
+
+            // Se for o Bruce Wayne, exibe APENAS o botão "MUDAR VISÃO" inicialmente
+            if (isBruce && btnToggleVisao) {
+                btnToggleVisao.style.display = 'inline-flex';
+            }
+
+            if (nivelAcesso === 'ADMIN') {
+                if (descEl) descEl.textContent = 'Bem-vindo, Sr. Wayne. Você possui controle total do sistema, autorização para novos projetos e desativação de recursos.';
+                if (btnCriar) btnCriar.style.display = 'inline-flex';
+
+            } else if (nivelAcesso === 'GERENTE') {
+                if (descEl) descEl.textContent = 'Bem-vindo, Lucius. Você possui permissão para gerenciar a frota tecnológica, cadastrar e remover equipamentos.';
+                if (btnCriar) btnCriar.style.display = 'inline-flex';
+
+            } else {
+                if (descEl) descEl.textContent = 'Bem-vindo, Alfred. Modo de suporte de campo ativo. Utilize o controle remoto em caso de emergências na mansão ou na Batcaverna.';
+                if (btnEmergencia) btnEmergencia.style.display = 'inline-flex';
+            }
+        }
+
+        function setupBotoesEspeciais() {
+            const btnToggleVisao = document.getElementById('btnToggleVisao');
+            const btnAlfred = document.getElementById('btnChamarAlfred');
+            const descPainel = document.getElementById('descPainel');
+
+            if (!btnToggleVisao) return;
+
+            btnToggleVisao.addEventListener('click', () => {
+                modoVigilanteAtivo = !modoVigilanteAtivo;
+
+                if (modoVigilanteAtivo) {
+                    btnToggleVisao.classList.add('mode-vigilante');
+                    btnToggleVisao.innerHTML = '🦇 Visão: Vigilante';
+                    
+                    // Exibe o botão de chamar o Alfred apenas no modo Vigilante
+                    if (btnAlfred) btnAlfred.style.display = 'inline-flex';
+
+                    if (descPainel) descPainel.textContent = 'MODO VIGILANTE ATIVADO. Redirecionando feeds táticos da Batcaverna e frotas de combate.';
+                    alert('🚨 MODO VIGILANTE ATIVADO: Criptografia de canal nível 10 estabelecida.');
+                } else {
+                    btnToggleVisao.classList.remove('mode-vigilante');
+                    btnToggleVisao.innerHTML = '👁️ Visão: Corporativa';
+
+                    // Oculta o botão de chamar o Alfred ao retornar ao modo Corporativo
+                    if (btnAlfred) btnAlfred.style.display = 'none';
+
+                    if (descPainel) descPainel.textContent = 'Bem-vindo, Sr. Wayne. Você possui controle total do sistema, autorização para novos projetos e desativação de recursos.';
+                    alert('💼 MODO CORPORATIVO RESTABELECIDO: Acesso restrito a relatórios da Wayne Enterprises.');
+                }
+            });
+
+            if (btnAlfred) {
+                btnAlfred.addEventListener('click', () => {
+                    alert('☕ ALFRED: "Pois não, Sr. Wayne? O chá está pronto e os diagnósticos do Batmóvel foram atualizados."');
+                });
+            }
+        }
+
+        async function criarRecurso(e) {
+            e.preventDefault();
+
+            const nome = document.getElementById('nomeRecurso').value.trim();
+            const descricao = document.getElementById('descRecurso').value.trim();
+            const nivelMinimo = document.getElementById('nivelMinimo').value;
+
+            const payload = {
+                nome: nome,
+                descricao: descricao,
+                nivelMinimo: nivelMinimo
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/recursos`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    alert('Recurso criado com sucesso!');
+                    document.getElementById('modalCriar').style.display = 'none';
+                    document.getElementById('formNovoRecurso').reset();
+                } else {
+                    const data = await response.json();
+                    alert(data.erro || 'Erro ao criar recurso.');
+                }
+            } catch (error) {
+                console.error('Erro ao criar recurso:', error);
+                alert('Erro de comunicação com o servidor.');
+            }
+        }
     </script>
 </body>
 </html>
