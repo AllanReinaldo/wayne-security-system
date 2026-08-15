@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wayne Tech - Login & Galeria</title>
+    <title>Wayne Tech - Login</title>
     
     <!-- FAVICON -->
     <link rel="icon" type="image/png" href="w-azul.png">
 
-    <!-- ARQUIVO CSS EXTERNO -->
+    <!-- ESTILOS GLOBAIS (inclui regras do login e dos vilões) -->
     <link rel="stylesheet" href="style.css">
 
     <style>
@@ -25,9 +25,9 @@
             min-height: 100vh;
             width: 100vw;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            padding: 40px 20px; 
+            padding: 20px; 
             
             background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('wayne-enterprises-wallpapers.jpg');
             background-repeat: no-repeat;
@@ -48,7 +48,6 @@
             -webkit-backdrop-filter: blur(12px);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 15px rgba(2, 132, 199, 0.1);
             text-align: center;
-            margin-bottom: 40px;
         }
 
         .brand-header {
@@ -142,22 +141,6 @@
             display: none;
         }
 
-        /* CONTAINER PRINCIPAL DA GALERIA */
-        .gallery-container {
-            width: 100%;
-            max-width: 1200px;
-        }
-
-        .gallery-title {
-            text-align: center;
-            font-size: 1.5rem;
-            color: #f59e0b;
-            letter-spacing: 1.5px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-
-        /* RESPONSIVIDADE (SMARTPHONES E TABLETS) */
         @media (max-width: 480px) {
             .login-card {
                 padding: 25px 20px;
@@ -175,7 +158,6 @@
 </head>
 <body>
 
-    <!-- CARD DE LOGIN -->
     <div class="login-card">
         <div class="brand-header">
             <img src="icone W.jpeg" alt="Logo Wayne Tech" class="logo-wayne">
@@ -199,116 +181,6 @@
         </form>
     </div>
 
-    <!-- SEÇÃO DA GRADE DE VILÕES -->
-    <section class="gallery-container">
-        <h2 class="gallery-title">Arquivo de Ameaças - Gotham</h2>
-        
-        <div class="villains-grid">
-
-            <!-- Bane -->
-            <div class="villain-card">
-                <div class="villain-img-wrapper">
-                    <img class="villain-img" src="bane.jpg" alt="Bane">
-                </div>
-                <div class="villain-info">
-                    <h3 class="villain-name">Bane</h3>
-                </div>
-            </div>
-
-            <!-- Charada -->
-            <div class="villain-card">
-                <div class="villain-img-wrapper">
-                    <img class="villain-img" src="charada.jpg" alt="Charada">
-                </div>
-                <div class="villain-info">
-                    <h3 class="villain-name">Charada</h3>
-                </div>
-            </div>
-
-            <!-- Coringa -->
-            <div class="villain-card">
-                <div class="villain-img-wrapper">
-                    <img class="villain-img" src="coringa.jpg" alt="Coringa">
-                </div>
-                <div class="villain-info">
-                    <h3 class="villain-name">Coringa</h3>
-                </div>
-            </div>
-
-            <!-- Corte das Corujas -->
-            <div class="villain-card">
-                <div class="villain-img-wrapper">
-                    <img class="villain-img" src="corte-das-corujas.jpg" alt="Corte das Corujas">
-                </div>
-                <div class="villain-info">
-                    <h3 class="villain-name">Corte das Corujas</h3>
-                </div>
-            </div>
-
-            <!-- Duas-Caras -->
-            <div class="villain-card">
-                <div class="villain-img-wrapper">
-                    <img class="villain-img" src="duas-caras.jpg" alt="Duas-Caras">
-                </div>
-                <div class="villain-info">
-                    <h3 class="villain-name">Duas-Caras</h3>
-                </div>
-            </div>
-
-            <!-- Espantalho -->
-            <div class="villain-card">
-                <div class="villain-img-wrapper">
-                    <img class="villain-img" src="espantalho.jpg" alt="Espantalho">
-                </div>
-                <div class="villain-info">
-                    <h3 class="villain-name">Espantalho</h3>
-                </div>
-            </div>
-
-            <!-- Exterminador -->
-            <div class="villain-card">
-                <div class="villain-img-wrapper">
-                    <img class="villain-img" src="exterminador.jpg" alt="Exterminador">
-                </div>
-                <div class="villain-info">
-                    <h3 class="villain-name">Exterminador</h3>
-                </div>
-            </div>
-
-            <!-- Hera Venenosa -->
-            <div class="villain-card">
-                <div class="villain-img-wrapper">
-                    <img class="villain-img" src="hera-venenosa.jpg" alt="Hera Venenosa">
-                </div>
-                <div class="villain-info">
-                    <h3 class="villain-name">Hera Venenosa</h3>
-                </div>
-            </div>
-
-            <!-- Mulher-Gato -->
-            <div class="villain-card">
-                <div class="villain-img-wrapper">
-                    <img class="villain-img" src="mulher-gato.jpg" alt="Mulher-Gato">
-                </div>
-                <div class="villain-info">
-                    <h3 class="villain-name">Mulher-Gato</h3>
-                </div>
-            </div>
-
-            <!-- Pinguim -->
-            <div class="villain-card">
-                <div class="villain-img-wrapper">
-                    <img class="villain-img" src="pinguim.jpg" alt="Pinguim">
-                </div>
-                <div class="villain-info">
-                    <h3 class="villain-name">Pinguim</h3>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- SCRIPT JS -->
     <script>
         const API_URL = 'https://wayne-tech-api.onrender.com/api';
 
@@ -334,11 +206,9 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Guarda token e usuário no localStorage
                     localStorage.setItem('token', data.token || data.accessToken);
                     localStorage.setItem('usuario', JSON.stringify(data.usuario || data.user || data));
                     
-                    // Redireciona para o dashboard
                     window.location.href = 'dashboard.html';
                 } else {
                     msgErro.textContent = data.erro || data.mensagem || 'Credenciais inválidas.';
