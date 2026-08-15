@@ -10,14 +10,14 @@ métricas e CRUD completo de recursos.
 
 ### **Backend**
 * **Python 3**
-* **Flask** (Microframework web)
+* **Flask**              (Microframework web)
 * **Flask-JWT-Extended** (Autenticação via tokens JWT)
-* **Flask-CORS** (Integração segura com o Frontend)
-* **Werkzeug** (Criptografia de senhas com HASH)
+* **Flask-CORS**         (Integração segura com o Frontend)
+* **Werkzeug**           (Criptografia de senhas com HASH)
 
 ### **Frontend**
-* **HTML5** (Estrutura semântica)
-* **CSS3** (Estilização em modo escuro com CSS Grid e Flexbox)
+* **HTML5**             (Estrutura semântica)
+* **CSS3**              (Estilização em modo escuro com CSS Grid e Flexbox)
 * **JavaScript (ES6+)** (Consumo da API REST via Fetch API)
 
 ---
@@ -26,11 +26,11 @@ métricas e CRUD completo de recursos.
 
 O sistema possui 3 níveis de acesso pré-cadastrados:
 
-| Usuário | E-mail | Senha | Perfil | Permissões |
-| :--- | :--- | :--- | :--- | :--- |
-| **Bruce Wayne** | `bruce@wayne.com` | `batman123` | **Admin** | Acesso total: Visualizar, Criar e Excluir recursos |
-| **Lucius Fox** | `fox@wayne.com` | `tech123` | **Gerente** | Visualizar e Criar novos recursos |
-| **Alfred Pennyworth** | `alfred@wayne.com` | `tea123` | **Funcionário** | Apenas visualização de recursos e dashboard |
+| Usuário               | E-mail            | Senha       | Perfil         | Permissões                                         |
+| :---                  | :---              | :---        | :---           | :---                                               |
+| **Bruce Wayne**       | `bruce@wayne.com` | `batman123` | **Admin**      | Acesso total: Visualizar, Criar e Excluir recursos |
+| **Lucius Fox**        | `fox@wayne.com`   | `tech123`   | **Gerente**    | Visualizar e Criar novos recursos                  |
+| **Alfred Pennyworth** | `alfred@wayne.com`| `tea123`    | **Funcionário**| Apenas visualização de recursos e dashboard        |
 
 ---
 
