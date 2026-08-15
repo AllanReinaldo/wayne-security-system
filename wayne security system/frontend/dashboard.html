@@ -27,7 +27,7 @@
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
-            transition: background-color 0.4s ease;
+            transition: background-image 0.4s ease, background-color 0.4s ease;
         }
 
         /* NAVBAR */
@@ -480,8 +480,8 @@
         <div class="actions-bar">
             <div class="btn-group">
                 <!-- Exclusivo Bruce Wayne -->
-                <button class="btn-toggle-mode" id="btnToggleVisao" style="display: none;">
-                    👁️ Visão: Corporativa
+                <button class="btn-toggle-mode mode-vigilante" id="btnToggleVisao" style="display: none;">
+                    👁️ Visão: Vigilante
                 </button>
                 <button class="btn-alfred" id="btnChamarAlfred" style="display: none;">
                     🔔 Chamar Alfred
@@ -952,12 +952,14 @@
         }
 
         function configurarEventos() {
-            // Sair
+            // 1. CORREÇÃO: Sair (redireciona ou recarrega a página)
             document.getElementById('btnLogout').addEventListener('click', () => {
                 alert("Sessão encerrada com segurança.");
+                // Redireciona para o login (ajuste o caminho se necessário) ou recarrega a página
+                window.location.href = "login.html"; 
             });
 
-            // Toggle de Visão (Bruce Wayne)
+            // 2. CORREÇÃO: Toggle de Visão mantendo a imagem de fundo em ambos os modos
             const btnToggle = document.getElementById('btnToggleVisao');
             if (btnToggle) {
                 btnToggle.addEventListener('click', () => {
@@ -969,7 +971,8 @@
                     } else {
                         btnToggle.textContent = "👁️ Visão: Corporativa";
                         btnToggle.classList.remove('mode-vigilante');
-                        document.body.style.backgroundImage = "linear-gradient(rgba(10, 15, 30, 0.85), rgba(10, 15, 30, 0.85))";
+                        // Mantém a imagem de fundo, alterando apenas a camada de cor por cima para um tom corporativo
+                        document.body.style.backgroundImage = "linear-gradient(rgba(10, 25, 50, 0.85), rgba(10, 25, 50, 0.85)), url('wayne-enterprises-wallpapers.jpg')";
                     }
                 });
             }
