@@ -3,1079 +3,338 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wayne Tech - Dashboard Tático</title>
+    <title>Wayne Tech - Dashboard de Ameaças</title>
     <!-- FAVICON -->
     <link rel="icon" type="image/png" href="w-azul.png">
-    
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    <!-- ARQUIVO CSS EXTERNO -->
+    <link rel="stylesheet" href="style.css">
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        background-color: #000000;
+        color: #ffffff;
+        min-height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px; 
+        
+        background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('wayne-enterprises-wallpapers.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-attachment: fixed;
+    }
+
+    /* CARD DO DASHBOARD */
+    .dashboard-card {
+        background: rgba(10, 15, 25, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 16px;
+        padding: 40px 35px;
+        width: 100%;
+        max-width: 1200px;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 15px rgba(2, 132, 199, 0.1);
+        text-align: center;
+    }
+
+    .brand-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 8px;
+    }
+
+    .logo-wayne {
+        width: 40px !important;
+        height: 40px !important;
+        max-width: 40px !important;
+        max-height: 40px !important;
+        border-radius: 50%;
+        object-fit: cover;
+        background-color: #000;
+        mix-blend-mode: multiply;
+    }
+
+    .brand-header h1 {
+        font-size: 1.6rem;
+        color: #1ea1e1;
+        letter-spacing: 1.5px;
+        font-weight: 700;
+    }
+
+    .subtitle {
+        color: #94a3b8;
+        font-size: 0.85rem;
+        margin-bottom: 28px;
+        letter-spacing: 0.5px;
+    }
+
+    .section-title {
+        color: #f59e0b;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 10px;
+    }
+
+    /* ESTILOS INTERNOS DOS DADOS DOS VILÕES */
+    .villain-details {
+        text-align: left;
+        font-size: 0.8rem;
+        color: #cbd5e1;
+        margin-top: 8px;
+        line-height: 1.4;
+    }
+
+    .villain-details strong {
+        color: #38bdf8;
+    }
+
+    /* RESPONSIVIDADE */
+    @media (max-width: 480px) {
+        .dashboard-card {
+            padding: 25px 20px;
         }
 
-        body {
-            background-color: #000000;
-            color: #ffffff;
-            min-height: 100vh;
-            width: 100vw;
-            display: flex;
-            flex-direction: column;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('wayne-enterprises-wallpapers.jpg');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            background-attachment: fixed;
-            transition: background-color 0.4s ease;
-        }
-
-        /* NAVBAR */
-        .navbar {
-            background: rgba(10, 15, 25, 0.9);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-wayne {
-            width: 36px !important;
-            height: 36px !important;
-            border-radius: 50%;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        .navbar-brand h1 {
+        .brand-header h1 {
             font-size: 1.3rem;
-            color: #1ea1e1;
-            letter-spacing: 1px;
-            font-weight: 700;
         }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .user-name {
-            font-size: 0.95rem;
-            color: #cbd5e1;
-            font-weight: 600;
-        }
-
-        .btn-logout {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid #ef4444;
-            color: #fca5a5;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: all 0.2s;
-        }
-
-        .btn-logout:hover { background: #ef4444; color: #ffffff; }
-
-        /* CONTEÚDO PRINCIPAL */
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 30px 20px;
-            width: 100%;
-        }
-
-        /* WELCOME CARD */
-        .welcome-card {
-            background: rgba(15, 20, 30, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 25px;
-            backdrop-filter: blur(8px);
-        }
-
-        .welcome-card h2 { font-size: 1.5rem; color: #ffffff; margin-bottom: 8px; }
-        .welcome-card p { color: #94a3b8; font-size: 0.95rem; }
-
-        /* BARRA DE AÇÕES E BOTÕES ESPECIAIS */
-        .actions-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .btn-toggle-mode {
-            background: #0284c7;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-        }
-
-        .btn-toggle-mode.mode-vigilante {
-            background: #000000;
-            color: #38bdf8;
-            border: 1px solid #0284c7;
-            box-shadow: 0 0 12px rgba(2, 132, 199, 0.5);
-        }
-
-        .btn-alfred {
-            background: rgba(100, 116, 139, 0.2);
-            border: 1px solid #94a3b8;
-            color: #f1f5f9;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.9rem;
-        }
-
-        .btn-alfred:hover { background: #475569; }
-
-        .btn-create {
-            background: #0284c7;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.9rem;
-        }
-
-        .btn-create:hover { background: #0369a1; }
-
-        .btn-emergency {
-            background: rgba(220, 38, 38, 0.85);
-            color: white;
-            border: 1px solid #ef4444;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.9rem;
-            box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
-        }
-
-        /* SEÇÕES DO DASHBOARD */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 2px solid rgba(30, 161, 225, 0.3);
-            padding-bottom: 10px;
-        }
-
-        .section-header h3 {
-            font-size: 1.3rem;
-            color: #38bdf8;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* GRID DE RECURSOS / GADGETS */
-        .resources-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
-            margin-bottom: 50px;
-        }
-
-        .resource-card {
-            background: rgba(15, 23, 42, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            backdrop-filter: blur(6px);
-            transition: all 0.2s ease;
-        }
-
-        .resource-card:hover {
-            border-color: #38bdf8;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15);
-        }
-
-        .card-header-tech {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
-        }
-
-        .card-title-tech {
-            font-size: 1.1rem;
-            color: #f1f5f9;
-            font-weight: 600;
-        }
-
-        .card-category-badge {
-            font-size: 0.7rem;
-            padding: 3px 8px;
-            border-radius: 4px;
-            background: rgba(56, 189, 248, 0.15);
-            color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        .card-desc-tech {
-            color: #94a3b8;
-            font-size: 0.88rem;
-            line-height: 1.5;
-        }
-
-        /* GRID DE VILÕES DE GOTHAM */
-        .villains-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 22px;
-            margin-bottom: 40px;
-        }
-
-        .villain-card {
-            background: rgba(10, 15, 25, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(6px);
-        }
-
-        .villain-card:hover {
-            transform: translateY(-4px);
-            border-color: #ef4444;
-            box-shadow: 0 6px 25px rgba(239, 68, 68, 0.2);
-        }
-
-        .villain-img-container {
-            width: 100%;
-            height: 200px;
-            position: relative;
-            overflow: hidden;
-            background-color: #020617;
-        }
-
-        .villain-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-
-        .villain-card:hover .villain-img { transform: scale(1.06); }
-
-        .villain-danger-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.72rem;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.6);
-        }
-
-        .danger-extrema { background: #7f1d1d; color: #fca5a5; border: 1px solid #ef4444; }
-        .danger-alta { background: #7c2d12; color: #fdba74; border: 1px solid #f97316; }
-        .danger-media { background: #713f12; color: #fde047; border: 1px solid #eab308; }
-        .danger-baixa { background: #14532d; color: #86efac; border: 1px solid #22c55e; }
-
-        .villain-info {
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            flex-grow: 1;
-        }
-
-        .villain-name { font-size: 1.2rem; color: #f8fafc; font-weight: 700; }
-        .villain-field { font-size: 0.85rem; color: #cbd5e1; line-height: 1.4; }
-        .villain-field span { color: #64748b; font-weight: 600; display: block; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 2px; }
-
-        .villain-status {
-            margin-top: auto;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 0.82rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-        .status-ativo { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
-        .status-preso { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
-        .status-inativo { background: #eab308; box-shadow: 0 0 8px #eab308; }
-
-        /* TABELA DE ESTOQUE (LUCIUS FOX) */
-        .stock-table-container {
-            width: 100%;
-            overflow-x: auto;
-            background: rgba(10, 15, 25, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 40px;
-            backdrop-filter: blur(6px);
-        }
-
-        .stock-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-
-        .stock-table th {
-            padding: 14px 16px;
-            background: rgba(30, 41, 59, 0.8);
-            color: #38bdf8;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid rgba(56, 189, 248, 0.3);
-        }
-
-        .stock-table td {
-            padding: 14px 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            color: #e2e8f0;
-            font-size: 0.9rem;
-        }
-
-        .stock-table tr:hover {
-            background: rgba(30, 41, 59, 0.4);
-        }
-
-        .badge-stock {
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            display: inline-block;
-        }
-
-        .badge-ok { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
-        .badge-low { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid #ef4444; }
-        .badge-prod { background: rgba(234, 179, 8, 0.2); color: #fde047; border: 1px solid #eab308; }
-
-        .btn-stock-action {
-            background: rgba(56, 189, 248, 0.15);
-            border: 1px solid #38bdf8;
-            color: #38bdf8;
-            padding: 4px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.2s;
-        }
-
-        .btn-stock-action:hover {
-            background: #0284c7;
-            color: white;
-        }
-
-        /* MODAL */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(4px);
-            justify-content: center; align-items: center;
-            z-index: 1000; padding: 15px;
-        }
-        .modal {
-            background: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px; padding: 30px;
-            width: 100%; max-width: 450px;
-        }
-        .modal h3 { margin-bottom: 20px; color: #1ea1e1; }
-        .modal .form-group { margin-bottom: 16px; }
-        .modal label { display: block; margin-bottom: 6px; font-size: 0.85rem; color: #cbd5e1; }
-        .modal input, .modal select, .modal textarea {
-            width: 100%; padding: 10px;
-            background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px; color: white; outline: none;
-        }
-        .modal textarea { resize: vertical; height: 80px; }
-        .modal-buttons { display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; }
-        .btn-cancel { background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: #cbd5e1; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
-
-        @media (max-width: 768px) {
-            .navbar { padding: 12px 18px; }
-            .container { padding: 20px 12px; }
-            .resources-grid, .villains-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
 
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="navbar-brand">
+    <div class="dashboard-card">
+        <div class="brand-header">
             <img src="icone W.jpeg" alt="Logo Wayne Tech" class="logo-wayne">
             <h1>WAYNE TECH</h1>
         </div>
-        <div class="user-info">
-            <span class="user-name" id="nomeUsuario">Carregando...</span>
-            <button class="btn-logout" id="btnLogout">SAIR</button>
-        </div>
-    </nav>
+        <p class="subtitle">Sistema de Gerenciamento de Segurança</p>
 
-    <div class="container">
-        
-        <!-- CARD BOAS VINDAS -->
-        <div class="welcome-card">
-            <h2 id="tituloPainel">Painel de Operações Táticas</h2>
-            <p id="descPainel">Carregando permissões do sistema...</p>
-        </div>
+        <h2 class="section-title">Arquivo de Ameaças - Gotham</h2>
 
-        <!-- BARRA DE BOTOES ESPECIAIS -->
-        <div class="actions-bar">
-            <div class="btn-group">
-                <!-- Exclusivo Bruce Wayne -->
-                <button class="btn-toggle-mode" id="btnToggleVisao" style="display: none;">
-                    👁️ Visão: Corporativa
-                </button>
-                <button class="btn-alfred" id="btnChamarAlfred" style="display: none;">
-                    🔔 Chamar Alfred
-                </button>
+        <!-- GRADE DE VILÕES COM DADOS ATUALIZADOS -->
+        <div class="villains-grid">
 
-                <!-- Botões Gerente / Admin -->
-                <button class="btn-create" id="btnAbrirModal" style="display: none;">
-                    + Criar Novo Recurso
-                </button>
-
-                <!-- Botão Suporte / Funcionário -->
-                <button class="btn-emergency" id="btnUsoRemoto" style="display: none;">
-                    🚨 Acionar Uso Remoto de Emergência
-                </button>
-            </div>
-        </div>
-
-        <!-- SEÇÃO 1: RECURSOS WAYNE TECH -->
-        <div class="section-header">
-            <h3>🛡️ Equipamentos e Tecnologia Wayne Tech</h3>
-        </div>
-
-        <div class="resources-grid" id="gridRecursosWayne">
-            <div class="resource-card">
-                <div>
-                    <div class="card-header-tech">
-                        <h4 class="card-title-tech">Batarangues</h4>
-                        <span class="card-category-badge">Cinto & Gadgets</span>
-                    </div>
-                    <p class="card-desc-tech">Lâminas de arremesso em formato de morcego, com variações explosivas, sônicas ou eletrificadas.</p>
-                </div>
-            </div>
-
-            <div class="resource-card">
-                <div>
-                    <div class="card-header-tech">
-                        <h4 class="card-title-tech">Bat-garra / Pistola de Gancho</h4>
-                        <span class="card-category-badge">Cinto & Gadgets</span>
-                    </div>
-                    <p class="card-desc-tech">Dispositivo para escalar prédios e se locomover rapidamente pelos telhados de Gotham.</p>
-                </div>
-            </div>
-
-            <div class="resource-card">
-                <div>
-                    <div class="card-header-tech">
-                        <h4 class="card-title-tech">Granadas de Fumaça</h4>
-                        <span class="card-category-badge">Cinto & Gadgets</span>
-                    </div>
-                    <p class="card-desc-tech">Usadas para criar cortinas de fumaça e sumir rapidamente de vista.</p>
-                </div>
-            </div>
-
-            <div class="resource-card">
-                <div>
-                    <div class="card-header-tech">
-                        <h4 class="card-title-tech">Máscara de Gás e Respirador</h4>
-                        <span class="card-category-badge">Cinto & Gadgets</span>
-                    </div>
-                    <p class="card-desc-tech">Protege contra toxinas, gás do Espantalho e permite respirar debaixo d'água ou em locais sem oxigênio.</p>
-                </div>
-            </div>
-
-            <div class="resource-card">
-                <div>
-                    <div class="card-header-tech">
-                        <h4 class="card-title-tech">Rastreadores</h4>
-                        <span class="card-category-badge">Cinto & Gadgets</span>
-                    </div>
-                    <p class="card-desc-tech">Pequenos transmissores em formato de morcego colocados em veículos ou roupas de criminosos.</p>
-                </div>
-            </div>
-
-            <div class="resource-card">
-                <div>
-                    <div class="card-header-tech">
-                        <h4 class="card-title-tech">Binóculos de Visão Noturna</h4>
-                        <span class="card-category-badge">Cinto & Gadgets</span>
-                    </div>
-                    <p class="card-desc-tech">Lentes especiais no Capuz do Batman com modos térmicos e infravermelhos.</p>
-                </div>
-            </div>
-
-            <div class="resource-card">
-                <div>
-                    <div class="card-header-tech">
-                        <h4 class="card-title-tech">Traje de Kevlar e Nomex</h4>
-                        <span class="card-category-badge">Armadura</span>
-                    </div>
-                    <p class="card-desc-tech">Tecido blindado contra tiros de raspão e cortes, além de ser resistente a chamas.</p>
-                </div>
-            </div>
-
-            <div class="resource-card">
-                <div>
-                    <div class="card-header-tech">
-                        <h4 class="card-title-tech">Capa Planadora</h4>
-                        <span class="card-category-badge">Armadura</span>
-                    </div>
-                    <p class="card-desc-tech">Permite que ele plane por curtas distâncias entre os edifícios de Gotham.</p>
-                </div>
-            </div>
-
-            <div class="resource-card">
-                <div>
-                    <div class="card-header-tech">
-                        <h4 class="card-title-tech">Batmóvel</h4>
-                        <span class="card-category-badge">Veículos & Base</span>
-                    </div>
-                    <p class="card-desc-tech">O carro blindado de alta performance equipado com armamento não-letal e tecnologia de ponta.</p>
-                </div>
-            </div>
-
-            <div class="resource-card">
-                <div>
-                    <div class="card-header-tech">
-                        <h4 class="card-title-tech">Batcomputador</h4>
-                        <span class="card-category-badge">Veículos & Base</span>
-                    </div>
-                    <p class="card-desc-tech">O supercomputador localizado na Batcaverna usado para investigações forenses, hackeamento e reconhecimento facial.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- SEÇÃO DINÂMICA: MONITOR DE VILÕES OU CONTROLE DE ESTOQUE (LUCIUS) -->
-        <div class="section-header">
-            <h3 id="tituloSecaoSecundaria">⚠️ Monitor de Ameaças: Vilões de Gotham</h3>
-        </div>
-
-        <!-- CONTAINER DA GRADE DE VILÕES (Padrão para Bruce / Admin / Outros) -->
-        <div class="villains-grid" id="gridViloes">
+            <!-- Ra's al Ghul -->
             <div class="villain-card">
-                <div class="villain-img-container">
-                    <img src="https://images.unsplash.com/photo-1514539079130-25950c84af65?auto=format&fit=crop&w=500&q=80" alt="Ra's al Ghul" class="villain-img">
-                    <span class="villain-danger-badge danger-extrema">Extrema (Global)</span>
+                <div class="villain-img-wrapper">
+                    <img class="villain-img" src="viloes/ras-al-ghul.jpg" alt="Ra's al Ghul">
                 </div>
                 <div class="villain-info">
-                    <h4 class="villain-name">Ra's al Ghul</h4>
-                    <div class="villain-field">
-                        <span>Principal Ameaça</span>
-                        Líder de organização e ameaça mundial.
-                    </div>
-                    <div class="villain-status">
-                        <span class="status-dot status-inativo"></span>
-                        Status: Morto / Ressuscitando (Poço de Lázaro)
+                    <h3 class="villain-name">Ra's al Ghul</h3>
+                    <div class="villain-details">
+                        <p><strong>Periculosidade:</strong> Extrema (Global)</p>
+                        <p><strong>Ameaça:</strong> Líder de organização e ameaça mundial</p>
+                        <p><strong>Status:</strong> Morto / Ressuscitando (Poço de Lázaro)</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Coringa -->
             <div class="villain-card">
-                <div class="villain-img-container">
-                    <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=500&q=80" alt="Coringa" class="villain-img">
-                    <span class="villain-danger-badge danger-extrema">Extrema (Imprevisível)</span>
+                <div class="villain-img-wrapper">
+                    <img class="villain-img" src="viloes/coringa.jpg" alt="Coringa">
                 </div>
                 <div class="villain-info">
-                    <h4 class="villain-name">Coringa</h4>
-                    <div class="villain-field">
-                        <span>Principal Ameaça</span>
-                        Terrorismo psicológico e caos em massa.
-                    </div>
-                    <div class="villain-status">
-                        <span class="status-dot status-ativo"></span>
-                        Status: Ativo (À solta em Gotham)
+                    <h3 class="villain-name">Coringa</h3>
+                    <div class="villain-details">
+                        <p><strong>Periculosidade:</strong> Extrema (Imprevisível)</p>
+                        <p><strong>Ameaça:</strong> Terrorismo psicológico e caos em massa</p>
+                        <p><strong>Status:</strong> Ativo (Sempre à solta em Gotham)</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Bane -->
             <div class="villain-card">
-                <div class="villain-img-container">
-                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=500&q=80" alt="Bane" class="villain-img">
-                    <span class="villain-danger-badge danger-alta">Alta a Extrema</span>
+                <div class="villain-img-wrapper">
+                    <img class="villain-img" src="viloes/bane.jpg" alt="Bane">
                 </div>
                 <div class="villain-info">
-                    <h4 class="villain-name">Bane</h4>
-                    <div class="villain-field">
-                        <span>Principal Ameaça</span>
-                        Força física extrema e mente genial.
-                    </div>
-                    <div class="villain-status">
-                        <span class="status-dot status-ativo"></span>
-                        Status: Ativo (Controle territorial)
+                    <h3 class="villain-name">Bane</h3>
+                    <div class="villain-details">
+                        <p><strong>Periculosidade:</strong> Alta a Extrema</p>
+                        <p><strong>Ameaça:</strong> Força física extrema e mente genial</p>
+                        <p><strong>Status:</strong> Ativo (Buscando controle territorial)</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Corte das Corujas -->
             <div class="villain-card">
-                <div class="villain-img-container">
-                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80" alt="Corte das Corujas" class="villain-img">
-                    <span class="villain-danger-badge danger-alta">Alta a Extrema</span>
+                <div class="villain-img-wrapper">
+                    <img class="villain-img" src="viloes/corte-das-corujas.jpg" alt="Corte das Corujas">
                 </div>
                 <div class="villain-info">
-                    <h4 class="villain-name">Corte das Corujas</h4>
-                    <div class="villain-field">
-                        <span>Principal Ameaça</span>
-                        Sociedade secreta e controle político.
-                    </div>
-                    <div class="villain-status">
-                        <span class="status-dot status-ativo"></span>
-                        Status: Ativa / Nas Sombras
+                    <h3 class="villain-name">Corte das Corujas</h3>
+                    <div class="villain-details">
+                        <p><strong>Periculosidade:</strong> Alta a Extrema</p>
+                        <p><strong>Ameaça:</strong> Sociedade secreta e controle político</p>
+                        <p><strong>Status:</strong> Ativa / Nas Sombras (Controle secreto)</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Hera Venenosa -->
             <div class="villain-card">
-                <div class="villain-img-container">
-                    <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=500&q=80" alt="Hera Venenosa" class="villain-img">
-                    <span class="villain-danger-badge danger-alta">Alta (Metahumana)</span>
+                <div class="villain-img-wrapper">
+                    <img class="villain-img" src="viloes/hera-venenosa.jpg" alt="Hera Venenosa">
                 </div>
                 <div class="villain-info">
-                    <h4 class="villain-name">Hera Venenosa</h4>
-                    <div class="villain-field">
-                        <span>Principal Ameaça</span>
-                        Controle mental e manipulação de plantas.
-                    </div>
-                    <div class="villain-status">
-                        <span class="status-dot status-inativo"></span>
-                        Status: Ativa / Anti-heroína
+                    <h3 class="villain-name">Hera Venenosa</h3>
+                    <div class="villain-details">
+                        <p><strong>Periculosidade:</strong> Alta (Metahumana)</p>
+                        <p><strong>Ameaça:</strong> Controle mental e manipulação de plantas</p>
+                        <p><strong>Status:</strong> Ativa / Anti-heroína</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Espantalho -->
             <div class="villain-card">
-                <div class="villain-img-container">
-                    <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=500&q=80" alt="Espantalho" class="villain-img">
-                    <span class="villain-danger-badge danger-alta">Alta (Psicológica)</span>
+                <div class="villain-img-wrapper">
+                    <img class="villain-img" src="viloes/espantalho.jpg" alt="Espantalho">
                 </div>
                 <div class="villain-info">
-                    <h4 class="villain-name">Espantalho</h4>
-                    <div class="villain-field">
-                        <span>Principal Ameaça</span>
-                        Guerra psicológica e toxinas do medo.
-                    </div>
-                    <div class="villain-status">
-                        <span class="status-dot status-preso"></span>
-                        Status: Preso / Foragido (Asilo Arkham)
+                    <h3 class="villain-name">Espantalho</h3>
+                    <div class="villain-details">
+                        <p><strong>Periculosidade:</strong> Alta (Psicológica)</p>
+                        <p><strong>Ameaça:</strong> Guerra psicológica e toxinas do medo</p>
+                        <p><strong>Status:</strong> Preso / Foragido (Asilo Arkham)</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Exterminador -->
             <div class="villain-card">
-                <div class="villain-img-container">
-                    <img src="https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=500&q=80" alt="Exterminador" class="villain-img">
-                    <span class="villain-danger-badge danger-alta">Alta (Combate)</span>
+                <div class="villain-img-wrapper">
+                    <img class="villain-img" src="viloes/exterminador.jpg" alt="Exterminador">
                 </div>
                 <div class="villain-info">
-                    <h4 class="villain-name">Exterminador</h4>
-                    <div class="villain-field">
-                        <span>Principal Ameaça</span>
-                        Mestre em táticas e combate marcial.
-                    </div>
-                    <div class="villain-status">
-                        <span class="status-dot status-ativo"></span>
-                        Status: Ativo (Mercenário Global)
+                    <h3 class="villain-name">Exterminador</h3>
+                    <div class="villain-details">
+                        <p><strong>Periculosidade:</strong> Alta (Combate)</p>
+                        <p><strong>Ameaça:</strong> Mestre em táticas e combate marcial</p>
+                        <p><strong>Status:</strong> Ativo (Mercenário global)</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Duas-Caras -->
             <div class="villain-card">
-                <div class="villain-img-container">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" alt="Duas-Caras" class="villain-img">
-                    <span class="villain-danger-badge danger-media">Média a Alta</span>
+                <div class="villain-img-wrapper">
+                    <img class="villain-img" src="viloes/duas-caras.jpg" alt="Duas-Caras">
                 </div>
                 <div class="villain-info">
-                    <h4 class="villain-name">Duas-Caras</h4>
-                    <div class="villain-field">
-                        <span>Principal Ameaça</span>
-                        Instabilidade mental e controle de máfia.
-                    </div>
-                    <div class="villain-status">
-                        <span class="status-dot status-preso"></span>
-                        Status: Preso / Em Tratamento (Arkham)
+                    <h3 class="villain-name">Duas-Caras</h3>
+                    <div class="villain-details">
+                        <p><strong>Periculosidade:</strong> Média a Alta</p>
+                        <p><strong>Ameaça:</strong> Instabilidade mental e controle de máfia</p>
+                        <p><strong>Status:</strong> Preso / Em Tratamento (Asilo Arkham)</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Charada -->
             <div class="villain-card">
-                <div class="villain-img-container">
-                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=500&q=80" alt="Charada" class="villain-img">
-                    <span class="villain-danger-badge danger-media">Média a Alta</span>
+                <div class="villain-img-wrapper">
+                    <img class="villain-img" src="viloes/charada.jpg" alt="Charada">
                 </div>
                 <div class="villain-info">
-                    <h4 class="villain-name">Charada</h4>
-                    <div class="villain-field">
-                        <span>Principal Ameaça</span>
-                        Gênio intelectual e jogos mentais.
-                    </div>
-                    <div class="villain-status">
-                        <span class="status-dot status-ativo"></span>
-                        Status: Ativo (Novos Enigmas)
+                    <h3 class="villain-name">Charada</h3>
+                    <div class="villain-details">
+                        <p><strong>Periculosidade:</strong> Média a Alta</p>
+                        <p><strong>Ameaça:</strong> Gênio intelectual e jogos mentais</p>
+                        <p><strong>Status:</strong> Ativo (Planejando novos enigmas)</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Arlequina -->
             <div class="villain-card">
-                <div class="villain-img-container">
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80" alt="Senhor Frio" class="villain-img">
-                    <span class="villain-danger-badge danger-media">Média</span>
+                <div class="villain-img-wrapper">
+                    <img class="villain-img" src="viloes/arlequina.jpg" alt="Arlequina">
                 </div>
                 <div class="villain-info">
-                    <h4 class="villain-name">Senhor Frio</h4>
-                    <div class="villain-field">
-                        <span>Principal Ameaça</span>
-                        Tecnologia congelante avançada.
-                    </div>
-                    <div class="villain-status">
-                        <span class="status-dot status-inativo"></span>
-                        Status: Inativo (Focado na cura de Nora)
+                    <h3 class="villain-name">Arlequina</h3>
+                    <div class="villain-details">
+                        <p><strong>Periculosidade:</strong> Média</p>
+                        <p><strong>Ameaça:</strong> Combate acrobático e intelecto psiquiátrico</p>
+                        <p><strong>Status:</strong> Ativa / Anti-heroína (Aliada do Batman)</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Senhor Frio -->
             <div class="villain-card">
-                <div class="villain-img-container">
-                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=500&q=80" alt="Pinguim" class="villain-img">
-                    <span class="villain-danger-badge danger-media">Média</span>
+                <div class="villain-img-wrapper">
+                    <img class="villain-img" src="viloes/senhor-frio.jpg" alt="Senhor Frio">
                 </div>
                 <div class="villain-info">
-                    <h4 class="villain-name">Pinguim</h4>
-                    <div class="villain-field">
-                        <span>Principal Ameaça</span>
-                        Controle do submundo e crime organizado.
-                    </div>
-                    <div class="villain-status">
-                        <span class="status-dot status-ativo"></span>
-                        Status: Ativo (Gerenciando Iceberg Lounge)
+                    <h3 class="villain-name">Senhor Frio</h3>
+                    <div class="villain-details">
+                        <p><strong>Periculosidade:</strong> Média</p>
+                        <p><strong>Ameaça:</strong> Tecnologia congelante avançada</p>
+                        <p><strong>Status:</strong> Inativo (Focado em curar a esposa Nora)</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Pinguim -->
             <div class="villain-card">
-                <div class="villain-img-container">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" alt="Mulher-Gato" class="villain-img">
-                    <span class="villain-danger-badge danger-baixa">Baixa a Média</span>
+                <div class="villain-img-wrapper">
+                    <img class="villain-img" src="viloes/pinguim.jpg" alt="Pinguim">
                 </div>
                 <div class="villain-info">
-                    <h4 class="villain-name">Mulher-Gato</h4>
-                    <div class="villain-field">
-                        <span>Principal Ameaça</span>
-                        Ladra de elite de alta agilidade.
-                    </div>
-                    <div class="villain-status">
-                        <span class="status-dot status-ativo"></span>
-                        Status: Ativa / Aliada de Gotham
+                    <h3 class="villain-name">Pinguim</h3>
+                    <div class="villain-details">
+                        <p><strong>Periculosidade:</strong> Média</p>
+                        <p><strong>Ameaça:</strong> Controle do submundo e crime organizado</p>
+                        <p><strong>Status:</strong> Ativo (Gerenciando Iceberg Lounge)</p>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- CONTAINER DO ESTOQUE (Exibido apenas para Lucius Fox) -->
-        <div class="stock-table-container" id="containerEstoque" style="display: none;">
-            <table class="stock-table">
-                <thead>
-                    <tr>
-                        <th>Item / Equipamento</th>
-                        <th>Categoria</th>
-                        <th>Qtd. em Estoque</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="tabelaEstoqueCorpo">
-                    <tr>
-                        <td><strong>Batarangues Táticos</strong></td>
-                        <td>Gadget</td>
-                        <td>142 unidades</td>
-                        <td><span class="badge-stock badge-ok">Estoque OK</span></td>
-                        <td><button class="btn-stock-action" onclick="alert('Solicitação de reabastecimento enviada!')">+ Solicitar</button></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Pistola de Gancho (Bat-garra)</strong></td>
-                        <td>Gadget</td>
-                        <td>8 unidades</td>
-                        <td><span class="badge-stock badge-ok">Estoque OK</span></td>
-                        <td><button class="btn-stock-action" onclick="alert('Solicitação de reabastecimento enviada!')">+ Solicitar</button></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Granadas de Fumaça Sônica</strong></td>
-                        <td>Consumível</td>
-                        <td>3 unidades</td>
-                        <td><span class="badge-stock badge-low">Estoque Crítico</span></td>
-                        <td><button class="btn-stock-action" onclick="alert('Pedido prioritário gerado no R&D!')">+ Repor Urgente</button></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Placas de Kevlar Reforçado</strong></td>
-                        <td>Armadura</td>
-                        <td>15 unidades</td>
-                        <td><span class="badge-stock badge-ok">Estoque OK</span></td>
-                        <td><button class="btn-stock-action" onclick="alert('Solicitação de reabastecimento enviada!')">+ Solicitar</button></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Peças de Reposição - Batmóvel</strong></td>
-                        <td>Veículo</td>
-                        <td>1 kit (Em montagem)</td>
-                        <td><span class="badge-stock badge-prod">Em Produção</span></td>
-                        <td><button class="btn-stock-action" onclick="alert('Status da produção atualizado.')">Ver Detalhes</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <!-- Mulher-Gato -->
+            <div class="villain-card">
+                <div class="villain-img-wrapper">
+                    <img class="villain-img" src="viloes/mulher-gato.jpg" alt="Mulher-Gato">
+                </div>
+                <div class="villain-info">
+                    <h3 class="villain-name">Mulher-Gato</h3>
+                    <div class="villain-details">
+                        <p><strong>Periculosidade:</strong> Baixa a Média</p>
+                        <p><strong>Ameaça:</strong> Ladra de elite de alta agilidade</p>
+                        <p><strong>Status:</strong> Ativa / Aliada (Protetora de Gotham)</p>
+                    </div>
+                </div>
+            </div>
 
-    </div>
-
-    <!-- MODAL DE CRIAÇÃO -->
-    <div class="modal-overlay" id="modalCriar">
-        <div class="modal">
-            <h3>Novo Recurso Wayne Tech</h3>
-            <form id="formNovoRecurso">
-                <div class="form-group">
-                    <label for="nomeRecurso">Nome do Recurso</label>
-                    <input type="text" id="nomeRecurso" required placeholder="Ex: Batmóvel Tático">
-                </div>
-                <div class="form-group">
-                    <label for="descRecurso">Descrição</label>
-                    <textarea id="descRecurso" required placeholder="Ex: Veículo blindado de alta performance."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="nivelMinimo">Nível de Acesso Mínimo</label>
-                    <select id="nivelMinimo" required>
-                        <option value="FUNCIONARIO">Funcionário</option>
-                        <option value="GERENTE">Gerente</option>
-                        <option value="ADMIN">Administrador</option>
-                    </select>
-                </div>
-                <div class="modal-buttons">
-                    <button type="button" class="btn-cancel" id="btnFecharModal">Cancelar</button>
-                    <button type="submit" class="btn-create">Salvar Recurso</button>
-                </div>
-            </form>
         </div>
     </div>
 
-    <!-- JAVASCRIPT -->
     <script>
-        const API_URL = 'https://wayne-tech-api.onrender.com/api';
+        // Proteção de rota
         const token = localStorage.getItem('token');
-        
-        let usuario = {};
-        try {
-            usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
-        } catch (e) {
-            console.error('Erro ao ler usuario do localStorage:', e);
-        }
-
-        let modoVigilanteAtivo = false;
-        let indiceMensagemAlfred = 0;
-
-        const mensagensAlfred = [
-            '☕ ALFRED: "Pois não, Patrão Bruce? O chá está pronto e os diagnósticos do Batmóvel foram atualizados."',
-            '🛠️ ALFRED: "Os novos Bat-garra chegaram da Wayne Tech. Já os deixei organizados em seu cinto utilitário, Sr. Wayne."',
-            '🦇 ALFRED: "Lembre-se de que o senhor tem uma reunião de conselho às 09:00 amanhã, Patrão Bruce. Tente não voltar muito machucado esta noite."'
-        ];
-
         if (!token) {
             window.location.href = 'index.html';
-        }
-
-        const nivelAcesso = (usuario.nivelAcesso || usuario.nivel || usuario.cargo || usuario.role || '').toUpperCase();
-        const nomeUsuario = usuario.nome || usuario.name || 'Usuário';
-
-        document.addEventListener('DOMContentLoaded', () => {
-            configurarUsuario();
-
-            document.getElementById('btnLogout').addEventListener('click', () => {
-                localStorage.removeItem('token');
-                localStorage.removeItem('usuario');
-                window.location.href = 'index.html';
-            });
-
-            // Controle de Modal
-            const btnAbrir = document.getElementById('btnAbrirModal');
-            const btnFechar = document.getElementById('btnFecharModal');
-            const modal = document.getElementById('modalCriar');
-            const form = document.getElementById('formNovoRecurso');
-
-            if (btnAbrir) btnAbrir.addEventListener('click', () => modal.style.display = 'flex');
-            if (btnFechar) btnFechar.addEventListener('click', () => modal.style.display = 'none');
-            if (form) form.addEventListener('submit', criarRecurso);
-
-            setupBotoesEspeciais();
-        });
-
-        function configurarUsuario() {
-            const nomeEl = document.getElementById('nomeUsuario');
-            const descEl = document.getElementById('descPainel');
-            const btnCriar = document.getElementById('btnAbrirModal');
-            const btnEmergencia = document.getElementById('btnUsoRemoto');
-            const btnToggleVisao = document.getElementById('btnToggleVisao');
-
-            const tituloSecaoSecundaria = document.getElementById('tituloSecaoSecundaria');
-            const gridViloes = document.getElementById('gridViloes');
-            const containerEstoque = document.getElementById('containerEstoque');
-
-            // Nome no topo
-            if (nomeEl) nomeEl.textContent = nomeUsuario;
-
-            const isBruce = nomeUsuario.toLowerCase().includes('bruce');
-            const isLucius = nomeUsuario.toLowerCase().includes('lucius') || nivelAcesso === 'GERENTE';
-
-            if (isBruce && btnToggleVisao) {
-                btnToggleVisao.style.display = 'inline-flex';
-            }
-
-            // PERFIL LUCIUS FOX (ou Gerente)
-            if (isLucius) {
-                if (descEl) descEl.textContent = 'Bem-vindo, Lucius. Você possui permissão para gerenciar a frota tecnológica, cadastrar, remover e monitorar o estoque de equipamentos.';
-                if (btnCriar) btnCriar.style.display = 'inline-flex';
-
-                // Troca a lista de vilões pelo Controle de Estoque
-                if (tituloSecaoSecundaria) tituloSecaoSecundaria.innerHTML = '📦 Controle de Estoque e Produção R&D';
-                if (gridViloes) gridViloes.style.display = 'none';
-                if (containerEstoque) containerEstoque.style.display = 'block';
-
-            } else if (nivelAcesso === 'ADMIN') {
-                if (descEl) descEl.textContent = 'Bem-vindo, Sr. Wayne. Você possui controle total do sistema, autorização para novos projetos e desativação de recursos.';
-                if (btnCriar) btnCriar.style.display = 'inline-flex';
-
-            } else {
-                if (descEl) descEl.textContent = 'Bem-vindo, Alfred. Modo de suporte de campo ativo. Utilize o controle remoto em caso de emergências na mansão ou na Batcaverna.';
-                if (btnEmergencia) btnEmergencia.style.display = 'inline-flex';
-            }
-        }
-
-        function setupBotoesEspeciais() {
-            const btnToggleVisao = document.getElementById('btnToggleVisao');
-            const btnAlfred = document.getElementById('btnChamarAlfred');
-            const descPainel = document.getElementById('descPainel');
-            const nomeEl = document.getElementById('nomeUsuario');
-
-            if (!btnToggleVisao) return;
-
-            btnToggleVisao.addEventListener('click', () => {
-                modoVigilanteAtivo = !modoVigilanteAtivo;
-
-                if (modoVigilanteAtivo) {
-                    btnToggleVisao.classList.add('mode-vigilante');
-                    btnToggleVisao.innerHTML = '🦇 Visão: Vigilante';
-                    if (nomeEl) nomeEl.textContent = 'BATMAN';
-                    if (btnAlfred) btnAlfred.style.display = 'inline-flex';
-                    if (descPainel) descPainel.textContent = 'MODO VIGILANTE ATIVADO. Redirecionando feeds táticos da Batcaverna e frotas de combate.';
-                    alert('🚨 MODO VIGILANTE ATIVADO: Criptografia de canal nível 10 estabelecida.');
-                } else {
-                    btnToggleVisao.classList.remove('mode-vigilante');
-                    btnToggleVisao.innerHTML = '👁️ Visão: Corporativa';
-                    if (nomeEl) nomeEl.textContent = nomeUsuario;
-                    if (btnAlfred) btnAlfred.style.display = 'none';
-                    if (descPainel) descPainel.textContent = 'Bem-vindo, Sr. Wayne. Você possui controle total do sistema, autorização para novos projetos e desativação de recursos.';
-                    alert('💼 MODO CORPORATIVO RESTABELECIDO: Acesso restrito a relatórios da Wayne Enterprises.');
-                }
-            });
-
-            if (btnAlfred) {
-                btnAlfred.addEventListener('click', () => {
-                    const mensagemAtual = mensagensAlfred[indiceMensagemAlfred];
-                    alert(mensagemAtual);
-                    indiceMensagemAlfred = (indiceMensagemAlfred + 1) % mensagensAlfred.length;
-                });
-            }
-        }
-
-        async function criarRecurso(e) {
-            e.preventDefault();
-
-            const nome = document.getElementById('nomeRecurso').value.trim();
-            const descricao = document.getElementById('descRecurso').value.trim();
-            const nivelMinimo = document.getElementById('nivelMinimo').value;
-
-            const payload = {
-                nome: nome,
-                descricao: descricao,
-                nivelMinimo: nivelMinimo
-            };
-
-            try {
-                const response = await fetch(`${API_URL}/recursos`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                if (response.ok) {
-                    alert('Recurso criado com sucesso!');
-                    document.getElementById('modalCriar').style.display = 'none';
-                    document.getElementById('formNovoRecurso').reset();
-                } else {
-                    const data = await response.json();
-                    alert(data.erro || 'Erro ao criar recurso.');
-                }
-            } catch (error) {
-                console.error('Erro ao criar recurso:', error);
-                alert('Erro de comunicação com o servidor.');
-            }
         }
     </script>
 </body>
