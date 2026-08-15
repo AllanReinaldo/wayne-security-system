@@ -806,6 +806,14 @@
         }
 
         let modoVigilanteAtivo = false;
+        let indiceMensagemAlfred = 0; // Para alternar entre as mensagens do Alfred
+
+        // Lista de mensagens variadas do Alfred
+        const mensagensAlfred = [
+            '☕ ALFRED: "Pois não, Patrão Bruce? O chá está pronto e os diagnósticos do Batmóvel foram atualizados."',
+            '🛠️ ALFRED: "Os novos Bat-garra chegaram da Wayne Tech. Já os deixei organizados em seu cinto utilitário, Sr. Wayne."',
+            '🦇 ALFRED: "Lembre-se de que o senhor tem uma reunião de conselho às 09:00 amanhã, Patrão Bruce. Tente não voltar muito machucado esta noite."'
+        ];
 
         if (!token) {
             window.location.href = 'index.html';
@@ -844,12 +852,11 @@
             const btnEmergencia = document.getElementById('btnUsoRemoto');
             const btnToggleVisao = document.getElementById('btnToggleVisao');
 
-            // Atualiza dinamicamente o nome no topo do Dashboard ao lado de SAIR
+            // Atualiza o nome ao lado do botão SAIR
             if (nomeEl) nomeEl.textContent = nomeUsuario;
 
             const isBruce = nomeUsuario.toLowerCase().includes('bruce');
 
-            // Se for o Bruce Wayne, exibe APENAS o botão "MUDAR VISÃO" inicialmente
             if (isBruce && btnToggleVisao) {
                 btnToggleVisao.style.display = 'inline-flex';
             }
@@ -872,6 +879,7 @@
             const btnToggleVisao = document.getElementById('btnToggleVisao');
             const btnAlfred = document.getElementById('btnChamarAlfred');
             const descPainel = document.getElementById('descPainel');
+            const nomeEl = document.getElementById('nomeUsuario');
 
             if (!btnToggleVisao) return;
 
@@ -882,7 +890,10 @@
                     btnToggleVisao.classList.add('mode-vigilante');
                     btnToggleVisao.innerHTML = '🦇 Visão: Vigilante';
                     
-                    // Exibe o botão de chamar o Alfred apenas no modo Vigilante
+                    // Altera o nome no topo para BATMAN
+                    if (nomeEl) nomeEl.textContent = 'BATMAN';
+
+                    // Exibe o botão de chamar o Alfred
                     if (btnAlfred) btnAlfred.style.display = 'inline-flex';
 
                     if (descPainel) descPainel.textContent = 'MODO VIGILANTE ATIVADO. Redirecionando feeds táticos da Batcaverna e frotas de combate.';
@@ -891,7 +902,10 @@
                     btnToggleVisao.classList.remove('mode-vigilante');
                     btnToggleVisao.innerHTML = '👁️ Visão: Corporativa';
 
-                    // Oculta o botão de chamar o Alfred ao retornar ao modo Corporativo
+                    // Restaura o nome original
+                    if (nomeEl) nomeEl.textContent = nomeUsuario;
+
+                    // Oculta o botão do Alfred
                     if (btnAlfred) btnAlfred.style.display = 'none';
 
                     if (descPainel) descPainel.textContent = 'Bem-vindo, Sr. Wayne. Você possui controle total do sistema, autorização para novos projetos e desativação de recursos.';
@@ -899,9 +913,14 @@
                 }
             });
 
+            // Lógica de alternância de respostas do Alfred
             if (btnAlfred) {
                 btnAlfred.addEventListener('click', () => {
-                    alert('☕ ALFRED: "Pois não, Sr. Wayne? O chá está pronto e os diagnósticos do Batmóvel foram atualizados."');
+                    const mensagemAtual = mensagensAlfred[indiceMensagemAlfred];
+                    alert(mensagemAtual);
+
+                    // Avança para a próxima mensagem da fila de forma cíclica
+                    indiceMensagemAlfred = (indiceMensagemAlfred + 1) % mensagensAlfred.length;
                 });
             }
         }
