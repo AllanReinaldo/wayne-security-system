@@ -466,8 +466,8 @@
         
         <!-- CARD BOAS VINDAS -->
         <div class="welcome-card">
-            <h2 id="tituloPainel">Painel de Operações Táticas</h2>
-            <p id="descPainel">Carregando permissões do sistema...</p>
+            <h2 id="tituloPainel">Wayne Enterprises - Gestão Executiva</h2>
+            <p id="descPainel">Visão geral dos investimentos, orçamentos de P&D e ativos corporativos.</p>
         </div>
 
         <!-- BARRA DE BOTOES ESPECIAIS -->
@@ -475,7 +475,7 @@
             <div class="btn-group">
                 <!-- Exclusivo Bruce Wayne -->
                 <button class="btn-toggle-mode" id="btnToggleVisao" style="display: none;">
-                    👁️ Visão: Corporativa
+                    🦇 Mudar p/ Visão Vigilante
                 </button>
                 <button class="btn-alfred" id="btnChamarAlfred" style="display: none;">
                     🔔 Chamar Alfred
@@ -919,30 +919,24 @@
 
         function inicializarSistema() {
             const nomeEl = document.getElementById('nomeUsuario');
-            const tituloPainel = document.getElementById('tituloPainel');
-            const descPainel = document.getElementById('descPainel');
-
             const perfil = (usuarioLogado.perfil || "").toLowerCase();
 
             // Lógica por perfil
             if (perfil.includes('bruce') || perfil.includes('admin')) {
-                tituloPainel.textContent = "Painel de Operações Táticas - Batcaverna";
-                descPainel.textContent = "Monitoramento tático de Gotham em tempo real.";
-                
                 document.getElementById('btnToggleVisao').style.display = 'inline-flex';
                 document.getElementById('btnChamarAlfred').style.display = 'inline-flex';
                 document.getElementById('btnAbrirModal').style.display = 'inline-flex';
                 
-                // Aplica o estado inicial da Visão Corporativa
+                // Aplica a visão inicial (Corporativa)
                 atualizarVisaoUI();
                 
-                // Adiciona botão de excluir nos cards
+                // Adiciona o botão de excluir nos cards de recursos
                 adicionarBotoesExcluir();
 
             } else if (perfil.includes('lucius') || perfil.includes('gerente')) {
                 nomeEl.textContent = (usuarioLogado.nome || "Lucius Fox").toUpperCase();
-                tituloPainel.textContent = "R&D e Gestão de Logística Wayne Tech";
-                descPainel.textContent = "Acesso Corporativo/Projetos Especiais. Controle de protótipos e suprimentos.";
+                document.getElementById('tituloPainel').textContent = "R&D e Gestão de Logística Wayne Tech";
+                document.getElementById('descPainel').textContent = "Acesso Corporativo/Projetos Especiais. Controle de protótipos e suprimentos.";
                 
                 document.getElementById('btnAbrirModal').style.display = 'inline-flex';
                 document.getElementById('gridViloes').style.display = 'none';
@@ -953,27 +947,37 @@
 
             } else {
                 nomeEl.textContent = (usuarioLogado.nome || "Usuário").toUpperCase();
-                tituloPainel.textContent = "Wayne Tech - Terminal Operacional";
-                descPainel.textContent = "Acesso Restrito a Funcionários / Suporte Tático.";
+                document.getElementById('tituloPainel').textContent = "Wayne Tech - Terminal Operacional";
+                document.getElementById('descPainel').textContent = "Acesso Restrito a Funcionários / Suporte Tático.";
                 document.getElementById('btnUsoRemoto').style.display = 'inline-flex';
             }
         }
 
-        // Atualiza a interface gráfica dependendo do modo ativado (Corporativo x Vigilante)
+        // Atualiza a interface (Textos, Imagem de Fundo e Botão)
         function atualizarVisaoUI() {
             const btnToggle = document.getElementById('btnToggleVisao');
             const nomeUsuarioEl = document.getElementById('nomeUsuario');
+            const tituloPainel = document.getElementById('tituloPainel');
+            const descPainel = document.getElementById('descPainel');
 
             if (modoVigilante) {
-                btnToggle.textContent = "👁️ Visão: Vigilante";
+                // MODO VIGILANTE / BATMAN
+                btnToggle.textContent = "👁️ Mudar p/ Visão Corporativa";
                 btnToggle.classList.add('mode-vigilante');
-                document.body.style.backgroundImage = "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('wayne-enterprises-wallpapers.jpg')";
+                document.body.style.backgroundImage = "linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('wayne-enterprises-wallpapers.jpg')";
+                
                 nomeUsuarioEl.textContent = "BATMAN";
+                tituloPainel.textContent = "Painel de Operações Táticas - Batcaverna";
+                descPainel.textContent = "Monitoramento tático de Gotham em tempo real.";
             } else {
-                btnToggle.textContent = "👁️ Visão: Corporativa";
+                // MODO CORPORATIVO / BRUCE WAYNE
+                btnToggle.textContent = "🦇 Mudar p/ Visão Vigilante";
                 btnToggle.classList.remove('mode-vigilante');
-                document.body.style.backgroundImage = "linear-gradient(rgba(10, 25, 50, 0.85), rgba(10, 25, 50, 0.85)), url('wayne-enterprises-wallpapers.jpg')";
+                document.body.style.backgroundImage = "linear-gradient(rgba(10, 25, 50, 0.88), rgba(10, 25, 50, 0.88)), url('wayne-enterprises-wallpapers.jpg')";
+                
                 nomeUsuarioEl.textContent = "BRUCE WAYNE";
+                tituloPainel.textContent = "Wayne Enterprises - Gestão Executiva";
+                descPainel.textContent = "Visão geral dos investimentos, orçamentos de P&D e ativos corporativos.";
             }
         }
 
@@ -999,7 +1003,7 @@
                 window.location.href = "index.html"; 
             });
 
-            // Evento para alternar entre as visões
+            // Evento do Botão de Alternar Visão
             const btnToggle = document.getElementById('btnToggleVisao');
             if (btnToggle) {
                 btnToggle.addEventListener('click', () => {
