@@ -22,7 +22,6 @@
             width: 100vw;
             display: flex;
             flex-direction: column;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('wayne-enterprises-wallpapers.jpg');
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
@@ -264,7 +263,7 @@
             line-height: 1.5;
         }
 
-        /* BOTÃO DE EXCLUIR RECURSO (NOVO) */
+        /* BOTÃO DE EXCLUIR RECURSO */
         .btn-delete-card {
             background: rgba(239, 68, 68, 0.15);
             border: 1px solid #ef4444;
@@ -347,35 +346,7 @@
         .danger-media { background: rgba(113, 63, 18, 0.65); color: #fde047; border: 1px solid rgba(234, 179, 8, 0.5); }
         .danger-baixa { background: rgba(20, 83, 45, 0.65); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.5); }
 
-        .villain-info {
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            flex-grow: 1;
-        }
-
-        .villain-name { font-size: 1.2rem; color: #f8fafc; font-weight: 700; }
-        .villain-field { font-size: 0.85rem; color: #cbd5e1; line-height: 1.4; }
-        .villain-field span { color: #64748b; font-weight: 600; display: block; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 2px; }
-
-        .villain-status {
-            margin-top: auto;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 0.82rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-        .status-ativo { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
-        .status-preso { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
-        .status-inativo { background: #eab308; box-shadow: 0 0 8px #eab308; }
-
-        /* TABELA DE ESTOQUE (LUCIUS FOX) */
+        /* TABELA DE ESTOQUE */
         .stock-table-container {
             width: 100%;
             overflow-x: auto;
@@ -486,7 +457,7 @@
             <h1>WAYNE TECH</h1>
         </div>
         <div class="user-info">
-            <span class="user-name" id="nomeUsuario">Carregando...</span>
+            <span class="user-name" id="nomeUsuario">BRUCE WAYNE</span>
             <button class="btn-logout" id="btnLogout">SAIR</button>
         </div>
     </nav>
@@ -503,8 +474,8 @@
         <div class="actions-bar">
             <div class="btn-group">
                 <!-- Exclusivo Bruce Wayne -->
-                <button class="btn-toggle-mode mode-vigilante" id="btnToggleVisao" style="display: none;">
-                    👁️ Visão: Vigilante
+                <button class="btn-toggle-mode" id="btnToggleVisao" style="display: none;">
+                    👁️ Visão: Corporativa
                 </button>
                 <button class="btn-alfred" id="btnChamarAlfred" style="display: none;">
                     🔔 Chamar Alfred
@@ -629,7 +600,7 @@
             </div>
         </div>
 
-        <!-- SEÇÃO DINÂMICA: MONITOR DE VILÕES OU CONTROLE DE ESTOQUE (LUCIUS) -->
+        <!-- SEÇÃO DINÂMICA: MONITOR DE VILÕES OU CONTROLE DE ESTOQUE -->
         <div class="section-header">
             <h3 id="tituloSecaoSecundaria">⚠️ Monitor de Ameaças: Vilões de Gotham</h3>
         </div>
@@ -938,7 +909,8 @@
             usuarioLogado.perfil = usuarioLogado.tipo || usuarioLogado.role || "funcionario";
         }
 
-        let modoVigilante = true;
+        // Padrão inicial: Visão Corporativa (modoVigilante = false)
+        let modoVigilante = false;
 
         document.addEventListener('DOMContentLoaded', () => {
             inicializarSistema();
@@ -950,27 +922,25 @@
             const tituloPainel = document.getElementById('tituloPainel');
             const descPainel = document.getElementById('descPainel');
 
-            nomeEl.textContent = (usuarioLogado.nome || "Usuário").toUpperCase();
             const perfil = (usuarioLogado.perfil || "").toLowerCase();
 
             // Lógica por perfil
             if (perfil.includes('bruce') || perfil.includes('admin')) {
                 tituloPainel.textContent = "Painel de Operações Táticas - Batcaverna";
-                
-                // CORREÇÃO I: Frase atualizada
                 descPainel.textContent = "Monitoramento tático de Gotham em tempo real.";
                 
-                // Nome inicial configurado para BATMAN no modo vigilante
-                nomeEl.textContent = "BATMAN";
-
                 document.getElementById('btnToggleVisao').style.display = 'inline-flex';
                 document.getElementById('btnChamarAlfred').style.display = 'inline-flex';
                 document.getElementById('btnAbrirModal').style.display = 'inline-flex';
                 
-                // CORREÇÃO II: Adiciona botão de excluir nos cards
+                // Aplica o estado inicial da Visão Corporativa
+                atualizarVisaoUI();
+                
+                // Adiciona botão de excluir nos cards
                 adicionarBotoesExcluir();
 
             } else if (perfil.includes('lucius') || perfil.includes('gerente')) {
+                nomeEl.textContent = (usuarioLogado.nome || "Lucius Fox").toUpperCase();
                 tituloPainel.textContent = "R&D e Gestão de Logística Wayne Tech";
                 descPainel.textContent = "Acesso Corporativo/Projetos Especiais. Controle de protótipos e suprimentos.";
                 
@@ -979,13 +949,31 @@
                 document.getElementById('containerEstoque').style.display = 'block';
                 document.getElementById('tituloSecaoSecundaria').textContent = "📦 Gestão de Estoque e Protótipos (Divisão de Ciências Aplicadas)";
                 
-                // CORREÇÃO II: Adiciona botão de excluir para Lucius Fox também
                 adicionarBotoesExcluir();
 
             } else {
+                nomeEl.textContent = (usuarioLogado.nome || "Usuário").toUpperCase();
                 tituloPainel.textContent = "Wayne Tech - Terminal Operacional";
                 descPainel.textContent = "Acesso Restrito a Funcionários / Suporte Tático.";
                 document.getElementById('btnUsoRemoto').style.display = 'inline-flex';
+            }
+        }
+
+        // Atualiza a interface gráfica dependendo do modo ativado (Corporativo x Vigilante)
+        function atualizarVisaoUI() {
+            const btnToggle = document.getElementById('btnToggleVisao');
+            const nomeUsuarioEl = document.getElementById('nomeUsuario');
+
+            if (modoVigilante) {
+                btnToggle.textContent = "👁️ Visão: Vigilante";
+                btnToggle.classList.add('mode-vigilante');
+                document.body.style.backgroundImage = "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('wayne-enterprises-wallpapers.jpg')";
+                nomeUsuarioEl.textContent = "BATMAN";
+            } else {
+                btnToggle.textContent = "👁️ Visão: Corporativa";
+                btnToggle.classList.remove('mode-vigilante');
+                document.body.style.backgroundImage = "linear-gradient(rgba(10, 25, 50, 0.85), rgba(10, 25, 50, 0.85)), url('wayne-enterprises-wallpapers.jpg')";
+                nomeUsuarioEl.textContent = "BRUCE WAYNE";
             }
         }
 
@@ -1011,28 +999,12 @@
                 window.location.href = "index.html"; 
             });
 
-            // CORREÇÃO III: Alternar Visão e Trocar Nome entre BATMAN e BRUCE WAYNE
+            // Evento para alternar entre as visões
             const btnToggle = document.getElementById('btnToggleVisao');
             if (btnToggle) {
                 btnToggle.addEventListener('click', () => {
                     modoVigilante = !modoVigilante;
-                    const nomeUsuarioEl = document.getElementById('nomeUsuario');
-
-                    if (modoVigilante) {
-                        btnToggle.textContent = "👁️ Visão: Vigilante";
-                        btnToggle.classList.add('mode-vigilante');
-                        document.body.style.backgroundImage = "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('wayne-enterprises-wallpapers.jpg')";
-                        
-                        // Muda o nome para BATMAN
-                        nomeUsuarioEl.textContent = "BATMAN";
-                    } else {
-                        btnToggle.textContent = "👁️ Visão: Corporativa";
-                        btnToggle.classList.remove('mode-vigilante');
-                        document.body.style.backgroundImage = "linear-gradient(rgba(10, 25, 50, 0.85), rgba(10, 25, 50, 0.85)), url('wayne-enterprises-wallpapers.jpg')";
-                        
-                        // Volta para BRUCE WAYNE
-                        nomeUsuarioEl.textContent = "BRUCE WAYNE";
-                    }
+                    atualizarVisaoUI();
                 });
             }
 
@@ -1054,7 +1026,7 @@
                 modal.style.display = 'none';
             });
 
-            // Salvar Recurso com botão de excluir incluído
+            // Salvar Recurso
             document.getElementById('btnSalvarRecurso').addEventListener('click', () => {
                 const nome = document.getElementById('nomeRecurso').value;
                 const cat = document.getElementById('categoriaRecurso').value;
@@ -1078,7 +1050,6 @@
                     </div>
                 `;
 
-                // Adiciona o botão excluir no novo card
                 const btnExcluir = document.createElement('button');
                 btnExcluir.className = 'btn-delete-card';
                 btnExcluir.textContent = '🗑️ Excluir';
