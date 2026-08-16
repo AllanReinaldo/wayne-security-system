@@ -264,6 +264,26 @@
             line-height: 1.5;
         }
 
+        /* BOTÃO DE EXCLUIR RECURSO (NOVO) */
+        .btn-delete-card {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            margin-top: 14px;
+            align-self: flex-start;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .btn-delete-card:hover {
+            background: #ef4444;
+            color: #ffffff;
+        }
+
         /* GRID DE VILÕES DE GOTHAM */
         .villains-grid {
             display: grid;
@@ -306,10 +326,11 @@
 
         .villain-card:hover .villain-img { transform: scale(1.06); }
 
+        /* BADGE NA PARTE INFERIOR E TRANSPARENTE */
         .villain-danger-badge {
             position: absolute;
-            bottom: 10px;      
-            right: 12px;        
+            bottom: 10px;
+            right: 12px;
             padding: 4px 10px;
             border-radius: 6px;
             font-size: 0.72rem;
@@ -317,34 +338,14 @@
             letter-spacing: 0.5px;
             text-transform: uppercase;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px); 
+            backdrop-filter: blur(4px);
             z-index: 2;
         }
 
-        /* Ajuste de transparência usando rgba nas cores de fundo e bordas */
-        .danger-extrema { 
-            background: rgba(127, 29, 29, 0.65); 
-            color: #fca5a5; 
-            border: 1px solid rgba(239, 68, 68, 0.5); 
-        }
-
-        .danger-alta { 
-            background: rgba(124, 45, 18, 0.65); 
-            color: #fdba74; 
-            border: 1px solid rgba(249, 115, 22, 0.5); 
-        }
-
-        .danger-media { 
-            background: rgba(113, 63, 18, 0.65); 
-            color: #fde047; 
-            border: 1px solid rgba(234, 179, 8, 0.5); 
-        }
-
-        .danger-baixa { 
-            background: rgba(20, 83, 45, 0.65); 
-            color: #86efac; 
-            border: 1px solid rgba(34, 197, 94, 0.5); 
-        }
+        .danger-extrema { background: rgba(127, 29, 29, 0.65); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.5); }
+        .danger-alta { background: rgba(124, 45, 18, 0.65); color: #fdba74; border: 1px solid rgba(249, 115, 22, 0.5); }
+        .danger-media { background: rgba(113, 63, 18, 0.65); color: #fde047; border: 1px solid rgba(234, 179, 8, 0.5); }
+        .danger-baixa { background: rgba(20, 83, 45, 0.65); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.5); }
 
         .villain-info {
             padding: 18px;
@@ -633,7 +634,7 @@
             <h3 id="tituloSecaoSecundaria">⚠️ Monitor de Ameaças: Vilões de Gotham</h3>
         </div>
 
-        <!-- CONTAINER DA GRADE DE VILÕES (Padrão para Bruce / Admin / Outros) -->
+        <!-- CONTAINER DA GRADE DE VILÕES -->
         <div class="villains-grid" id="gridViloes">
             <div class="villain-card">
                 <div class="villain-img-container">
@@ -926,15 +927,13 @@
         </div>
     </div>
 
-    <!-- SCRIPT CORRIGIDO -->
+    <!-- SCRIPT DO SISTEMA -->
     <script>
-        // Carrega o usuário dinamicamente a partir do localStorage
         const dadosSalvos = localStorage.getItem('usuario');
         let usuarioLogado = dadosSalvos 
             ? JSON.parse(dadosSalvos) 
             : { nome: "Visitante", perfil: "funcionario" };
 
-        // Tratamento de segurança para encontrar a propriedade de perfil
         if (!usuarioLogado.perfil) {
             usuarioLogado.perfil = usuarioLogado.tipo || usuarioLogado.role || "funcionario";
         }
@@ -952,27 +951,37 @@
             const descPainel = document.getElementById('descPainel');
 
             nomeEl.textContent = (usuarioLogado.nome || "Usuário").toUpperCase();
-
-            // Mapeamento de perfis
             const perfil = (usuarioLogado.perfil || "").toLowerCase();
 
+            // Lógica por perfil
             if (perfil.includes('bruce') || perfil.includes('admin')) {
                 tituloPainel.textContent = "Painel de Operações Táticas - Batcaverna";
-                descPainel.textContent = "Acesso Nível Omega concedido. Monitoramento tático de Gotham em tempo real.";
                 
+                // CORREÇÃO I: Frase atualizada
+                descPainel.textContent = "Monitoramento tático de Gotham em tempo real.";
+                
+                // Nome inicial configurado para BATMAN no modo vigilante
+                nomeEl.textContent = "BATMAN";
+
                 document.getElementById('btnToggleVisao').style.display = 'inline-flex';
                 document.getElementById('btnChamarAlfred').style.display = 'inline-flex';
                 document.getElementById('btnAbrirModal').style.display = 'inline-flex';
+                
+                // CORREÇÃO II: Adiciona botão de excluir nos cards
+                adicionarBotoesExcluir();
+
             } else if (perfil.includes('lucius') || perfil.includes('gerente')) {
                 tituloPainel.textContent = "R&D e Gestão de Logística Wayne Tech";
                 descPainel.textContent = "Acesso Corporativo/Projetos Especiais. Controle de protótipos e suprimentos.";
                 
                 document.getElementById('btnAbrirModal').style.display = 'inline-flex';
-                
-                // Exibe Tabela de Estoque e Esconde Vilões
                 document.getElementById('gridViloes').style.display = 'none';
                 document.getElementById('containerEstoque').style.display = 'block';
                 document.getElementById('tituloSecaoSecundaria').textContent = "📦 Gestão de Estoque e Protótipos (Divisão de Ciências Aplicadas)";
+                
+                // CORREÇÃO II: Adiciona botão de excluir para Lucius Fox também
+                adicionarBotoesExcluir();
+
             } else {
                 tituloPainel.textContent = "Wayne Tech - Terminal Operacional";
                 descPainel.textContent = "Acesso Restrito a Funcionários / Suporte Tático.";
@@ -980,8 +989,21 @@
             }
         }
 
+        function adicionarBotoesExcluir() {
+            const cards = document.querySelectorAll('#gridRecursosWayne .resource-card');
+            cards.forEach(card => {
+                if (!card.querySelector('.btn-delete-card')) {
+                    const btnExcluir = document.createElement('button');
+                    btnExcluir.className = 'btn-delete-card';
+                    btnExcluir.textContent = '🗑️ Excluir';
+                    btnExcluir.onclick = () => card.remove();
+                    card.appendChild(btnExcluir);
+                }
+            });
+        }
+
         function configurarEventos() {
-            // Logout apontando para index.html e limpando a sessão
+            // Logout
             document.getElementById('btnLogout').addEventListener('click', () => {
                 localStorage.removeItem('token');
                 localStorage.removeItem('usuario');
@@ -989,19 +1011,27 @@
                 window.location.href = "index.html"; 
             });
 
-            // Toggle de Visão mantendo fundo
+            // CORREÇÃO III: Alternar Visão e Trocar Nome entre BATMAN e BRUCE WAYNE
             const btnToggle = document.getElementById('btnToggleVisao');
             if (btnToggle) {
                 btnToggle.addEventListener('click', () => {
                     modoVigilante = !modoVigilante;
+                    const nomeUsuarioEl = document.getElementById('nomeUsuario');
+
                     if (modoVigilante) {
                         btnToggle.textContent = "👁️ Visão: Vigilante";
                         btnToggle.classList.add('mode-vigilante');
                         document.body.style.backgroundImage = "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('wayne-enterprises-wallpapers.jpg')";
+                        
+                        // Muda o nome para BATMAN
+                        nomeUsuarioEl.textContent = "BATMAN";
                     } else {
                         btnToggle.textContent = "👁️ Visão: Corporativa";
                         btnToggle.classList.remove('mode-vigilante');
                         document.body.style.backgroundImage = "linear-gradient(rgba(10, 25, 50, 0.85), rgba(10, 25, 50, 0.85)), url('wayne-enterprises-wallpapers.jpg')";
+                        
+                        // Volta para BRUCE WAYNE
+                        nomeUsuarioEl.textContent = "BRUCE WAYNE";
                     }
                 });
             }
@@ -1014,7 +1044,7 @@
                 });
             }
 
-            // Abertura e Fechamento do Modal
+            // Modal Criar Recurso
             const modal = document.getElementById('modalCriarRecurso');
             document.getElementById('btnAbrirModal').addEventListener('click', () => {
                 modal.style.display = 'flex';
@@ -1024,7 +1054,7 @@
                 modal.style.display = 'none';
             });
 
-            // Salvar Novo Recurso
+            // Salvar Recurso com botão de excluir incluído
             document.getElementById('btnSalvarRecurso').addEventListener('click', () => {
                 const nome = document.getElementById('nomeRecurso').value;
                 const cat = document.getElementById('categoriaRecurso').value;
@@ -1048,6 +1078,13 @@
                     </div>
                 `;
 
+                // Adiciona o botão excluir no novo card
+                const btnExcluir = document.createElement('button');
+                btnExcluir.className = 'btn-delete-card';
+                btnExcluir.textContent = '🗑️ Excluir';
+                btnExcluir.onclick = () => novoCard.remove();
+                novoCard.appendChild(btnExcluir);
+
                 grid.appendChild(novoCard);
                 modal.style.display = 'none';
 
@@ -1055,7 +1092,7 @@
                 document.getElementById('descRecurso').value = '';
             });
 
-            // Uso remoto emergencial
+            // Emergência
             const btnEmergencia = document.getElementById('btnUsoRemoto');
             if (btnEmergencia) {
                 btnEmergencia.addEventListener('click', () => {
