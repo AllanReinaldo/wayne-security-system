@@ -904,13 +904,18 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE FUNCIONALIDADES E NÍVEIS DE ACESSO -->
+    <!-- SCRIPT CORRIGIDO -->
     <script>
-        // Simulação do usuário logado no sistema (pode alterar para testar permissões: 'bruce', 'lucius', 'alfred', 'funcionario')
-        let usuarioLogado = {
-            nome: "Bruce Wayne",
-            perfil: "bruce" 
-        };
+        // Carrega o usuário dinamicamente a partir do localStorage
+        const dadosSalvos = localStorage.getItem('usuario');
+        let usuarioLogado = dadosSalvos 
+            ? JSON.parse(dadosSalvos) 
+            : { nome: "Visitante", perfil: "funcionario" };
+
+        // Tratamento de segurança para encontrar a propriedade de perfil
+        if (!usuarioLogado.perfil) {
+            usuarioLogado.perfil = usuarioLogado.tipo || usuarioLogado.role || "funcionario";
+        }
 
         let modoVigilante = true;
 
@@ -924,17 +929,19 @@
             const tituloPainel = document.getElementById('tituloPainel');
             const descPainel = document.getElementById('descPainel');
 
-            nomeEl.textContent = usuarioLogado.nome.toUpperCase();
+            nomeEl.textContent = (usuarioLogado.nome || "Usuário").toUpperCase();
 
-            // Configurar visão baseada no Usuário
-            if (usuarioLogado.perfil === 'bruce') {
+            // Mapeamento de perfis
+            const perfil = (usuarioLogado.perfil || "").toLowerCase();
+
+            if (perfil.includes('bruce') || perfil.includes('admin')) {
                 tituloPainel.textContent = "Painel de Operações Táticas - Batcaverna";
                 descPainel.textContent = "Acesso Nível Omega concedido. Monitoramento tático de Gotham em tempo real.";
                 
                 document.getElementById('btnToggleVisao').style.display = 'inline-flex';
                 document.getElementById('btnChamarAlfred').style.display = 'inline-flex';
                 document.getElementById('btnAbrirModal').style.display = 'inline-flex';
-            } else if (usuarioLogado.perfil === 'lucius') {
+            } else if (perfil.includes('lucius') || perfil.includes('gerente')) {
                 tituloPainel.textContent = "R&D e Gestão de Logística Wayne Tech";
                 descPainel.textContent = "Acesso Corporativo/Projetos Especiais. Controle de protótipos e suprimentos.";
                 
@@ -952,14 +959,15 @@
         }
 
         function configurarEventos() {
-            // 1. CORREÇÃO: Sair (redireciona ou recarrega a página)
+            // Logout apontando para index.html e limpando a sessão
             document.getElementById('btnLogout').addEventListener('click', () => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('usuario');
                 alert("Sessão encerrada com segurança.");
-                // Redireciona para o login (ajuste o caminho se necessário) ou recarrega a página
                 window.location.href = "index.html"; 
             });
 
-            // 2. CORREÇÃO: Toggle de Visão mantendo a imagem de fundo em ambos os modos
+            // Toggle de Visão mantendo fundo
             const btnToggle = document.getElementById('btnToggleVisao');
             if (btnToggle) {
                 btnToggle.addEventListener('click', () => {
@@ -971,7 +979,6 @@
                     } else {
                         btnToggle.textContent = "👁️ Visão: Corporativa";
                         btnToggle.classList.remove('mode-vigilante');
-                        // Mantém a imagem de fundo, alterando apenas a camada de cor por cima para um tom corporativo
                         document.body.style.backgroundImage = "linear-gradient(rgba(10, 25, 50, 0.85), rgba(10, 25, 50, 0.85)), url('wayne-enterprises-wallpapers.jpg')";
                     }
                 });
@@ -1022,7 +1029,6 @@
                 grid.appendChild(novoCard);
                 modal.style.display = 'none';
 
-                // Limpar campos
                 document.getElementById('nomeRecurso').value = '';
                 document.getElementById('descRecurso').value = '';
             });
