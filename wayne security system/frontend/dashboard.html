@@ -558,14 +558,9 @@
         <div class="actions-bar">
             <div class="btn-group">
         
-                <!-- Exclusivo Gerente / Admin -->
-                <button class="btn-create" id="btnAbrirModal" style="display: none;">
-                    + Criar Novo Recurso
-                </button>
-
-                <!-- Exclusivo Funcionário / Suporte -->
-                <button class="btn-emergency" id="btnUsoRemoto" style="display: none;">
-                    🚨 Acionar Uso Remoto de Emergência
+        <!-- Exclusivo Funcionário / Suporte -->
+                <button id="btnAdicionarRecurso" onclick="abrirModalAdicionarRecurso()" style="background: #38bdf8; color: #0f172a; border: 1px solid #38bdf8; padding: 8px 16px; font-family: monospace; font-size: 0.85rem; font-weight: bold; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);">
+                    ➕ ADICIONAR RECURSO
                 </button>
             </div>
         </div>
@@ -961,7 +956,7 @@
     </div>
 
     <!-- SCRIPT PRINCIPAL DO SISTEMA -->
-    <script>
+<script>
     // 1. DADOS COMPLETOS DO DOSSIÊ TÉCNICO (WAYNE ENTERPRISES)
     const recursosPadrao = [
         // --- O BAT-TRAJE ---
@@ -1020,10 +1015,13 @@
     function inicializarSistema() {
         const perfil = (usuarioLogado.perfil || "").toLowerCase();
 
+        // Oculta por padrão o botão de uso remoto
+        ocultarElemento('btnUsoRemoto');
+
         if (perfil.includes('bruce') || perfil.includes('admin')) {
             exibirElemento('btnToggleVisao');
             exibirElemento('btnChamarAlfred');
-            exibirElemento('btnAbrirModal');
+            exibirElemento('btnAbrirModal'); // Botão "Adicionar Recurso" para Bruce Wayne
             atualizarVisaoUI();
 
         } else if (perfil.includes('lucius') || perfil.includes('gerente')) {
@@ -1031,7 +1029,7 @@
             atualizarTexto('tituloPainel', "R&D e Gestão de Logística Wayne Tech");
             atualizarTexto('descPainel', "Acesso Corporativo/Projetos Especiais. Controle de protótipos e suprimentos.");
             
-            exibirElemento('btnAbrirModal');
+            exibirElemento('btnAbrirModal'); // Botão "Adicionar Recurso" para Lucius Fox
             ocultarElemento('gridViloes');
             exibirElemento('containerEstoque', 'block');
             
@@ -1041,7 +1039,8 @@
             atualizarTexto('nomeUsuario', (usuarioLogado.nome || "Usuário").toUpperCase());
             atualizarTexto('tituloPainel', "Wayne Tech - Terminal Operacional");
             atualizarTexto('descPainel', "Acesso Restrito a Funcionários / Suporte Tático.");
-            exibirElemento('btnUsoRemoto');
+            
+            ocultarElemento('btnAbrirModal');
         }
     }
 
@@ -1102,13 +1101,11 @@
         const grid = document.getElementById('gridRecursosWayne');
         if (!grid) return;
 
-        // Força o container a ocupar 100% da largura útil do painel
         grid.style.cssText = 'width: 100% !important; max-width: 100% !important; display: block !important; clear: both; margin-top: 15px;';
     
         const recursos = obterRecursosSalvos();
         grid.innerHTML = '';
     
-        // 1. Agrupa os recursos por categoria
         const categorias = {};
         recursos.forEach(item => {
             const cat = item.categoria || 'Outros';
@@ -1119,22 +1116,18 @@
         const nomesCategorias = Object.keys(categorias);
         if (nomesCategorias.length === 0) return;
     
-        // 2. Container Geral
         const mainWrapper = document.createElement('div');
         mainWrapper.style.cssText = 'width: 100%; display: flex; flex-direction: column; gap: 20px;';
     
-        // 3. Barra de Abas Horizontais
         const navBar = document.createElement('div');
         navBar.style.cssText = 'width: 100%; display: flex; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid rgba(56, 189, 248, 0.25); padding-bottom: 12px;';
     
-        // 4. Área do Conteúdo
         const contentArea = document.createElement('div');
         contentArea.style.cssText = 'width: 100%;';
     
         nomesCategorias.forEach((nomeCategoria, index) => {
             const catId = `tab-panel-${index}`;
     
-            // --- BOTÃO DA ABA ---
             const btnTab = document.createElement('button');
             btnTab.type = 'button';
             
@@ -1148,19 +1141,14 @@
     
             btnTab.innerHTML = `📁 ${nomeCategoria.toUpperCase()} <span style="background: rgba(0,0,0,0.25); padding: 2px 7px; border-radius: 10px; font-size: 0.75rem;">${categorias[nomeCategoria].length}</span>`;
     
-            // --- PAINEL DAS LINHAS ---
             const panel = document.createElement('div');
             panel.id = catId;
             panel.style.cssText = index === 0 ? 'display: flex; flex-direction: column; gap: 12px; width: 100%;' : 'display: none; flex-direction: column; gap: 12px; width: 100%;';
     
-            // Renderiza cada recurso em um Card Profissional estilo Dashboard
             categorias[nomeCategoria].forEach(item => {
                 const card = document.createElement('div');
-                
-                // ESTILO DO CARD: Efeito Glassmorphism, borda sutil e brilho ao passar o mouse
                 card.style.cssText = 'background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(56, 189, 248, 0.15); border-left: 4px solid #38bdf8; border-radius: 6px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; gap: 20px; width: 100%; box-sizing: border-box; backdrop-filter: blur(8px); transition: all 0.2s ease;';
     
-                // Definição de Cores do Badge de Status
                 const status = item.status || "Estoque Normal";
                 let statusBg = "rgba(34, 197, 94, 0.12)";
                 let statusColor = "#4ade80";
@@ -1177,7 +1165,6 @@
                 }
     
                 card.innerHTML = `
-                    <!-- LADO ESQUERDO: INFOS DO EQUIPAMENTO -->
                     <div style="flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0;">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <h4 style="margin: 0; font-size: 0.95rem; color: #f8fafc; font-weight: 600; letter-spacing: 0.3px;">${item.nome}</h4>
@@ -1185,14 +1172,11 @@
                         <p style="margin: 0; font-size: 0.82rem; color: #94a3b8; line-height: 1.4; overflow: hidden; text-overflow: ellipsis;">${item.desc}</p>
                     </div>
     
-                    <!-- LADO DIREITO: STATUS + BOTÕES DE AÇÃO COMPACTOS -->
                     <div style="display: flex; align-items: center; gap: 16px; flex-shrink: 0;">
-                        <!-- BADGE DE STATUS -->
                         <span style="font-size: 0.72rem; font-family: monospace; font-weight: 600; padding: 4px 10px; border-radius: 4px; background: ${statusBg}; color: ${statusColor}; border: 1px solid ${statusBorder}; text-transform: uppercase; letter-spacing: 0.5px;">
                             ${status}
                         </span>
     
-                        <!-- AÇÕES (EDITAR / REMOVER) -->
                         <div style="display: flex; gap: 8px;">
                             <button class="btn-edit-card" onclick="prepararEdicao(${item.id})" title="Editar Item" style="background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 6px 12px; font-size: 0.78rem; font-weight: bold; border-radius: 4px; cursor: pointer; transition: all 0.2s ease;">
                                 ✏️ Editar
@@ -1204,7 +1188,6 @@
                     </div>
                 `;
     
-                // Efeito Hover na linha do card
                 card.onmouseenter = () => {
                     card.style.background = 'rgba(30, 41, 59, 0.85)';
                     card.style.borderColor = 'rgba(56, 189, 248, 0.4)';
@@ -1217,7 +1200,6 @@
                 panel.appendChild(card);
             });
     
-            // Evento de Alternar Abas
             btnTab.onclick = () => {
                 navBar.querySelectorAll('button').forEach(b => {
                     b.style.background = 'rgba(15, 23, 42, 0.9)';
@@ -1392,13 +1374,6 @@
         if (btnAbrir) btnAbrir.onclick = () => { idEditando = null; exibirElemento('modalCriarRecurso', 'flex'); };
         if (btnFechar) btnFechar.onclick = fecharModal;
         if (btnSalvar) btnSalvar.onclick = salvarModal;
-
-        const btnEmergencia = document.getElementById('btnUsoRemoto');
-        if (btnEmergencia) {
-            btnEmergencia.onclick = () => {
-                alert("🚨 Alerta de Emergência emitido! Batcomputador notificado.");
-            };
-        }
     }
 </script>
 </body>
