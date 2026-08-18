@@ -42,8 +42,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #f8fafc;
             
-            /* IMAGEM DE FUNDO FIXA OCUPANDO A TELA INTEIRA */
-            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), 
+            /* FUNDO ESCURO NEUTRO (SEM AZUL) */
+            background: linear-gradient(rgba(10, 10, 12, 0.82), rgba(10, 10, 12, 0.82)), 
                         url('wayne-enterprises-wallpapers.jpg') no-repeat center center fixed;
             background-size: cover;
         }
@@ -1154,28 +1154,34 @@
     }
 
     function atualizarVisaoUI() {
-        const btnToggle = document.getElementById('btnToggleVisao');
+    const btnToggle = document.getElementById('btnToggleVisao');
 
-        if (modoVigilante) {
-            if (btnToggle) {
-                btnToggle.textContent = "👁️ Mudar p/ Visão Corporativa";
-                btnToggle.classList.add('mode-vigilante');
-            }
-            document.body.style.background = "#050505 linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.82)) url('wayne-enterprises-wallpapers.jpg') no-repeat center/cover fixed";
-            atualizarTexto('nomeUsuario', "BATMAN");
-            atualizarTexto('tituloPainel', "Painel de Operações Táticas - Batcaverna");
-            atualizarTexto('descPainel', "Monitoramento tático de Gotham em tempo real.");
-        } else {
-            if (btnToggle) {
-                btnToggle.textContent = "🦇 Mudar p/ Visão Vigilante";
-                btnToggle.classList.remove('mode-vigilante');
-            }
-            document.body.style.background = "#0f172a url('wayne-enterprises-wallpapers.jpg') no-repeat center/cover fixed";
-            atualizarTexto('nomeUsuario', "BRUCE WAYNE");
-            atualizarTexto('tituloPainel', "Wayne Enterprises - Gestão Executiva");
-            atualizarTexto('descPainel', "Visão geral dos investimentos, orçamentos de P&D e ativos corporativos.");
+    if (modoVigilante) {
+        if (btnToggle) {
+            btnToggle.textContent = "👁️ Mudar p/ Visão Corporativa";
+            btnToggle.classList.add('mode-vigilante');
         }
+        // Fundo preto bem escuro tático (Batman)
+        document.body.style.background = "linear-gradient(rgba(0, 0, 0, 0.90), rgba(0, 0, 0, 0.90)), url('wayne-enterprises-wallpapers.jpg') no-repeat center center fixed";
+        document.body.style.backgroundSize = "cover";
+        
+        atualizarTexto('nomeUsuario', "BATMAN");
+        atualizarTexto('tituloPainel', "Painel de Operações Táticas - Batcaverna");
+        atualizarTexto('descPainel', "Monitoramento tático de Gotham em tempo real.");
+    } else {
+        if (btnToggle) {
+            btnToggle.textContent = "🦇 Mudar p/ Visão Vigilante";
+            btnToggle.classList.remove('mode-vigilante');
+        }
+        // Fundo escuro neutro/preto (sem tom azul)
+        document.body.style.background = "linear-gradient(rgba(10, 10, 12, 0.82), rgba(10, 10, 12, 0.82)), url('wayne-enterprises-wallpapers.jpg') no-repeat center center fixed";
+        document.body.style.backgroundSize = "cover";
+
+        atualizarTexto('nomeUsuario', "BRUCE WAYNE");
+        atualizarTexto('tituloPainel', "Wayne Enterprises - Gestão Executiva");
+        atualizarTexto('descPainel', "Visão geral dos investimentos, orçamentos de P&D e ativos corporativos.");
     }
+}
 
     function configurarEventos() {
         const btnToggle = document.getElementById('btnToggleVisao');
