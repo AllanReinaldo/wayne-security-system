@@ -891,6 +891,11 @@
 
         <!-- TABELA DE ESTOQUE (LUCIUS FOX) -->
         <div class="stock-table-container" id="containerEstoque" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="color: var(--primary-light); margin: 0;">📦 Controle de Estoque & Protótipos</h3>
+                <button class="btn-stock-action" onclick="carregarTabelaEstoque()">🔄 Atualizar Lista</button>
+            </div>
+
             <table class="stock-table">
                 <thead>
                     <tr>
@@ -898,42 +903,14 @@
                         <th>Categoria</th>
                         <th>Qtd. Estoque</th>
                         <th>Status</th>
-                        <th>Ação</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
-                <tbody id="corpoTabelaEstoque">
-                    <tr>
-                        <td>Micro-Batarangues Explosivos</td>
-                        <td>Munição</td>
-                        <td>142 un</td>
-                        <td><span class="badge-stock badge-ok">Estoque Normal</span></td>
-                        <td><button class="btn-stock-action">Solicitar Produção</button></td>
-                    </tr>
-                    <tr>
-                        <td>Placa de Kevlar Triplo (Blindagem)</td>
-                        <td>Manutenção</td>
-                        <td>4 un</td>
-                        <td><span class="badge-stock badge-low">Crítico / Baixo</span></td>
-                        <td><button class="btn-stock-action">Solicitar Produção</button></td>
-                    </tr>
-                    <tr>
-                        <td>Gel Explosivo RDX</td>
-                        <td>Consumíveis</td>
-                        <td>18 un</td>
-                        <td><span class="badge-stock badge-prod">Em Produção</span></td>
-                        <td><button class="btn-stock-action">Ver Detalhes</button></td>
-                    </tr>
-                    <tr>
-                        <td>Pneus de Polímero para Batmóvel</td>
-                        <td>Veículos</td>
-                        <td>8 un</td>
-                        <td><span class="badge-stock badge-ok">Estoque Normal</span></td>
-                        <td><button class="btn-stock-action">Solicitar Produção</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
+            <tbody id=>
+            <!-- Os itens serão gerados dinamicamente pelo JavaScript -->
+            </tbody>
+        </table>
+    </div>
     </main>
 
     <!-- MODAL DE CRIAÇÃO -->
@@ -965,37 +942,32 @@
 
     <!-- SCRIPT PRINCIPAL DO SISTEMA -->
     <script>
-    // 1. DADOS INICIAIS DE EXEMPLO (Caso o LocalStorage esteja vazio)
+    // 1. DADOS INICIAIS DO SISTEMA
     const recursosPadrao = [
-        { id: 1, nome: "Batarangues", categoria: "Cinto & Gadgets", desc: "Lâminas de arremesso em formato de morcego, com variações explosivas, sônicas ou eletrificadas." },
-        { id: 2, nome: "Bat-garra / Pistola de Gancho", categoria: "Cinto & Gadgets", desc: "Dispositivo para escalar prédios e se locomover rapidamente pelos telhados de Gotham." },
-        { id: 3, nome: "Granadas de Fumaça", categoria: "Cinto & Gadgets", desc: "Usadas para criar cortinas de fumaça e sumir rapidamente de vista." },
-        { id: 4, nome: "Máscara de Gás e Respirador", categoria: "Cinto & Gadgets", desc: "Protege contra toxinas, gás do Espantalho e permite respirar debaixo d'água." },
-        { id: 5, nome: "Rastreadores", categoria: "Cinto & Gadgets", desc: "Pequenos transmissores em formato de morcego colocados em veículos ou roupas." },
-        { id: 6, nome: "Binóculos de Visão Noturna", categoria: "Cinto & Gadgets", desc: "Lentes especiais no Capuz do Batman com modos térmicos e infravermelhos." },
-        { id: 7, nome: "Traje de Kevlar e Nomex", categoria: "Armadura", desc: "Tecido blindado contra tiros de raspão e cortes, além de ser resistente a chamas." },
-        { id: 8, nome: "Capa Planadora", categoria: "Armadura", desc: "Permite que ele plane por curtas distâncias entre os edifícios de Gotham." },
-        { id: 9, nome: "Batmóvel", categoria: "Veículos & Base", desc: "O carro blindado de alta performance equipado com armamento não-letal." },
-        { id: 10, nome: "Batcomputador", categoria: "Veículos & Base", desc: "O supercomputador localizado na Batcaverna usado para investigações e reconhecimento." }
+        { id: 1, nome: "Micro-Batarangues Explosivos", categoria: "Munição", qtd: 142, status: "Estoque Normal", desc: "Lâminas de arremesso em formato de morcego com carga explosiva." },
+        { id: 2, nome: "Placa de Kevlar Triplo (Blindagem)", categoria: "Manutenção", qtd: 4, status: "Crítico / Baixo", desc: "Tecido blindado contra tiros de alto calibre e lâminas." },
+        { id: 3, nome: "Gel Explosivo RDX", categoria: "Consumíveis", qtd: 18, status: "Em Produção", desc: "Aerosol altamente volátil ativado por detonador sem fio." },
+        { id: 4, nome: "Pneus de Polímero para Batmóvel", categoria: "Veículos", qtd: 8, status: "Estoque Normal", desc: "Pneus blindados de altíssima durabilidade." },
+        { id: 5, nome: "Bat-garra / Pistola de Gancho", categoria: "Cinto & Gadgets", qtd: 3, status: "Estoque Normal", desc: "Dispositivo de alta tensão para escalada urbana." }
     ];
 
-    // Carrega a sessão do usuário
+    // Carrega o perfil do usuário logado
     const dadosSalvos = localStorage.getItem('usuario');
     let usuarioLogado = dadosSalvos 
         ? JSON.parse(dadosSalvos) 
-        : { nome: "Bruce Wayne", perfil: "bruce" };
+        : { nome: "Lucius Fox", perfil: "lucius" }; // Exemplo padrão
 
     let modoVigilante = false;
-    let idEditando = null; // Controla se o modal está editando ou criando
+    let idEditando = null;
 
-    // Inicialização do DOM
+    // Inicialização do sistema
     window.addEventListener('DOMContentLoaded', () => {
         inicializarSistema();
         carregarERenderizarRecursos();
         configurarEventos();
     });
 
-    // Controla perfil e permissões de exibição
+    // Controla as telas de acordo com o Usuário
     function inicializarSistema() {
         const perfil = (usuarioLogado.perfil || "").toLowerCase();
 
@@ -1004,6 +976,7 @@
             exibirElemento('btnChamarAlfred');
             exibirElemento('btnAbrirModal');
             atualizarVisaoUI();
+
         } else if (perfil.includes('lucius') || perfil.includes('gerente')) {
             atualizarTexto('nomeUsuario', (usuarioLogado.nome || "Lucius Fox").toUpperCase());
             atualizarTexto('tituloPainel', "R&D e Gestão de Logística Wayne Tech");
@@ -1013,6 +986,10 @@
             exibirElemento('btnAbrirModal');
             ocultarElemento('gridViloes');
             exibirElemento('containerEstoque', 'block');
+            
+            // Carrega a tabela do Lucius
+            carregarTabelaEstoque();
+
         } else {
             atualizarTexto('nomeUsuario', (usuarioLogado.nome || "Usuário").toUpperCase());
             atualizarTexto('tituloPainel', "Wayne Tech - Terminal Operacional");
@@ -1021,7 +998,7 @@
         }
     }
 
-    // --- GERENCIAMENTO DE PERSISTÊNCIA (LOCALSTORAGE) ---
+    // --- GERENCIAMENTO DE DADOS (LOCALSTORAGE) ---
 
     function obterRecursosSalvos() {
         const salvos = localStorage.getItem('wayne_recursos');
@@ -1034,15 +1011,50 @@
 
     function salvarListaRecursos(lista) {
         localStorage.setItem('wayne_recursos', JSON.stringify(lista));
-        carregarERenderizarRecursos();
+        carregarERenderizarRecursos(); // Atualiza os cards
+        carregarTabelaEstoque();       // Atualiza a tabela do Lucius
     }
 
+    // RENDERIZA A TABELA DO LUCIUS FOX
+    function carregarTabelaEstoque() {
+        const corpoTabela = document.getElementById('corpoTabelaEstoque');
+        if (!corpoTabela) return;
+
+        const recursos = obterRecursosSalvos();
+        corpoTabela.innerHTML = '';
+
+        recursos.forEach(item => {
+            const qtd = item.qtd !== undefined ? item.qtd : 1;
+            const status = item.status || "Estoque Normal";
+
+            let classeBadge = "badge-ok";
+            if (status.includes("Crítico") || status.includes("Baixo") || status.includes("Manutenção")) {
+                classeBadge = "badge-low";
+            } else if (status.includes("Produção") || status.includes("Desenvolvimento")) {
+                classeBadge = "badge-prod";
+            }
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${item.nome}</strong></td>
+                <td>${item.categoria}</td>
+                <td>${qtd} un</td>
+                <td><span class="badge-stock ${classeBadge}">${status}</span></td>
+                <td>
+                    <button class="btn-edit-card" onclick="prepararEdicao(${item.id})">✏️ Editar</button>
+                </td>
+            `;
+            corpoTabela.appendChild(tr);
+        });
+    }
+
+    // RENDERIZA OS CARDS EM GRID
     function carregarERenderizarRecursos() {
         const grid = document.getElementById('gridRecursosWayne');
         if (!grid) return;
 
         const recursos = obterRecursosSalvos();
-        grid.innerHTML = ''; // Limpa a grid para renderizar a lista atualizada
+        grid.innerHTML = '';
 
         recursos.forEach(item => {
             const card = document.createElement('div');
@@ -1064,7 +1076,7 @@
         });
     }
 
-    // --- OPERAÇÕES DO CRUD ---
+    // --- AÇÕES DO MODAL E OPERAÇÕES ---
 
     function removerRecurso(id) {
         if (confirm("Tem certeza que deseja remover este recurso do inventário?")) {
@@ -1104,15 +1116,15 @@
         let recursos = obterRecursosSalvos();
 
         if (idEditando !== null) {
-            // Atualizar existente
             recursos = recursos.map(r => r.id === idEditando ? { ...r, nome, categoria: cat, desc } : r);
         } else {
-            // Criar novo
             const novoItem = {
                 id: Date.now(),
                 nome: nome,
                 categoria: cat,
-                desc: desc
+                desc: desc,
+                qtd: 10,
+                status: "Estoque Normal"
             };
             recursos.push(novoItem);
         }
@@ -1133,7 +1145,7 @@
         if (tituloModal) tituloModal.textContent = "Criar Novo Recurso";
     }
 
-    // --- FUNÇÕES UTILITÁRIAS ---
+    // --- UTILITÁRIOS ---
 
     function exibirElemento(id, displayType = 'inline-flex') {
         const el = document.getElementById(id);
