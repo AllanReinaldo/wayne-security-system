@@ -36,17 +36,16 @@
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
+            margin: 0;
+            padding: 0;
             min-height: 100vh;
-            width: 100vw;
-            display: flex;
-            flex-direction: column;
-            background-repeat: no-repeat;
-            background-position: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #f8fafc;
+            
+            /* IMAGEM DE FUNDO FIXA OCUPANDO A TELA INTEIRA */
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), 
+                        url('wayne-enterprises-wallpapers.jpg') no-repeat center center fixed;
             background-size: cover;
-            background-attachment: fixed;
-            transition: background-image 0.4s ease, background-color 0.4s ease;
         }
 
         /* ==========================================================================
@@ -281,7 +280,7 @@
         /* ESTILO BASE UNIFICADO PARA OS BOTÕES DE AÇÃO */
         .btn-edit-card,
         .btn-delete-card {
-            flex: 1; /* Faz com que ambos dividam o espaço igualmente */
+            flex: 1; 
             padding: 6px 12px;
             border-radius: 4px;
             cursor: pointer;
@@ -553,20 +552,12 @@
         <!-- CARD BOAS-VINDAS -->
         <div class="welcome-card">
             <h2 id="tituloPainel">Wayne Enterprises - Gestão Executiva</h2>
-            <p id="descPainel">Visão geral dos investimentos, orçamentos de P&D e ativos corporativos.</p>
         </div>
 
         <!-- BARRA DE AÇÕES -->
         <div class="actions-bar">
             <div class="btn-group">
-                <!-- Exclusivo Bruce Wayne -->
-                <button class="btn-toggle-mode" id="btnToggleVisao" style="display: none;">
-                    🦇 Mudar p/ Visão Vigilante
-                </button>
-                <button class="btn-alfred" id="btnChamarAlfred" style="display: none;">
-                    🔔 Chamar Alfred
-                </button>
-
+        
                 <!-- Exclusivo Gerente / Admin -->
                 <button class="btn-create" id="btnAbrirModal" style="display: none;">
                     + Criar Novo Recurso
