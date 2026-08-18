@@ -559,9 +559,9 @@
             <div class="btn-group">
         
         <!-- Exclusivo Funcionário / Suporte -->
-                <button id="btnAdicionarRecurso" onclick="abrirModalAdicionarRecurso()" style="background: #38bdf8; color: #0f172a; border: 1px solid #38bdf8; padding: 8px 16px; font-family: monospace; font-size: 0.85rem; font-weight: bold; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);">
-                    ➕ ADICIONAR RECURSO
-                </button>
+            <button id="btnAbrirModal" onclick="document.getElementById('modalCriarRecurso').style.display='flex'">
+                ➕ Adicionar Recurso
+            </button>
             </div>
         </div>
 
@@ -1340,10 +1340,10 @@
             atualizarTexto('nomeUsuario', "BRUCE WAYNE");
             atualizarTexto('tituloPainel', "Wayne Enterprises - Gestão Executiva");
             atualizarTexto('descPainel', "Visão geral dos investimentos, orçamentos de P&D e ativos corporativos.");
+            }
         }
-    }
 
-    function configurarEventos() {
+        function configurarEventos() {
         const btnToggle = document.getElementById('btnToggleVisao');
         if (btnToggle) {
             btnToggle.onclick = () => {
@@ -1351,14 +1351,14 @@
                 atualizarVisaoUI();
             };
         }
-
+    
         const btnAlfred = document.getElementById('btnChamarAlfred');
         if (btnAlfred) {
             btnAlfred.onclick = () => {
                 alert("Alfred Pennyworth: 'Já preparei o chá e os novos suprimentos para o Batcomputador, patrão Bruce.'");
             };
         }
-
+    
         const btnLogout = document.getElementById('btnLogout');
         if (btnLogout) {
             btnLogout.onclick = () => {
@@ -1366,12 +1366,31 @@
                 window.location.href = "index.html";
             };
         }
-
+    
+        // --- LÓGICA DO MODAL DE RECURSOS ---
         const btnAbrir = document.getElementById('btnAbrirModal');
         const btnFechar = document.getElementById('btnFecharModal');
         const btnSalvar = document.getElementById('btnSalvarRecurso');
-
-        if (btnAbrir) btnAbrir.onclick = () => { idEditando = null; exibirElemento('modalCriarRecurso', 'flex'); };
+    
+        if (btnAbrir) {
+            btnAbrir.onclick = () => { 
+                idEditando = null; 
+    
+                // Limpa os campos para um novo cadastro
+                const campoNome = document.getElementById('nomeRecurso');
+                const campoDesc = document.getElementById('descRecurso');
+                if (campoNome) campoNome.value = '';
+                if (campoDesc) campoDesc.value = '';
+    
+                // Garante que o título do modal esteja como "Criar Novo Recurso"
+                const tituloModal = document.querySelector('#modalCriarRecurso h3');
+                if (tituloModal) tituloModal.textContent = "Criar Novo Recurso";
+    
+                // Abre o modal
+                exibirElemento('modalCriarRecurso', 'flex'); 
+            };
+        }
+    
         if (btnFechar) btnFechar.onclick = fecharModal;
         if (btnSalvar) btnSalvar.onclick = salvarModal;
     }
