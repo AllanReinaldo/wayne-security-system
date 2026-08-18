@@ -1066,66 +1066,83 @@
         });
     }
 
-    // RENDERIZA OS CARDS AGRUPADOS POR CATEGORIA
-function carregarERenderizarRecursos() {
-    const grid = document.getElementById('gridRecursosWayne');
-    if (!grid) return;
-
-    const recursos = obterRecursosSalvos();
-    grid.innerHTML = '';
-
-    // 1. Agrupa os recursos por categoria
-    const categorias = {};
-    recursos.forEach(item => {
-        const cat = item.categoria || 'Outros';
-        if (!categorias[cat]) {
-            categorias[cat] = [];
-        }
-        categorias[cat].push(item);
-    });
-
-    // 2. Renderiza cada categoria em um bloco separado
-    Object.keys(categorias).forEach(nomeCategoria => {
-        // Container da Categoria
-        const secaoCategoria = document.createElement('div');
-        secaoCategoria.className = 'category-section';
-        secaoCategoria.style.cssText = 'width: 100%; margin-bottom: 35px;';
-
-        // Título da Categoria
-        const tituloCat = document.createElement('h3');
-        tituloCat.className = 'category-title';
-        tituloCat.style.cssText = 'color: var(--primary-light); border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 8px; margin-bottom: 18px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;';
-        tituloCat.innerHTML = `<span>📂</span> ${nomeCategoria} <span style="font-size: 0.8rem; opacity: 0.7;">(${categorias[nomeCategoria].length})</span>`;
-        
-        secaoCategoria.appendChild(tituloCat);
-
-        // Sub-grid para os cards desta categoria
-        const subGrid = document.createElement('div');
-        subGrid.style.cssText = 'display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;';
-
-        categorias[nomeCategoria].forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'resource-card';
-            card.innerHTML = `
-                <div>
-                    <div class="card-header-tech">
-                        <h4 class="card-title-tech">${item.nome}</h4>
-                        <span class="card-category-badge">${item.categoria}</span>
-                    </div>
-                    <p class="card-desc-tech">${item.desc}</p>
-                </div>
-                <div class="card-actions" style="margin-top: 15px; display: flex; gap: 8px;">
-                    <button class="btn-edit-card" onclick="prepararEdicao(${item.id})">✏️ Editar</button>
-                    <button class="btn-delete-card" onclick="removerRecurso(${item.id})">🗑️ Remover</button>
-                </div>
-            `;
-            subGrid.appendChild(card);
+   // RENDERIZA OS CARDS EM DIVISÓRIAS RETRÁTEIS (ACCORDION)
+    function carregarERenderizarRecursos() {
+        const grid = document.getElementById('gridRecursosWayne');
+        if (!grid) return;
+    
+        const recursos = obterRecursosSalvos();
+        grid.innerHTML = '';
+    
+        // 1. Agrupa os recursos por categoria
+        const categorias = {};
+        recursos.forEach(item => {
+            const cat = item.categoria || 'Outros';
+            if (!categorias[cat]) {
+                categorias[cat] = [];
+            }
+            categorias[cat].push(item);
         });
-
-        secaoCategoria.appendChild(subGrid);
-        grid.appendChild(secaoCategoria);
-    });
-}
+    
+        // 2. Renderiza cada categoria como uma divisória retrátil
+        Object.keys(categorias).forEach((nomeCategoria, index) => {
+            const secaoCategoria = document.createElement('div');
+            secaoCategoria.className = 'category-section';
+            secaoCategoria.style.cssText = 'width: 100%; margin-bottom: 15px; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 8px; overflow: hidden; background: rgba(10, 15, 25, 0.6);';
+    
+            // Cabeçalho Clicável (Accordion Header)
+            const headerCat = document.createElement('button');
+            headerCat.className = 'category-header-btn';
+            headerCat.style.cssText = 'width: 100%; text-align: left; background: rgba(15, 23, 42, 0.85); color: var(--primary-light); padding: 14px 18px; font-family: monospace; font-size: 1rem; font-weight: bold; border: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s;';
+            
+            // Ícone indicativo (Abrir/Fechar)
+            headerCat.innerHTML = `
+                <span>📂 ${nomeCategoria.toUpperCase()} <small style="opacity: 0.7; font-weight: normal;">(${categorias[nomeCategoria].length} itens)</small></span>
+                <span class="acc-icon" style="transition: transform 0.3s ease;">▶</span>
+            `;
+    
+            // Container dos Cards (Inicialmente Oculto)
+            const subGrid = document.createElement('div');
+            subGrid.className = 'category-content';
+            subGrid.style.cssText = 'display: none; padding: 20px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; background: rgba(5, 10, 20, 0.4); border-top: 1px solid rgba(255, 255, 255, 0.08);';
+    
+            // Preenche os cards
+            categorias[nomeCategoria].forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'resource-card';
+                card.innerHTML = `
+                    <div>
+                        <div class="card-header-tech">
+                            <h4 class="card-title-tech">${item.nome}</h4>
+                            <span class="card-category-badge">${item.categoria}</span>
+                        </div>
+                        <p class="card-desc-tech">${item.desc}</p>
+                    </div>
+                    <div class="card-actions" style="margin-top: 15px; display: flex; gap: 8px;">
+                        <button class="btn-edit-card" onclick="prepararEdicao(${item.id})">✏️ Editar</button>
+                        <button class="btn-delete-card" onclick="removerRecurso(${item.id})">🗑️ Remover</button>
+                    </div>
+                `;
+                subGrid.appendChild(card);
+            });
+    
+            // Lógica de Expandir / Recolher ao Clicar
+            headerCat.onclick = () => {
+                const estaAberto = subGrid.style.display === 'grid';
+                subGrid.style.display = estaAberto ? 'none' : 'grid';
+                
+                const icone = headerCat.querySelector('.acc-icon');
+                if (icone) {
+                    icone.style.transform = estaAberto ? 'rotate(0deg)' : 'rotate(90deg)';
+                }
+                headerCat.style.background = estaAberto ? 'rgba(15, 23, 42, 0.85)' : 'rgba(30, 41, 59, 0.95)';
+            };
+    
+            secaoCategoria.appendChild(headerCat);
+            secaoCategoria.appendChild(subGrid);
+            grid.appendChild(secaoCategoria);
+        });
+    }
 
     // --- OPERAÇÕES DO CRUD ---
 
