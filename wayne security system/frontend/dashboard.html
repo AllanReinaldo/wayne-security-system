@@ -920,13 +920,13 @@
         const dadosSalvos = localStorage.getItem('usuario');
         let usuarioLogado = dadosSalvos 
             ? JSON.parse(dadosSalvos) 
-            : { nome: "Visitante", perfil: "funcionario" };
+            : { nome: "Visitante", perfil: "bruce" }; // Fallback para Bruce se não houver dados
 
         if (!usuarioLogado.perfil) {
             usuarioLogado.perfil = usuarioLogado.tipo || usuarioLogado.role || "funcionario";
         }
 
-        // Padrão inicial: Visão Corporativa (modoVigilante = false)
+        // Estado inicial do modo (false = Visão Corporativa / Bruce Wayne)
         let modoVigilante = false;
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -938,12 +938,16 @@
             const nomeEl = document.getElementById('nomeUsuario');
             const perfil = (usuarioLogado.perfil || "").toLowerCase();
 
+            // Exibe os botões do Bruce Wayne / Admin
             if (perfil.includes('bruce') || perfil.includes('admin')) {
                 document.getElementById('btnToggleVisao').style.display = 'inline-flex';
                 document.getElementById('btnChamarAlfred').style.display = 'inline-flex';
                 document.getElementById('btnAbrirModal').style.display = 'inline-flex';
                 
+                // Aplica os textos e fundo da Visão Corporativa inicial
                 atualizarVisaoUI();
+                
+                // Adiciona o botão de excluir nos cards de recursos
                 adicionarBotoesExcluir();
 
             } else if (perfil.includes('lucius') || perfil.includes('gerente')) {
@@ -966,7 +970,7 @@
             }
         }
 
-        // Função corrigida para alterar textos, botões e cores reais do fundo
+        // Função responsável por alternar Fundo, Textos e Botões
         function atualizarVisaoUI() {
             const btnToggle = document.getElementById('btnToggleVisao');
             const nomeUsuarioEl = document.getElementById('nomeUsuario');
@@ -978,18 +982,18 @@
                 btnToggle.textContent = "👁️ Mudar p/ Visão Corporativa";
                 btnToggle.classList.add('mode-vigilante');
                 
-                // Fundo totalmente preto/escuro para o Batman
-                document.body.style.background = "#050505 linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)) url('wayne-enterprises-wallpapers.jpg') no-repeat center/cover fixed";
+                // Fundo escuro
+                document.body.style.background = "#050505 linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)) url('wayne-enterprises-wallpapers.jpg') no-repeat center/cover fixed";
                 
                 nomeUsuarioEl.textContent = "BATMAN";
                 tituloPainel.textContent = "Painel de Operações Táticas - Batcaverna";
-                descPainel.textContent = "Monitoramento tático de Gotham em tempo real.";
+                descPainel.textContent = "Acesso Nível Ômega concedido. Monitoramento tático de Gotham em tempo real.";
             } else {
                 // --- MODO CORPORATIVO (BRUCE WAYNE) ---
                 btnToggle.textContent = "🦇 Mudar p/ Visão Vigilante";
                 btnToggle.classList.remove('mode-vigilante');
                 
-                // Fundo limpo sem a sobreposição azul
+                // Fundo corporativo sem o filtro azul
                 document.body.style.background = "#0f172a url('wayne-enterprises-wallpapers.jpg') no-repeat center/cover fixed";
                 
                 nomeUsuarioEl.textContent = "BRUCE WAYNE";
@@ -998,6 +1002,7 @@
             }
         }
 
+        // Função para injetar o botão Excluir em cada card
         function adicionarBotoesExcluir() {
             const cards = document.querySelectorAll('#gridRecursosWayne .resource-card');
             cards.forEach(card => {
@@ -1011,7 +1016,9 @@
             });
         }
 
+        // Configuração dos eventos de clique de todos os botões
         function configurarEventos() {
+            // Sair
             document.getElementById('btnLogout').addEventListener('click', () => {
                 localStorage.removeItem('token');
                 localStorage.removeItem('usuario');
@@ -1019,71 +1026,82 @@
                 window.location.href = "index.html"; 
             });
 
+            // Botão Alternar Visão (Vigilante / Corporativo)
             const btnToggle = document.getElementById('btnToggleVisao');
             if (btnToggle) {
-                btnToggle.addEventListener('click', () => {
+                btnToggle.onclick = () => {
                     modoVigilante = !modoVigilante;
                     atualizarVisaoUI();
-                });
+                };
             }
 
+            // Botão Chamar Alfred
             const btnAlfred = document.getElementById('btnChamarAlfred');
             if (btnAlfred) {
-                btnAlfred.addEventListener('click', () => {
+                btnAlfred.onclick = () => {
                     alert("Alfred Pennyworth: 'Já preparei o chá e os novos suprimentos para o Batcomputador, patrão Bruce.'");
-                });
+                };
             }
 
+            // Modal Criar Recurso
             const modal = document.getElementById('modalCriarRecurso');
-            document.getElementById('btnAbrirModal').addEventListener('click', () => {
-                modal.style.display = 'flex';
-            });
+            const btnAbrirModal = document.getElementById('btnAbrirModal');
+            const btnFecharModal = document.getElementById('btnFecharModal');
+            const btnSalvarRecurso = document.getElementById('btnSalvarRecurso');
 
-            document.getElementById('btnFecharModal').addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
+            if (btnAbrirModal) {
+                btnAbrirModal.onclick = () => { modal.style.display = 'flex'; };
+            }
 
-            document.getElementById('btnSalvarRecurso').addEventListener('click', () => {
-                const nome = document.getElementById('nomeRecurso').value;
-                const cat = document.getElementById('categoriaRecurso').value;
-                const desc = document.getElementById('descRecurso').value;
+            if (btnFecharModal) {
+                btnFecharModal.onclick = () => { modal.style.display = 'none'; };
+            }
 
-                if (!nome || !desc) {
-                    alert("Por favor, preencha todos os campos.");
-                    return;
-                }
+            // Criar Novo Recurso na Lista
+            if (btnSalvarRecurso) {
+                btnSalvarRecurso.onclick = () => {
+                    const nome = document.getElementById('nomeRecurso').value;
+                    const cat = document.getElementById('categoriaRecurso').value;
+                    const desc = document.getElementById('descRecurso').value;
 
-                const grid = document.getElementById('gridRecursosWayne');
-                const novoCard = document.createElement('div');
-                novoCard.className = 'resource-card';
-                novoCard.innerHTML = `
-                    <div>
-                        <div class="card-header-tech">
-                            <h4 class="card-title-tech">${nome}</h4>
-                            <span class="card-category-badge">${cat}</span>
+                    if (!nome || !desc) {
+                        alert("Por favor, preencha todos os campos.");
+                        return;
+                    }
+
+                    const grid = document.getElementById('gridRecursosWayne');
+                    const novoCard = document.createElement('div');
+                    novoCard.className = 'resource-card';
+                    novoCard.innerHTML = `
+                        <div>
+                            <div class="card-header-tech">
+                                <h4 class="card-title-tech">${nome}</h4>
+                                <span class="card-category-badge">${cat}</span>
+                            </div>
+                            <p class="card-desc-tech">${desc}</p>
                         </div>
-                        <p class="card-desc-tech">${desc}</p>
-                    </div>
-                `;
+                    `;
 
-                const btnExcluir = document.createElement('button');
-                btnExcluir.className = 'btn-delete-card';
-                btnExcluir.textContent = '🗑️ Excluir';
-                btnExcluir.onclick = () => novoCard.remove();
-                novoCard.appendChild(btnExcluir);
+                    const btnExcluir = document.createElement('button');
+                    btnExcluir.className = 'btn-delete-card';
+                    btnExcluir.textContent = '🗑️ Excluir';
+                    btnExcluir.onclick = () => novoCard.remove();
+                    novoCard.appendChild(btnExcluir);
 
-                grid.appendChild(novoCard);
-                modal.style.display = 'none';
+                    grid.appendChild(novoCard);
+                    modal.style.display = 'none';
 
-                document.getElementById('nomeRecurso').value = '';
-                document.getElementById('descRecurso').value = '';
-            });
+                    document.getElementById('nomeRecurso').value = '';
+                    document.getElementById('descRecurso').value = '';
+                };
+            }
 
+            // Botão Emergência
             const btnEmergencia = document.getElementById('btnUsoRemoto');
             if (btnEmergencia) {
-                btnEmergencia.addEventListener('click', () => {
+                btnEmergencia.onclick = () => {
                     alert("🚨 Alerta de Emergência emitido! Batcomputador notificado.");
-                });
+                };
             }
         }
     </script>
