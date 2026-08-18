@@ -368,6 +368,58 @@
         .villain-card:hover .villain-img { 
             transform: scale(1.05); 
         }
+        .villain-info {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .villain-name {
+            font-size: 1.1rem;
+            color: #f1f5f9;
+        }
+
+        .villain-field {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .villain-field span {
+            display: block;
+            color: var(--primary-light);
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .villain-status {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border-light);
+            padding-top: 8px;
+        }
+
+        .villain-danger-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 12px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2;
+        }
+
+        .danger-extrema { background: rgba(127, 29, 29, 0.65); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.5); }
+        .danger-alta { background: rgba(124, 45, 18, 0.65); color: #fdba74; border: 1px solid rgba(249, 115, 22, 0.5); }
+        .danger-media { background: rgba(113, 63, 18, 0.65); color: #fde047; border: 1px solid rgba(234, 179, 8, 0.5); }
+        .danger-baixa { background: rgba(20, 83, 45, 0.65); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.5); }
 
         /* ==========================================================================
            6. TABELA DE ESTOQUE (MODO LUCIUS FOX)
