@@ -324,7 +324,7 @@
            ========================================================================== */
         .villains-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 25px;
             margin-bottom: 40px;
         }
@@ -348,25 +348,28 @@
         
         .villain-img-container {
             width: 100%;
-            height: 280px; 
+            height: 340px; 
             position: relative;
             overflow: hidden;
-            background-color: #020617; 
+            background-color: #050a14; 
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 8px; 
         }
         
         .villain-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; 
-            object-position: top center; 
-            transition: transform 0.4s ease;
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain; 
+            border-radius: 6px;
+            transition: transform 0.3s ease;
         }
         
         .villain-card:hover .villain-img { 
-            transform: scale(1.05); 
+            transform: scale(1.03); 
         }
         .villain-info {
             padding: 16px;
