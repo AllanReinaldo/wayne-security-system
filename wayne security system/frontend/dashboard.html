@@ -1096,12 +1096,13 @@
         });
     }
 
-       // RENDERIZAÇÃO CORRIGIDA DE ABAS E GRID FULL-WIDTH
-        function carregarERenderizarRecursos() {
-            const grid = document.getElementById('gridRecursosWayne');
-            if (!grid) return;
-    
-        // FORÇA O CONTAINER A OCUPAR 100% DA LARGURA (Resolve o problema de ficar espremido)
+    // RENDERIZAÇÃO COMPLETA: ABAS HORIZONTAIS + GRID E CARDS PADRONIZADOS
+
+    function carregarERenderizarRecursos() {
+        const grid = document.getElementById('gridRecursosWayne');
+        if (!grid) return;
+
+        // Força o container a ocupar 100% da largura
         grid.style.cssText = 'width: 100% !important; max-width: 100% !important; display: block !important; clear: both; margin-top: 15px;';
     
         const recursos = obterRecursosSalvos();
@@ -1122,11 +1123,11 @@
         const mainWrapper = document.createElement('div');
         mainWrapper.style.cssText = 'width: 100%; display: flex; flex-direction: column; gap: 20px;';
     
-        // 3. Barra de Abas
+        // 3. Barra de Abas Horizontais
         const navBar = document.createElement('div');
         navBar.style.cssText = 'width: 100%; display: flex; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid rgba(56, 189, 248, 0.25); padding-bottom: 12px;';
     
-        // 4. Área de Conteúdo
+        // 4. Área do Conteúdo
         const contentArea = document.createElement('div');
         contentArea.style.cssText = 'width: 100%;';
     
@@ -1147,19 +1148,18 @@
     
             btnTab.innerHTML = `📁 ${nomeCategoria.toUpperCase()} <span style="background: rgba(0,0,0,0.25); padding: 2px 7px; border-radius: 10px; font-size: 0.75rem;">${categorias[nomeCategoria].length}</span>`;
     
-            // --- GRADE DE CARDS (GRID) ---
+            // --- PAINEL GRID DA CATEGORIA ---
             const panel = document.createElement('div');
             panel.id = catId;
-            
-            // Define a grid para ocupar todo o espaço horizontal em várias colunas
-            const gridStyle = 'display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; width: 100%; box-sizing: border-box;';
-            panel.style.cssText = index === 0 ? gridStyle : 'display: none; ' + gridStyle;
+            panel.className = 'tab-pane-grid'; // Usa as regras do CSS para alinhar a grade
+            panel.style.display = index === 0 ? 'grid' : 'none';
     
-            // Renderiza os Cards
+            // Renderiza os Cards da Categoria
             categorias[nomeCategoria].forEach(item => {
                 const card = document.createElement('div');
-                card.style.cssText = 'background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; backdrop-filter: blur(4px); box-sizing: border-box; width: 100%;';
+                card.className = 'resource-card-item'; // Aplica o CSS padronizado
     
+                // Definição de Status
                 const status = item.status || "Estoque Normal";
                 let statusBg = "rgba(34, 197, 94, 0.15)";
                 let statusColor = "#4ade80";
@@ -1175,16 +1175,17 @@
                     statusBorder = "rgba(234, 179, 8, 0.3)";
                 }
     
+                // Estrutura Interna usando as novas classes de alinhamento
                 card.innerHTML = `
-                    <div>
+                    <div class="resource-card-content">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px;">
                             <h4 style="margin: 0; font-size: 0.95rem; color: #f8fafc; font-weight: 600;">${item.nome}</h4>
                             <span style="font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; background: ${statusBg}; color: ${statusColor}; border: 1px solid ${statusBorder}; white-space: nowrap;">${status}</span>
                         </div>
-                        <p style="margin: 0 0 14px 0; font-size: 0.82rem; color: #94a3b8; line-height: 1.4;">${item.desc}</p>
+                        <p class="resource-card-desc">${item.desc}</p>
                     </div>
                     
-                    <div style="padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; gap: 8px;">
+                    <div class="resource-card-actions">
                         <button class="btn-edit-card" onclick="prepararEdicao(${item.id})" style="flex: 1; padding: 6px; font-size: 0.75rem; cursor: pointer;">✏️ Editar</button>
                         <button class="btn-delete-card" onclick="removerRecurso(${item.id})" style="flex: 1; padding: 6px; font-size: 0.75rem; cursor: pointer;">🗑️ Remover</button>
                     </div>
@@ -1193,7 +1194,7 @@
                 panel.appendChild(card);
             });
     
-            // Alternar abas ao clicar
+            // Evento de Troca de Aba
             btnTab.onclick = () => {
                 navBar.querySelectorAll('button').forEach(b => {
                     b.style.background = 'rgba(15, 23, 42, 0.9)';
