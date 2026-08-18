@@ -377,3 +377,49 @@ tr:hover td {
     font-weight: 700;
     letter-spacing: 0.5px;
 }
+
+/* CONTAINER DA GRADE DE RECURSOS */
+.tab-pane-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+    gap: 20px !important;
+    width: 100% !important;
+    align-items: stretch !important; /* Força todos os cards da mesma linha a terem a mesma altura */
+}
+
+/* ESTILO PADRONIZADO DO CARD */
+.resource-card-item {
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important; /* Empurra os botões para o final do card */
+    min-height: 180px; /* Garante uma altura mínima uniforme */
+    box-sizing: border-box;
+}
+
+/* PARTE SUPERIOR DO CARD (TÍTULO E DESCRIÇÃO) */
+.resource-card-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.resource-card-desc {
+    font-size: 0.82rem;
+    color: #94a3b8;
+    line-height: 1.4;
+    margin-bottom: 15px;
+    flex-grow: 1; /* Ocupa o espaço sobressalente para alinhar as bases */
+}
+
+/* RODAPÉ DO CARD COM OS BOTÕES */
+.resource-card-actions {
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    gap: 8px;
+    margin-top: auto; /* Garante o alinhamento no rodapé */
+}
