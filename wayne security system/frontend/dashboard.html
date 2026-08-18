@@ -467,7 +467,6 @@
         <!-- CARD BOAS VINDAS -->
         <div class="welcome-card">
             <h2 id="tituloPainel">Wayne Enterprises - Gestão Executiva</h2>
-            <p id="descPainel">Visão geral dos investimentos, orçamentos de P&D e ativos corporativos.</p>
         </div>
 
         <!-- BARRA DE BOTOES ESPECIAIS -->
@@ -643,6 +642,24 @@
                 </div>
             </div>
 
+            <div class="villain-card">
+                <div class="villain-img-container">
+                    <img src="./viloes/Arlequina" alt="Arlequina" class="villain-img">
+                    <span class="villain-danger-badge danger-extrema">Extrema (Imprevisível)</span>
+                </div>
+                <div class="villain-info">
+                    <h4 class="villain-name">Arlequina</h4>
+                    <div class="villain-field">
+                        <span>Principal Ameaça</span>
+                        Terrorismo psicológico e caos em massa.
+                    </div>
+                    <div class="villain-status">
+                        <span class="status-dot status-ativo"></span>
+                        Status: Ativo/Anti-heroína (Totalmente emancipada do Coringa)
+                    </div>
+                </div>
+            </div>
+            
             <div class="villain-card">
                 <div class="villain-img-container">
                     <img src="./viloes/Bane.jpeg" alt="Bane" class="villain-img">
@@ -921,16 +938,12 @@
             const nomeEl = document.getElementById('nomeUsuario');
             const perfil = (usuarioLogado.perfil || "").toLowerCase();
 
-            // Lógica por perfil
             if (perfil.includes('bruce') || perfil.includes('admin')) {
                 document.getElementById('btnToggleVisao').style.display = 'inline-flex';
                 document.getElementById('btnChamarAlfred').style.display = 'inline-flex';
                 document.getElementById('btnAbrirModal').style.display = 'inline-flex';
                 
-                // Aplica a visão inicial (Corporativa)
                 atualizarVisaoUI();
-                
-                // Adiciona o botão de excluir nos cards de recursos
                 adicionarBotoesExcluir();
 
             } else if (perfil.includes('lucius') || perfil.includes('gerente')) {
@@ -953,7 +966,7 @@
             }
         }
 
-        // Atualiza a interface (Textos, Imagem de Fundo e Botão)
+        // Função corrigida para alterar textos, botões e cores reais do fundo
         function atualizarVisaoUI() {
             const btnToggle = document.getElementById('btnToggleVisao');
             const nomeUsuarioEl = document.getElementById('nomeUsuario');
@@ -961,19 +974,23 @@
             const descPainel = document.getElementById('descPainel');
 
             if (modoVigilante) {
-                // MODO VIGILANTE / BATMAN
+                // --- MODO VIGILANTE (BATMAN) ---
                 btnToggle.textContent = "👁️ Mudar p/ Visão Corporativa";
                 btnToggle.classList.add('mode-vigilante');
-                document.body.style.backgroundImage = "linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('wayne-enterprises-wallpapers.jpg')";
+                
+                // Fundo totalmente preto/escuro para o Batman
+                document.body.style.background = "#050505 linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)) url('wayne-enterprises-wallpapers.jpg') no-repeat center/cover fixed";
                 
                 nomeUsuarioEl.textContent = "BATMAN";
                 tituloPainel.textContent = "Painel de Operações Táticas - Batcaverna";
                 descPainel.textContent = "Monitoramento tático de Gotham em tempo real.";
             } else {
-                // MODO CORPORATIVO / BRUCE WAYNE
+                // --- MODO CORPORATIVO (BRUCE WAYNE) ---
                 btnToggle.textContent = "🦇 Mudar p/ Visão Vigilante";
                 btnToggle.classList.remove('mode-vigilante');
-                document.body.style.backgroundImage = "linear-gradient(rgba(10, 25, 50, 0.88), rgba(10, 25, 50, 0.88)), url('wayne-enterprises-wallpapers.jpg')";
+                
+                // Fundo limpo sem a sobreposição azul
+                document.body.style.background = "#0f172a url('wayne-enterprises-wallpapers.jpg') no-repeat center/cover fixed";
                 
                 nomeUsuarioEl.textContent = "BRUCE WAYNE";
                 tituloPainel.textContent = "Wayne Enterprises - Gestão Executiva";
@@ -995,7 +1012,6 @@
         }
 
         function configurarEventos() {
-            // Logout
             document.getElementById('btnLogout').addEventListener('click', () => {
                 localStorage.removeItem('token');
                 localStorage.removeItem('usuario');
@@ -1003,7 +1019,6 @@
                 window.location.href = "index.html"; 
             });
 
-            // Evento do Botão de Alternar Visão
             const btnToggle = document.getElementById('btnToggleVisao');
             if (btnToggle) {
                 btnToggle.addEventListener('click', () => {
@@ -1012,7 +1027,6 @@
                 });
             }
 
-            // Chamar Alfred
             const btnAlfred = document.getElementById('btnChamarAlfred');
             if (btnAlfred) {
                 btnAlfred.addEventListener('click', () => {
@@ -1020,7 +1034,6 @@
                 });
             }
 
-            // Modal Criar Recurso
             const modal = document.getElementById('modalCriarRecurso');
             document.getElementById('btnAbrirModal').addEventListener('click', () => {
                 modal.style.display = 'flex';
@@ -1030,7 +1043,6 @@
                 modal.style.display = 'none';
             });
 
-            // Salvar Recurso
             document.getElementById('btnSalvarRecurso').addEventListener('click', () => {
                 const nome = document.getElementById('nomeRecurso').value;
                 const cat = document.getElementById('categoriaRecurso').value;
@@ -1067,7 +1079,6 @@
                 document.getElementById('descRecurso').value = '';
             });
 
-            // Emergência
             const btnEmergencia = document.getElementById('btnUsoRemoto');
             if (btnEmergencia) {
                 btnEmergencia.addEventListener('click', () => {
