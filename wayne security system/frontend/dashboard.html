@@ -270,72 +270,55 @@
             box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15);
         }
 
-        .card-header-tech {
+        /* CONTAINER DE AÇÕES DO CARD */
+        .card-actions {
+            margin-top: 15px;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
+            gap: 8px;
+            width: 100%;
         }
-
-        .card-title-tech {
-            font-size: 1.1rem;
-            color: #f1f5f9;
-            font-weight: 600;
-        }
-
-        .card-category-badge {
-            font-size: 0.7rem;
-            padding: 3px 8px;
-            border-radius: 4px;
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--primary-light);
-            border: 1px solid var(--border-glow);
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        .card-desc-tech {
-            color: var(--text-muted);
-            font-size: 0.88rem;
-            line-height: 1.5;
-        }
-
+        
+        /* ESTILO BASE UNIFICADO PARA OS BOTÕES DE AÇÃO */
+        .btn-edit-card,
         .btn-delete-card {
-            background: var(--danger-bg);
-            border: 1px solid var(--danger);
-            color: #fca5a5;
-            padding: 4px 10px;
+            flex: 1; /* Faz com que ambos dividam o espaço igualmente */
+            padding: 6px 12px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 0.78rem;
-            margin-top: 14px;
-            align-self: flex-start;
-            transition: all 0.2s;
             font-weight: 600;
+            text-align: center;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
         }
-
-        .btn-delete-card:hover {
-            background: var(--danger);
-            color: var(--text-main);
-        }
-
+        
+        /* BOTÃO EDITAR */
         .btn-edit-card {
             background: rgba(56, 189, 248, 0.15);
             border: 1px solid var(--primary-light);
             color: var(--primary-light);
-            padding: 4px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.78rem;
-            transition: all 0.2s;
-            font-weight: 600;
         }
-
+        
         .btn-edit-card:hover {
             background: var(--primary);
             color: white;
         }
-
+        
+        /* BOTÃO REMOVER */
+        .btn-delete-card {
+            background: var(--danger-bg);
+            border: 1px solid var(--danger);
+            color: #fca5a5;
+        }
+        
+        .btn-delete-card:hover {
+            background: var(--danger);
+            color: var(--text-main);
+        }
+       
         /* ==========================================================================
            5. GRID DE VILÕES E BADGES DE PERIGO (AJUSTADO)
            ========================================================================== */
