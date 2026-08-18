@@ -1096,13 +1096,12 @@
         });
     }
 
-    // RENDERIZAÇÃO COMPLETA: ABAS HORIZONTAIS + GRID E CARDS PADRONIZADOS
+    // RESTAURADO: LAYOUT ORIGINAL EM LISTA / LINHAS COM ABAS
 
     function carregarERenderizarRecursos() {
         const grid = document.getElementById('gridRecursosWayne');
         if (!grid) return;
 
-        // Força o container a ocupar 100% da largura
         grid.style.cssText = 'width: 100% !important; max-width: 100% !important; display: block !important; clear: both; margin-top: 15px;';
     
         const recursos = obterRecursosSalvos();
@@ -1148,16 +1147,15 @@
     
             btnTab.innerHTML = `📁 ${nomeCategoria.toUpperCase()} <span style="background: rgba(0,0,0,0.25); padding: 2px 7px; border-radius: 10px; font-size: 0.75rem;">${categorias[nomeCategoria].length}</span>`;
     
-            // --- PAINEL GRID DA CATEGORIA ---
+            // --- PAINEL EM LISTA DA CATEGORIA ---
             const panel = document.createElement('div');
             panel.id = catId;
-            panel.className = 'tab-pane-grid'; // Usa as regras do CSS para alinhar a grade
-            panel.style.display = index === 0 ? 'grid' : 'none';
+            panel.style.cssText = index === 0 ? 'display: flex; flex-direction: column; gap: 16px; width: 100%;' : 'display: none; flex-direction: column; gap: 16px; width: 100%;';
     
-            // Renderiza os Cards da Categoria
+            // Renderiza os Itens no Formato de Linha/Lista Original
             categorias[nomeCategoria].forEach(item => {
                 const card = document.createElement('div');
-                card.className = 'resource-card-item'; // Aplica o CSS padronizado
+                card.style.cssText = 'display: flex; justify-content: space-between; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); width: 100%; box-sizing: border-box;';
     
                 // Definição de Status
                 const status = item.status || "Estoque Normal";
@@ -1175,19 +1173,17 @@
                     statusBorder = "rgba(234, 179, 8, 0.3)";
                 }
     
-                // Estrutura Interna usando as novas classes de alinhamento
                 card.innerHTML = `
-                    <div class="resource-card-content">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px;">
-                            <h4 style="margin: 0; font-size: 0.95rem; color: #f8fafc; font-weight: 600;">${item.nome}</h4>
-                            <span style="font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; background: ${statusBg}; color: ${statusColor}; border: 1px solid ${statusBorder}; white-space: nowrap;">${status}</span>
+                    <div style="flex: 1; padding-right: 20px;">
+                        <h4 style="margin: 0 0 6px 0; font-size: 0.95rem; color: #f8fafc; font-weight: 600;">${item.nome}</h4>
+                        <p style="margin: 0 0 10px 0; font-size: 0.82rem; color: #94a3b8; line-height: 1.4;">${item.desc}</p>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn-edit-card" onclick="prepararEdicao(${item.id})" style="padding: 4px 10px; font-size: 0.75rem; cursor: pointer;">✏️ Editar</button>
+                            <button class="btn-delete-card" onclick="removerRecurso(${item.id})" style="padding: 4px 10px; font-size: 0.75rem; cursor: pointer;">🗑️ Remover</button>
                         </div>
-                        <p class="resource-card-desc">${item.desc}</p>
                     </div>
-                    
-                    <div class="resource-card-actions">
-                        <button class="btn-edit-card" onclick="prepararEdicao(${item.id})" style="flex: 1; padding: 6px; font-size: 0.75rem; cursor: pointer;">✏️ Editar</button>
-                        <button class="btn-delete-card" onclick="removerRecurso(${item.id})" style="flex: 1; padding: 6px; font-size: 0.75rem; cursor: pointer;">🗑️ Remover</button>
+                    <div>
+                        <span style="font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; background: ${statusBg}; color: ${statusColor}; border: 1px solid ${statusBorder}; white-space: nowrap;">${status}</span>
                     </div>
                 `;
     
@@ -1212,7 +1208,7 @@
                 btnTab.style.border = '1px solid #38bdf8';
                 btnTab.style.boxShadow = '0 0 10px rgba(56, 189, 248, 0.4)';
     
-                panel.style.display = 'grid';
+                panel.style.display = 'flex';
             };
     
             navBar.appendChild(btnTab);
