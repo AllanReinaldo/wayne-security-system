@@ -319,6 +319,23 @@
             color: var(--text-main);
         }
 
+        .btn-edit-card {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid var(--primary-light);
+            color: var(--primary-light);
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .btn-edit-card:hover {
+            background: var(--primary);
+            color: white;
+        }
+
         /* ==========================================================================
            5. GRID DE VILÕES E BADGES DE PERIGO (AJUSTADO)
            ========================================================================== */
@@ -965,193 +982,254 @@
 
     <!-- SCRIPT PRINCIPAL DO SISTEMA -->
     <script>
-        // Dados de sessão do usuário
-        const dadosSalvos = localStorage.getItem('usuario');
-        let usuarioLogado = dadosSalvos 
-            ? JSON.parse(dadosSalvos) 
-            : { nome: "Bruce Wayne", perfil: "bruce" };
+    // 1. DADOS INICIAIS DE EXEMPLO (Caso o LocalStorage esteja vazio)
+    const recursosPadrao = [
+        { id: 1, nome: "Batarangues", categoria: "Cinto & Gadgets", desc: "Lâminas de arremesso em formato de morcego, com variações explosivas, sônicas ou eletrificadas." },
+        { id: 2, nome: "Bat-garra / Pistola de Gancho", categoria: "Cinto & Gadgets", desc: "Dispositivo para escalar prédios e se locomover rapidamente pelos telhados de Gotham." },
+        { id: 3, nome: "Granadas de Fumaça", categoria: "Cinto & Gadgets", desc: "Usadas para criar cortinas de fumaça e sumir rapidamente de vista." },
+        { id: 4, nome: "Máscara de Gás e Respirador", categoria: "Cinto & Gadgets", desc: "Protege contra toxinas, gás do Espantalho e permite respirar debaixo d'água." },
+        { id: 5, nome: "Rastreadores", categoria: "Cinto & Gadgets", desc: "Pequenos transmissores em formato de morcego colocados em veículos ou roupas." },
+        { id: 6, nome: "Binóculos de Visão Noturna", categoria: "Cinto & Gadgets", desc: "Lentes especiais no Capuz do Batman com modos térmicos e infravermelhos." },
+        { id: 7, nome: "Traje de Kevlar e Nomex", categoria: "Armadura", desc: "Tecido blindado contra tiros de raspão e cortes, além de ser resistente a chamas." },
+        { id: 8, nome: "Capa Planadora", categoria: "Armadura", desc: "Permite que ele plane por curtas distâncias entre os edifícios de Gotham." },
+        { id: 9, nome: "Batmóvel", categoria: "Veículos & Base", desc: "O carro blindado de alta performance equipado com armamento não-letal." },
+        { id: 10, nome: "Batcomputador", categoria: "Veículos & Base", desc: "O supercomputador localizado na Batcaverna usado para investigações e reconhecimento." }
+    ];
 
-        let modoVigilante = false;
+    // Carrega a sessão do usuário
+    const dadosSalvos = localStorage.getItem('usuario');
+    let usuarioLogado = dadosSalvos 
+        ? JSON.parse(dadosSalvos) 
+        : { nome: "Bruce Wayne", perfil: "bruce" };
 
-        // Inicialização acoplada ao evento DOMContentLoaded
-        window.addEventListener('DOMContentLoaded', () => {
-            inicializarSistema();
-            configurarEventos();
-            adicionarBotoesExcluir();
+    let modoVigilante = false;
+    let idEditando = null; // Controla se o modal está editando ou criando
+
+    // Inicialização do DOM
+    window.addEventListener('DOMContentLoaded', () => {
+        inicializarSistema();
+        carregarERenderizarRecursos();
+        configurarEventos();
+    });
+
+    // Controla perfil e permissões de exibição
+    function inicializarSistema() {
+        const perfil = (usuarioLogado.perfil || "").toLowerCase();
+
+        if (perfil.includes('bruce') || perfil.includes('admin')) {
+            exibirElemento('btnToggleVisao');
+            exibirElemento('btnChamarAlfred');
+            exibirElemento('btnAbrirModal');
+            atualizarVisaoUI();
+        } else if (perfil.includes('lucius') || perfil.includes('gerente')) {
+            atualizarTexto('nomeUsuario', (usuarioLogado.nome || "Lucius Fox").toUpperCase());
+            atualizarTexto('tituloPainel', "R&D e Gestão de Logística Wayne Tech");
+            atualizarTexto('descPainel', "Acesso Corporativo/Projetos Especiais. Controle de protótipos e suprimentos.");
+            atualizarTexto('tituloSecaoSecundaria', "📦 Gestão de Estoque e Protótipos (Divisão de Ciências Aplicadas)");
+
+            exibirElemento('btnAbrirModal');
+            ocultarElemento('gridViloes');
+            exibirElemento('containerEstoque', 'block');
+        } else {
+            atualizarTexto('nomeUsuario', (usuarioLogado.nome || "Usuário").toUpperCase());
+            atualizarTexto('tituloPainel', "Wayne Tech - Terminal Operacional");
+            atualizarTexto('descPainel', "Acesso Restrito a Funcionários / Suporte Tático.");
+            exibirElemento('btnUsoRemoto');
+        }
+    }
+
+    // --- GERENCIAMENTO DE PERSISTÊNCIA (LOCALSTORAGE) ---
+
+    function obterRecursosSalvos() {
+        const salvos = localStorage.getItem('wayne_recursos');
+        if (!salvos) {
+            localStorage.setItem('wayne_recursos', JSON.stringify(recursosPadrao));
+            return recursosPadrao;
+        }
+        return JSON.parse(salvos);
+    }
+
+    function salvarListaRecursos(lista) {
+        localStorage.setItem('wayne_recursos', JSON.stringify(lista));
+        carregarERenderizarRecursos();
+    }
+
+    function carregarERenderizarRecursos() {
+        const grid = document.getElementById('gridRecursosWayne');
+        if (!grid) return;
+
+        const recursos = obterRecursosSalvos();
+        grid.innerHTML = ''; // Limpa a grid para renderizar a lista atualizada
+
+        recursos.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'resource-card';
+            card.innerHTML = `
+                <div>
+                    <div class="card-header-tech">
+                        <h4 class="card-title-tech">${item.nome}</h4>
+                        <span class="card-category-badge">${item.categoria}</span>
+                    </div>
+                    <p class="card-desc-tech">${item.desc}</p>
+                </div>
+                <div class="card-actions" style="margin-top: 15px; display: flex; gap: 8px;">
+                    <button class="btn-edit-card" onclick="prepararEdicao(${item.id})">✏️ Editar</button>
+                    <button class="btn-delete-card" onclick="removerRecurso(${item.id})">🗑️ Remover</button>
+                </div>
+            `;
+            grid.appendChild(card);
         });
+    }
 
-        // Configura visibilidade de tela conforme permissão
-        function inicializarSistema() {
-            const perfil = (usuarioLogado.perfil || "").toLowerCase();
+    // --- OPERAÇÕES DO CRUD ---
 
-            if (perfil.includes('bruce') || perfil.includes('admin')) {
-                exibirElemento('btnToggleVisao');
-                exibirElemento('btnChamarAlfred');
-                exibirElemento('btnAbrirModal');
-                atualizarVisaoUI();
+    function removerRecurso(id) {
+        if (confirm("Tem certeza que deseja remover este recurso do inventário?")) {
+            let recursos = obterRecursosSalvos();
+            recursos = recursos.filter(r => r.id !== id);
+            salvarListaRecursos(recursos);
+        }
+    }
 
-            } else if (perfil.includes('lucius') || perfil.includes('gerente')) {
-                atualizarTexto('nomeUsuario', (usuarioLogado.nome || "Lucius Fox").toUpperCase());
-                atualizarTexto('tituloPainel', "R&D e Gestão de Logística Wayne Tech");
-                atualizarTexto('descPainel', "Acesso Corporativo/Projetos Especiais. Controle de protótipos e suprimentos.");
-                atualizarTexto('tituloSecaoSecundaria', "📦 Gestão de Estoque e Protótipos (Divisão de Ciências Aplicadas)");
+    function prepararEdicao(id) {
+        const recursos = obterRecursosSalvos();
+        const recurso = recursos.find(r => r.id === id);
 
-                exibirElemento('btnAbrirModal');
-                ocultarElemento('gridViloes');
-                exibirElemento('containerEstoque', 'block');
+        if (recurso) {
+            idEditando = id;
+            document.getElementById('nomeRecurso').value = recurso.nome;
+            document.getElementById('categoriaRecurso').value = recurso.categoria;
+            document.getElementById('descRecurso').value = recurso.desc;
+            
+            const tituloModal = document.querySelector('#modalCriarRecurso h3');
+            if (tituloModal) tituloModal.textContent = "Editar Recurso";
 
-            } else {
-                atualizarTexto('nomeUsuario', (usuarioLogado.nome || "Usuário").toUpperCase());
-                atualizarTexto('tituloPainel', "Wayne Tech - Terminal Operacional");
-                atualizarTexto('descPainel', "Acesso Restrito a Funcionários / Suporte Tático.");
-                exibirElemento('btnUsoRemoto');
-            }
+            exibirElemento('modalCriarRecurso', 'flex');
+        }
+    }
+
+    function salvarModal() {
+        const nome = document.getElementById('nomeRecurso')?.value.trim();
+        const cat = document.getElementById('categoriaRecurso')?.value || 'Geral';
+        const desc = document.getElementById('descRecurso')?.value.trim();
+
+        if (!nome || !desc) {
+            alert("Por favor, preencha todos os campos.");
+            return;
         }
 
-        // Métodos utilitários de DOM com proteção nula
-        function exibirElemento(id, displayType = 'inline-flex') {
-            const el = document.getElementById(id);
-            if (el) el.style.display = displayType;
+        let recursos = obterRecursosSalvos();
+
+        if (idEditando !== null) {
+            // Atualizar existente
+            recursos = recursos.map(r => r.id === idEditando ? { ...r, nome, categoria: cat, desc } : r);
+        } else {
+            // Criar novo
+            const novoItem = {
+                id: Date.now(),
+                nome: nome,
+                categoria: cat,
+                desc: desc
+            };
+            recursos.push(novoItem);
         }
 
-        function ocultarElemento(id) {
-            const el = document.getElementById(id);
-            if (el) el.style.display = 'none';
-        }
+        salvarListaRecursos(recursos);
+        fecharModal();
+    }
 
-        function atualizarTexto(id, texto) {
-            const el = document.getElementById(id);
-            if (el) el.textContent = texto;
-        }
+    function fecharModal() {
+        const modal = document.getElementById('modalCriarRecurso');
+        if (modal) modal.style.display = 'none';
+        
+        idEditando = null;
+        document.getElementById('nomeRecurso').value = '';
+        document.getElementById('descRecurso').value = '';
+        
+        const tituloModal = document.querySelector('#modalCriarRecurso h3');
+        if (tituloModal) tituloModal.textContent = "Criar Novo Recurso";
+    }
 
-        // Alterna entre o Modo Corporativo e Modo Vigilante
-        function atualizarVisaoUI() {
-            const btnToggle = document.getElementById('btnToggleVisao');
+    // --- FUNÇÕES UTILITÁRIAS ---
 
-            if (modoVigilante) {
-                if (btnToggle) {
-                    btnToggle.textContent = "👁️ Mudar p/ Visão Corporativa";
-                    btnToggle.classList.add('mode-vigilante');
-                }
-                
-                // Fundo Escuro Batcaverna sem matiz azulada
-                document.body.style.background = "#050505 linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.82)) url('wayne-enterprises-wallpapers.jpg') no-repeat center/cover fixed";
-                
-                atualizarTexto('nomeUsuario', "BATMAN");
-                atualizarTexto('tituloPainel', "Painel de Operações Táticas - Batcaverna");
-                atualizarTexto('descPainel', "Monitoramento tático de Gotham em tempo real.");
+    function exibirElemento(id, displayType = 'inline-flex') {
+        const el = document.getElementById(id);
+        if (el) el.style.display = displayType;
+    }
 
-            } else {
-                if (btnToggle) {
-                    btnToggle.textContent = "🦇 Mudar p/ Visão Vigilante";
-                    btnToggle.classList.remove('mode-vigilante');
-                }
+    function ocultarElemento(id) {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    }
 
-                // Fundo Corporativo
-                document.body.style.background = "#0f172a url('wayne-enterprises-wallpapers.jpg') no-repeat center/cover fixed";
-                
-                atualizarTexto('nomeUsuario', "BRUCE WAYNE");
-                atualizarTexto('tituloPainel', "Wayne Enterprises - Gestão Executiva");
-                atualizarTexto('descPainel', "Visão geral dos investimentos, orçamentos de P&D e ativos corporativos.");
-            }
-        }
+    function atualizarTexto(id, texto) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = texto;
+    }
 
-        // Adiciona funcionalidade de exclusão aos cards de recursos
-        function adicionarBotoesExcluir() {
-            const cards = document.querySelectorAll('.resource-card');
-            cards.forEach(card => {
-                if (!card.querySelector('.btn-delete-card')) {
-                    const btnExcluir = document.createElement('button');
-                    btnExcluir.className = 'btn-delete-card';
-                    btnExcluir.textContent = '🗑️ Excluir';
-                    btnExcluir.onclick = (e) => {
-                        e.stopPropagation();
-                        card.remove();
-                    };
-                    card.appendChild(btnExcluir);
-                }
-            });
-        }
+    function atualizarVisaoUI() {
+        const btnToggle = document.getElementById('btnToggleVisao');
 
-        // Mapeamento centralizado de eventos de botões
-        function configurarEventos() {
-            // Alternar Visão
-            const btnToggle = document.getElementById('btnToggleVisao');
+        if (modoVigilante) {
             if (btnToggle) {
-                btnToggle.onclick = () => {
-                    modoVigilante = !modoVigilante;
-                    atualizarVisaoUI();
-                };
+                btnToggle.textContent = "👁️ Mudar p/ Visão Corporativa";
+                btnToggle.classList.add('mode-vigilante');
             }
-
-            // Chamar Alfred
-            const btnAlfred = document.getElementById('btnChamarAlfred');
-            if (btnAlfred) {
-                btnAlfred.onclick = () => {
-                    alert("Alfred Pennyworth: 'Já preparei o chá e os novos suprimentos para o Batcomputador, patrão Bruce.'");
-                };
+            document.body.style.background = "#050505 linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.82)) url('wayne-enterprises-wallpapers.jpg') no-repeat center/cover fixed";
+            atualizarTexto('nomeUsuario', "BATMAN");
+            atualizarTexto('tituloPainel', "Painel de Operações Táticas - Batcaverna");
+            atualizarTexto('descPainel', "Monitoramento tático de Gotham em tempo real.");
+        } else {
+            if (btnToggle) {
+                btnToggle.textContent = "🦇 Mudar p/ Visão Vigilante";
+                btnToggle.classList.remove('mode-vigilante');
             }
-
-            // Encerrar Sessão
-            const btnLogout = document.getElementById('btnLogout');
-            if (btnLogout) {
-                btnLogout.onclick = () => {
-                    localStorage.clear();
-                    window.location.href = "index.html";
-                };
-            }
-
-            // Modal de Criar Recurso
-            const modal = document.getElementById('modalCriarRecurso');
-            const btnAbrir = document.getElementById('btnAbrirModal');
-            const btnFechar = document.getElementById('btnFecharModal');
-            const btnSalvar = document.getElementById('btnSalvarRecurso');
-
-            if (btnAbrir && modal) btnAbrir.onclick = () => modal.style.display = 'flex';
-            if (btnFechar && modal) btnFechar.onclick = () => modal.style.display = 'none';
-
-            if (btnSalvar && modal) {
-                btnSalvar.onclick = () => {
-                    const nome = document.getElementById('nomeRecurso')?.value;
-                    const cat = document.getElementById('categoriaRecurso')?.value || 'Geral';
-                    const desc = document.getElementById('descRecurso')?.value;
-
-                    if (!nome || !desc) {
-                        alert("Por favor, preencha todos os campos do recurso.");
-                        return;
-                    }
-
-                    const grid = document.getElementById('gridRecursosWayne');
-                    if (grid) {
-                        const novoCard = document.createElement('div');
-                        novoCard.className = 'resource-card';
-                        novoCard.innerHTML = `
-                            <div>
-                                <div class="card-header-tech">
-                                    <h4 class="card-title-tech">${nome}</h4>
-                                    <span class="card-category-badge">${cat}</span>
-                                </div>
-                                <p class="card-desc-tech">${desc}</p>
-                            </div>
-                        `;
-                        grid.appendChild(novoCard);
-                        adicionarBotoesExcluir();
-                    }
-
-                    modal.style.display = 'none';
-                    document.getElementById('nomeRecurso').value = '';
-                    document.getElementById('descRecurso').value = '';
-                };
-            }
-
-            // Botão Uso Remoto
-            const btnEmergencia = document.getElementById('btnUsoRemoto');
-            if (btnEmergencia) {
-                btnEmergencia.onclick = () => {
-                    alert("🚨 Alerta de Emergência emitido! Batcomputador notificado.");
-                };
-            }
+            document.body.style.background = "#0f172a url('wayne-enterprises-wallpapers.jpg') no-repeat center/cover fixed";
+            atualizarTexto('nomeUsuario', "BRUCE WAYNE");
+            atualizarTexto('tituloPainel', "Wayne Enterprises - Gestão Executiva");
+            atualizarTexto('descPainel', "Visão geral dos investimentos, orçamentos de P&D e ativos corporativos.");
         }
-    </script>
+    }
+
+    function configurarEventos() {
+        const btnToggle = document.getElementById('btnToggleVisao');
+        if (btnToggle) {
+            btnToggle.onclick = () => {
+                modoVigilante = !modoVigilante;
+                atualizarVisaoUI();
+            };
+        }
+
+        const btnAlfred = document.getElementById('btnChamarAlfred');
+        if (btnAlfred) {
+            btnAlfred.onclick = () => {
+                alert("Alfred Pennyworth: 'Já preparei o chá e os novos suprimentos para o Batcomputador, patrão Bruce.'");
+            };
+        }
+
+        const btnLogout = document.getElementById('btnLogout');
+        if (btnLogout) {
+            btnLogout.onclick = () => {
+                localStorage.removeItem('usuario');
+                window.location.href = "index.html";
+            };
+        }
+
+        const btnAbrir = document.getElementById('btnAbrirModal');
+        const btnFechar = document.getElementById('btnFecharModal');
+        const btnSalvar = document.getElementById('btnSalvarRecurso');
+
+        if (btnAbrir) btnAbrir.onclick = () => { idEditando = null; exibirElemento('modalCriarRecurso', 'flex'); };
+        if (btnFechar) btnFechar.onclick = fecharModal;
+        if (btnSalvar) btnSalvar.onclick = salvarModal;
+
+        const btnEmergencia = document.getElementById('btnUsoRemoto');
+        if (btnEmergencia) {
+            btnEmergencia.onclick = () => {
+                alert("🚨 Alerta de Emergência emitido! Batcomputador notificado.");
+            };
+        }
+    }
+</script>
 </body>
 </html>
