@@ -956,6 +956,7 @@
     </div>
 
     <!-- SCRIPT PRINCIPAL DO SISTEMA -->
+<!-- SCRIPT PRINCIPAL DO SISTEMA -->
 <script>
     // 1. DADOS COMPLETOS DO DOSSIÊ TÉCNICO (WAYNE ENTERPRISES)
     const recursosPadrao = [
@@ -1014,22 +1015,25 @@
 
     function inicializarSistema() {
         const perfil = (usuarioLogado.perfil || "").toLowerCase();
+        const nome = (usuarioLogado.nome || "").toLowerCase();
 
-        // Oculta por padrão o botão de uso remoto
+        // Oculta o botão antigo de emergência
         ocultarElemento('btnUsoRemoto');
 
-        if (perfil.includes('bruce') || perfil.includes('admin')) {
+        // Validação para Bruce Wayne
+        if (perfil.includes('bruce') || perfil.includes('admin') || nome.includes('bruce')) {
             exibirElemento('btnToggleVisao');
             exibirElemento('btnChamarAlfred');
-            exibirElemento('btnAbrirModal'); // Botão "Adicionar Recurso" para Bruce Wayne
+            exibirElemento('btnAbrirModal'); // Exibe botão "Adicionar Recurso"
             atualizarVisaoUI();
 
-        } else if (perfil.includes('lucius') || perfil.includes('gerente')) {
+        // Validação para Lucius Fox
+        } else if (perfil.includes('lucius') || perfil.includes('gerente') || nome.includes('lucius')) {
             atualizarTexto('nomeUsuario', (usuarioLogado.nome || "Lucius Fox").toUpperCase());
             atualizarTexto('tituloPainel', "R&D e Gestão de Logística Wayne Tech");
             atualizarTexto('descPainel', "Acesso Corporativo/Projetos Especiais. Controle de protótipos e suprimentos.");
             
-            exibirElemento('btnAbrirModal'); // Botão "Adicionar Recurso" para Lucius Fox
+            exibirElemento('btnAbrirModal'); // Exibe botão "Adicionar Recurso"
             ocultarElemento('gridViloes');
             exibirElemento('containerEstoque', 'block');
             
@@ -1096,7 +1100,6 @@
     }
 
     // RENDERIZAÇÃO PROFISSIONAL: TERMINAL WAYNE TECH 
-    
     function carregarERenderizarRecursos() {
         const grid = document.getElementById('gridRecursosWayne');
         if (!grid) return;
@@ -1245,9 +1248,9 @@
 
         if (recurso) {
             idEditando = id;
-            document.getElementById('nomeRecurso').value = recurso.nome;
-            document.getElementById('categoriaRecurso').value = recurso.categoria;
-            document.getElementById('descRecurso').value = recurso.desc;
+            if (document.getElementById('nomeRecurso')) document.getElementById('nomeRecurso').value = recurso.nome;
+            if (document.getElementById('categoriaRecurso')) document.getElementById('categoriaRecurso').value = recurso.categoria;
+            if (document.getElementById('descRecurso')) document.getElementById('descRecurso').value = recurso.desc;
             
             const tituloModal = document.querySelector('#modalCriarRecurso h3');
             if (tituloModal) tituloModal.textContent = "Editar Recurso";
@@ -1291,8 +1294,8 @@
         if (modal) modal.style.display = 'none';
         
         idEditando = null;
-        document.getElementById('nomeRecurso').value = '';
-        document.getElementById('descRecurso').value = '';
+        if (document.getElementById('nomeRecurso')) document.getElementById('nomeRecurso').value = '';
+        if (document.getElementById('descRecurso')) document.getElementById('descRecurso').value = '';
         
         const tituloModal = document.querySelector('#modalCriarRecurso h3');
         if (tituloModal) tituloModal.textContent = "Criar Novo Recurso";
@@ -1340,10 +1343,10 @@
             atualizarTexto('nomeUsuario', "BRUCE WAYNE");
             atualizarTexto('tituloPainel', "Wayne Enterprises - Gestão Executiva");
             atualizarTexto('descPainel', "Visão geral dos investimentos, orçamentos de P&D e ativos corporativos.");
-            }
         }
+    }
 
-        function configurarEventos() {
+    function configurarEventos() {
         const btnToggle = document.getElementById('btnToggleVisao');
         if (btnToggle) {
             btnToggle.onclick = () => {
@@ -1351,14 +1354,14 @@
                 atualizarVisaoUI();
             };
         }
-    
+
         const btnAlfred = document.getElementById('btnChamarAlfred');
         if (btnAlfred) {
             btnAlfred.onclick = () => {
                 alert("Alfred Pennyworth: 'Já preparei o chá e os novos suprimentos para o Batcomputador, patrão Bruce.'");
             };
         }
-    
+
         const btnLogout = document.getElementById('btnLogout');
         if (btnLogout) {
             btnLogout.onclick = () => {
@@ -1366,31 +1369,29 @@
                 window.location.href = "index.html";
             };
         }
-    
+
         // --- LÓGICA DO MODAL DE RECURSOS ---
         const btnAbrir = document.getElementById('btnAbrirModal');
         const btnFechar = document.getElementById('btnFecharModal');
         const btnSalvar = document.getElementById('btnSalvarRecurso');
-    
+
         if (btnAbrir) {
             btnAbrir.onclick = () => { 
                 idEditando = null; 
-    
+
                 // Limpa os campos para um novo cadastro
-                const campoNome = document.getElementById('nomeRecurso');
-                const campoDesc = document.getElementById('descRecurso');
-                if (campoNome) campoNome.value = '';
-                if (campoDesc) campoDesc.value = '';
-    
-                // Garante que o título do modal esteja como "Criar Novo Recurso"
+                if (document.getElementById('nomeRecurso')) document.getElementById('nomeRecurso').value = '';
+                if (document.getElementById('descRecurso')) document.getElementById('descRecurso').value = '';
+
+                // Garante o título do modal
                 const tituloModal = document.querySelector('#modalCriarRecurso h3');
                 if (tituloModal) tituloModal.textContent = "Criar Novo Recurso";
-    
-                // Abre o modal
+
+                // Abre o overlay do modal
                 exibirElemento('modalCriarRecurso', 'flex'); 
             };
         }
-    
+
         if (btnFechar) btnFechar.onclick = fecharModal;
         if (btnSalvar) btnSalvar.onclick = salvarModal;
     }
