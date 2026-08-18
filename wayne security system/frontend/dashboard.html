@@ -1066,16 +1066,18 @@
         });
     }
 
-    // RENDERIZA OS RECURSOS EM ABAS HORIZONTAIS ESTILIZADAS E CORRETAS
-
-    function carregarERenderizarRecursos() {
-        const grid = document.getElementById('gridRecursosWayne');
-        if (!grid) return;
-
+       // RENDERIZAÇÃO CORRIGIDA DE ABAS E GRID FULL-WIDTH
+        function carregarERenderizarRecursos() {
+            const grid = document.getElementById('gridRecursosWayne');
+            if (!grid) return;
+    
+        // FORÇA O CONTAINER A OCUPAR 100% DA LARGURA (Resolve o problema de ficar espremido)
+        grid.style.cssText = 'width: 100% !important; max-width: 100% !important; display: block !important; clear: both; margin-top: 15px;';
+    
         const recursos = obterRecursosSalvos();
         grid.innerHTML = '';
     
-        // 1. Agrupa por categoria
+        // 1. Agrupa os recursos por categoria
         const categorias = {};
         recursos.forEach(item => {
             const cat = item.categoria || 'Outros';
@@ -1086,47 +1088,47 @@
         const nomesCategorias = Object.keys(categorias);
         if (nomesCategorias.length === 0) return;
     
-        // 2. Container Geral das Abas
-        const mainTabsWrapper = document.createElement('div');
-        mainTabsWrapper.style.cssText = 'width: 100%; display: flex; flex-direction: column; gap: 20px;';
+        // 2. Container Geral
+        const mainWrapper = document.createElement('div');
+        mainWrapper.style.cssText = 'width: 100%; display: flex; flex-direction: column; gap: 20px;';
     
-        // 3. Barra de Botões Horizontais (Nav Tabs)
+        // 3. Barra de Abas
         const navBar = document.createElement('div');
-        navBar.style.cssText = 'width: 100%; display: flex; gap: 10px; border-bottom: 2px solid rgba(56, 189, 248, 0.3); padding-bottom: 12px; overflow-x: auto; scrollbar-width: thin; align-items: center;';
+        navBar.style.cssText = 'width: 100%; display: flex; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid rgba(56, 189, 248, 0.25); padding-bottom: 12px;';
     
-        // 4. Container do Conteúdo (Cards)
+        // 4. Área de Conteúdo
         const contentArea = document.createElement('div');
         contentArea.style.cssText = 'width: 100%;';
     
         nomesCategorias.forEach((nomeCategoria, index) => {
             const catId = `tab-panel-${index}`;
     
-            // --- BOTÃO DA ABA HORIZONTAL ---
+            // --- BOTÃO DA ABA ---
             const btnTab = document.createElement('button');
             btnTab.type = 'button';
             
-            // Estilização forçada em linha para não herdar estilos de cards do seu CSS
-            const baseStyle = 'padding: 8px 16px; font-family: monospace; font-size: 0.85rem; font-weight: bold; border-radius: 6px; cursor: pointer; white-space: nowrap; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 8px; height: 38px; box-sizing: border-box;';
-            
+            const baseStyle = 'padding: 8px 18px; font-family: monospace; font-size: 0.85rem; font-weight: bold; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 8px; height: 38px; box-sizing: border-box;';
+    
             if (index === 0) {
                 btnTab.style.cssText = baseStyle + ' background: #38bdf8; color: #0f172a; border: 1px solid #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);';
             } else {
                 btnTab.style.cssText = baseStyle + ' background: rgba(15, 23, 42, 0.9); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.15);';
             }
     
-            btnTab.innerHTML = `📂 ${nomeCategoria.toUpperCase()} <span style="background: rgba(0,0,0,0.25); padding: 2px 6px; border-radius: 10px; font-size: 0.75rem;">${categorias[nomeCategoria].length}</span>`;
+            btnTab.innerHTML = `📁 ${nomeCategoria.toUpperCase()} <span style="background: rgba(0,0,0,0.25); padding: 2px 7px; border-radius: 10px; font-size: 0.75rem;">${categorias[nomeCategoria].length}</span>`;
     
-            // --- PAINEL EM GRADE (GRID) ---
+            // --- GRADE DE CARDS (GRID) ---
             const panel = document.createElement('div');
             panel.id = catId;
-            panel.style.cssText = index === 0 
-                ? 'display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; width: 100%;' 
-                : 'display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; width: 100%;';
+            
+            // Define a grid para ocupar todo o espaço horizontal em várias colunas
+            const gridStyle = 'display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; width: 100%; box-sizing: border-box;';
+            panel.style.cssText = index === 0 ? gridStyle : 'display: none; ' + gridStyle;
     
-            // Preenche os cards
+            // Renderiza os Cards
             categorias[nomeCategoria].forEach(item => {
                 const card = document.createElement('div');
-                card.style.cssText = 'background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; backdrop-filter: blur(4px); box-sizing: border-box;';
+                card.style.cssText = 'background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; backdrop-filter: blur(4px); box-sizing: border-box; width: 100%;';
     
                 const status = item.status || "Estoque Normal";
                 let statusBg = "rgba(34, 197, 94, 0.15)";
@@ -1153,17 +1155,16 @@
                     </div>
                     
                     <div style="padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; gap: 8px;">
-                        <button class="btn-edit-card" onclick="prepararEdicao(${item.id})" style="flex: 1; padding: 6px; font-size: 0.75rem;">✏️ Editar</button>
-                        <button class="btn-delete-card" onclick="removerRecurso(${item.id})" style="flex: 1; padding: 6px; font-size: 0.75rem;">🗑️ Remover</button>
+                        <button class="btn-edit-card" onclick="prepararEdicao(${item.id})" style="flex: 1; padding: 6px; font-size: 0.75rem; cursor: pointer;">✏️ Editar</button>
+                        <button class="btn-delete-card" onclick="removerRecurso(${item.id})" style="flex: 1; padding: 6px; font-size: 0.75rem; cursor: pointer;">🗑️ Remover</button>
                     </div>
                 `;
     
                 panel.appendChild(card);
             });
     
-            // Evento de Troca de Aba
+            // Alternar abas ao clicar
             btnTab.onclick = () => {
-                // Desativa todos os botões da barra
                 navBar.querySelectorAll('button').forEach(b => {
                     b.style.background = 'rgba(15, 23, 42, 0.9)';
                     b.style.color = '#94a3b8';
@@ -1171,18 +1172,15 @@
                     b.style.boxShadow = 'none';
                 });
     
-                // Oculta todos os painéis de cards
                 contentArea.querySelectorAll('div[id^="tab-panel-"]').forEach(p => {
                     p.style.display = 'none';
                 });
     
-                // Ativa o botão selecionado
                 btnTab.style.background = '#38bdf8';
                 btnTab.style.color = '#0f172a';
                 btnTab.style.border = '1px solid #38bdf8';
                 btnTab.style.boxShadow = '0 0 10px rgba(56, 189, 248, 0.4)';
     
-                // Exibe o painel de cards ativo
                 panel.style.display = 'grid';
             };
     
@@ -1190,9 +1188,9 @@
             contentArea.appendChild(panel);
         });
     
-        mainTabsWrapper.appendChild(navBar);
-        mainTabsWrapper.appendChild(contentArea);
-        grid.appendChild(mainTabsWrapper);
+        mainWrapper.appendChild(navBar);
+        mainWrapper.appendChild(contentArea);
+        grid.appendChild(mainWrapper);
     }
     
     // --- OPERAÇÕES DO CRUD ---
