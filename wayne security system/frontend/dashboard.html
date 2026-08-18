@@ -1096,12 +1096,13 @@
         });
     }
 
-    // RENDERIZAÇÃO EM CARDS DE LINHA COMPLETA (FULL-WIDTH CARDS)
+    // RENDERIZAÇÃO PROFISSIONAL: TERMINAL WAYNE TECH 
     
     function carregarERenderizarRecursos() {
         const grid = document.getElementById('gridRecursosWayne');
         if (!grid) return;
 
+        // Força o container a ocupar 100% da largura útil do painel
         grid.style.cssText = 'width: 100% !important; max-width: 100% !important; display: block !important; clear: both; margin-top: 15px;';
     
         const recursos = obterRecursosSalvos();
@@ -1147,50 +1148,71 @@
     
             btnTab.innerHTML = `📁 ${nomeCategoria.toUpperCase()} <span style="background: rgba(0,0,0,0.25); padding: 2px 7px; border-radius: 10px; font-size: 0.75rem;">${categorias[nomeCategoria].length}</span>`;
     
-            // --- CONTAINER DO PAINEL ---
+            // --- PAINEL DAS LINHAS ---
             const panel = document.createElement('div');
             panel.id = catId;
-            panel.style.cssText = index === 0 ? 'display: flex; flex-direction: column; gap: 14px; width: 100%;' : 'display: none; flex-direction: column; gap: 14px; width: 100%;';
+            panel.style.cssText = index === 0 ? 'display: flex; flex-direction: column; gap: 12px; width: 100%;' : 'display: none; flex-direction: column; gap: 12px; width: 100%;';
     
-            // Renderiza cada recurso em um Card Fechado
+            // Renderiza cada recurso em um Card Profissional estilo Dashboard
             categorias[nomeCategoria].forEach(item => {
                 const card = document.createElement('div');
                 
-                // ESTILO DO CARD (Borda, Fundo Escuro, Padding e Arredondamento)
-                card.style.cssText = 'background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; width: 100%; box-sizing: border-box; backdrop-filter: blur(4px);';
+                // ESTILO DO CARD: Efeito Glassmorphism, borda sutil e brilho ao passar o mouse
+                card.style.cssText = 'background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(56, 189, 248, 0.15); border-left: 4px solid #38bdf8; border-radius: 6px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; gap: 20px; width: 100%; box-sizing: border-box; backdrop-filter: blur(8px); transition: all 0.2s ease;';
     
                 // Definição de Cores do Badge de Status
                 const status = item.status || "Estoque Normal";
-                let statusBg = "rgba(34, 197, 94, 0.15)";
+                let statusBg = "rgba(34, 197, 94, 0.12)";
                 let statusColor = "#4ade80";
                 let statusBorder = "rgba(34, 197, 94, 0.3)";
     
                 if (status.includes("Crítico") || status.includes("Baixo") || status.includes("Manutenção")) {
-                    statusBg = "rgba(239, 68, 68, 0.15)";
+                    statusBg = "rgba(239, 68, 68, 0.12)";
                     statusColor = "#f87171";
                     statusBorder = "rgba(239, 68, 68, 0.3)";
                 } else if (status.includes("Produção") || status.includes("Desenvolvimento")) {
-                    statusBg = "rgba(234, 179, 8, 0.15)";
+                    statusBg = "rgba(234, 179, 8, 0.12)";
                     statusColor = "#facc15";
                     statusBorder = "rgba(234, 179, 8, 0.3)";
                 }
     
                 card.innerHTML = `
-                    <!-- TOPO DO CARD: TÍTULO E STATUS -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
-                        <h4 style="margin: 0; font-size: 1rem; color: #f8fafc; font-weight: 600;">${item.nome}</h4>
-                        <span style="font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; background: ${statusBg}; color: ${statusColor}; border: 1px solid ${statusBorder}; white-space: nowrap;">${status}</span>
+                    <!-- LADO ESQUERDO: INFOS DO EQUIPAMENTO -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <h4 style="margin: 0; font-size: 0.95rem; color: #f8fafc; font-weight: 600; letter-spacing: 0.3px;">${item.nome}</h4>
+                        </div>
+                        <p style="margin: 0; font-size: 0.82rem; color: #94a3b8; line-height: 1.4; overflow: hidden; text-overflow: ellipsis;">${item.desc}</p>
                     </div>
     
-                    <!-- DESCRIÇÃO DO ITEM -->
-                    <p style="margin: 0; font-size: 0.85rem; color: #94a3b8; line-height: 1.4;">${item.desc}</p>
+                    <!-- LADO DIREITO: STATUS + BOTÕES DE AÇÃO COMPACTOS -->
+                    <div style="display: flex; align-items: center; gap: 16px; flex-shrink: 0;">
+                        <!-- BADGE DE STATUS -->
+                        <span style="font-size: 0.72rem; font-family: monospace; font-weight: 600; padding: 4px 10px; border-radius: 4px; background: ${statusBg}; color: ${statusColor}; border: 1px solid ${statusBorder}; text-transform: uppercase; letter-spacing: 0.5px;">
+                            ${status}
+                        </span>
     
-                    <!-- BOTÕES DE AÇÃO LADO A LADO -->
-                    <div style="display: flex; gap: 10px; margin-top: 4px;">
-                        <button class="btn-edit-card" onclick="prepararEdicao(${item.id})" style="flex: 1; padding: 8px; font-size: 0.8rem; cursor: pointer; border-radius: 4px;">✏️ Editar</button>
-                        <button class="btn-delete-card" onclick="removerRecurso(${item.id})" style="flex: 1; padding: 8px; font-size: 0.8rem; cursor: pointer; border-radius: 4px;">🗑️ Remover</button>
+                        <!-- AÇÕES (EDITAR / REMOVER) -->
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn-edit-card" onclick="prepararEdicao(${item.id})" title="Editar Item" style="background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 6px 12px; font-size: 0.78rem; font-weight: bold; border-radius: 4px; cursor: pointer; transition: all 0.2s ease;">
+                                ✏️ Editar
+                            </button>
+                            <button class="btn-delete-card" onclick="removerRecurso(${item.id})" title="Remover Item" style="background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 12px; font-size: 0.78rem; font-weight: bold; border-radius: 4px; cursor: pointer; transition: all 0.2s ease;">
+                                🗑️
+                            </button>
+                        </div>
                     </div>
                 `;
+    
+                // Efeito Hover na linha do card
+                card.onmouseenter = () => {
+                    card.style.background = 'rgba(30, 41, 59, 0.85)';
+                    card.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+                };
+                card.onmouseleave = () => {
+                    card.style.background = 'rgba(15, 23, 42, 0.65)';
+                    card.style.borderColor = 'rgba(56, 189, 248, 0.15)';
+                };
     
                 panel.appendChild(card);
             });
