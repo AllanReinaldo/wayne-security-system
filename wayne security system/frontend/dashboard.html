@@ -898,7 +898,6 @@
                     </tr>
                 </thead>
             <tbody id=>
-            <!-- Os itens serão gerados dinamicamente pelo JavaScript -->
             </tbody>
         </table>
     </div>
@@ -933,20 +932,50 @@
 
     <!-- SCRIPT PRINCIPAL DO SISTEMA -->
     <script>
-    // 1. DADOS INICIAIS DO SISTEMA
+    // 1. DADOS COMPLETOS DO DOSSIÊ TÉCNICO (WAYNE ENTERPRISES)
     const recursosPadrao = [
-        { id: 1, nome: "Micro-Batarangues Explosivos", categoria: "Munição", qtd: 142, status: "Estoque Normal", desc: "Lâminas de arremesso em formato de morcego com carga explosiva." },
-        { id: 2, nome: "Placa de Kevlar Triplo (Blindagem)", categoria: "Manutenção", qtd: 4, status: "Crítico / Baixo", desc: "Tecido blindado contra tiros de alto calibre e lâminas." },
-        { id: 3, nome: "Gel Explosivo RDX", categoria: "Consumíveis", qtd: 18, status: "Em Produção", desc: "Aerosol altamente volátil ativado por detonador sem fio." },
-        { id: 4, nome: "Pneus de Polímero para Batmóvel", categoria: "Veículos", qtd: 8, status: "Estoque Normal", desc: "Pneus blindados de altíssima durabilidade." },
-        { id: 5, nome: "Bat-garra / Pistola de Gancho", categoria: "Cinto & Gadgets", qtd: 3, status: "Estoque Normal", desc: "Dispositivo de alta tensão para escalada urbana." }
+        // --- O BAT-TRAJE ---
+        { id: 1, nome: "Capuz (Máscara Tática)", categoria: "Armadura", qtd: 3, status: "Estoque Normal", desc: "Visor com Modo Detetive (sonar, visão térmica, raio-X e análise forense) e rádio criptografado." },
+        { id: 2, nome: "Malha Corporal (Blindagem Flexível)", categoria: "Armadura", qtd: 5, status: "Estoque Normal", desc: "Camadas de Kevlar, titânio líquido e cerâmica composta contra tiros e lâminas." },
+        { id: 3, nome: "Capa com Memória de Forma", categoria: "Armadura", qtd: 4, status: "Estoque Normal", desc: "Polímero sensível a impulsos elétricos das luvas que se rígida para planar." },
+        { id: 4, nome: "Luvas e Braçadeiras Táticas", categoria: "Armadura", qtd: 6, status: "Estoque Normal", desc: "Lâminas laterais triplas, fibras de micro-sucção e geradores de choque." },
+
+        // --- CINTO DE UTILIDADES ---
+        { id: 5, nome: "Batarangues Clássicos", categoria: "Cinto & Gadgets", qtd: 100, status: "Estoque Normal", desc: "Lâminas aerodinâmicas para desarmar, cortar ou atordoar alvos." },
+        { id: 6, nome: "Batarangues Especiais", categoria: "Cinto & Gadgets", qtd: 45, status: "Estoque Normal", desc: "Variantes Explosivas, Sônicas, Elétricas e Remotas guiadas por sensores." },
+        { id: 7, nome: "Pistola de Gancho (Grapple Gun)", categoria: "Cinto & Gadgets", qtd: 4, status: "Estoque Normal", desc: "Disparo a gás comprimido com cabo de aramida e gancho magnético retrátil." },
+        { id: 8, nome: "Lançador de Linhas (Line Launcher)", categoria: "Cinto & Gadgets", qtd: 3, status: "Estoque Normal", desc: "Dispara dois cabos opostos para criar tirolesa horizontal rápida em vãos." },
+        { id: 9, nome: "Gel Explosivo", categoria: "Consumíveis", qtd: 20, status: "Em Produção", desc: "Aerosol instável aplicado em superfícies e detonado remotamente." },
+        { id: 10, nome: "Disruptor de Armas", categoria: "Cinto & Gadgets", qtd: 2, status: "Estoque Normal", desc: "Pulsos de micro-ondas para desativar armas de fogo, minas e torretas." },
+        { id: 11, nome: "Carga Elétrica Remota (REC)", categoria: "Cinto & Gadgets", qtd: 2, status: "Estoque Normal", desc: "Dardo elétrico de alta potência para sobrecarregar geradores ou inimigos." },
+        { id: 12, nome: "Sequenciador Criptográfico", categoria: "Cinto & Gadgets", qtd: 3, status: "Estoque Normal", desc: "Computador tático de bolso para interceptar rádios e hackear painéis." },
+        { id: 13, nome: "Bomba de Fumaça e Flashbang", categoria: "Consumíveis", qtd: 50, status: "Estoque Normal", desc: "Cápsulas de liberação rápida para cobertura tática e desorientação." },
+        { id: 14, nome: "Respirador Compacto / Máscara de Gás", categoria: "Cinto & Gadgets", qtd: 6, status: "Estoque Normal", desc: "Filtros avançados para respiração subaquática (30 min) e neutralização de toxinas." },
+        { id: 15, nome: "Anel de Kryptonita", categoria: "Cinto & Gadgets", qtd: 1, status: "Crítico / Baixo", desc: "Protocolo de emergência guardado em compartimento de chumbo contra o Superman." },
+
+        // --- FROTA DE VEÍCULOS ---
+        { id: 16, nome: "O Batmóvel", categoria: "Veículos", qtd: 1, status: "Estoque Normal", desc: "Tanque tático blindado com turbinas a jato, pneus indestrutíveis e Modo Combate." },
+        { id: 17, nome: "O Batwing (Batplano)", categoria: "Veículos", qtd: 1, status: "Estoque Normal", desc: "Jato supersônico furtivo com camuflagem ativa, canhões EMP e ganchos de resgate." },
+        { id: 18, nome: "O Batpod", categoria: "Veículos", qtd: 1, status: "Estoque Normal", desc: "Motocicleta ejetável de emergência do Batmóvel com canhões de 40mm." },
+        { id: 19, nome: "O Bat-Sub", categoria: "Veículos", qtd: 1, status: "Em Manutenção", desc: "Submersível tático indetectável por sonares para infiltração marinha." },
+
+        // --- INFRAESTRUTURA OPERACIONAL ---
+        { id: 20, nome: "Batcaverna Principal", categoria: "Veículos & Base", qtd: 1, status: "Estoque Normal", desc: "Central tática, oficina robótica, laboratório forense e UTI médica intensiva." },
+        { id: 21, nome: "O Batcomputador", categoria: "Veículos & Base", qtd: 1, status: "Estoque Normal", desc: "Rede de supercomputadores com IA, monitoramento orbital e dados da Interpol." },
+        { id: 22, nome: "Casas Seguras (Safehouses)", categoria: "Veículos & Base", qtd: 12, status: "Estoque Normal", desc: "Abrigos secretos espalhados por Gotham com munições, kits médicos e trajes." },
+
+        // --- ARMADURAS TÁTICAS DE ELITE ---
+        { id: 23, nome: "Mech-Suit (Anti-Superman)", categoria: "Armadura", qtd: 1, status: "Em Manutenção", desc: "Exoesqueleto com titânio, poeira de Kryptonita e manoplas de radiação solar vermelha." },
+        { id: 24, nome: "Hellbat Armor", categoria: "Armadura", qtd: 1, status: "Crítico / Baixo", desc: "Forjada na estrela solar pela Liga da Justiça; concede voo e força de nível divino." },
+        { id: 25, nome: "Justice Buster (Fenrir)", categoria: "Armadura", qtd: 1, status: "Em Desenvolvimento", desc: "Projetada com contramedidas específicas para neutralizar toda a Liga da Justiça." },
+        { id: 26, nome: "Insider Suit", categoria: "Armadura", qtd: 1, status: "Estoque Normal", desc: "Traje stealth que mimetiza poderes meta-humanos (invisibilidade e teletransporte curto)." }
     ];
 
-    // Carrega o perfil do usuário logado
+    // Carrega o perfil logado
     const dadosSalvos = localStorage.getItem('usuario');
     let usuarioLogado = dadosSalvos 
         ? JSON.parse(dadosSalvos) 
-        : { nome: "Lucius Fox", perfil: "lucius" }; // Exemplo padrão
+        : { nome: "Bruce Wayne", perfil: "bruce" };
 
     let modoVigilante = false;
     let idEditando = null;
@@ -958,7 +987,6 @@
         configurarEventos();
     });
 
-    // Controla as telas de acordo com o Usuário
     function inicializarSistema() {
         const perfil = (usuarioLogado.perfil || "").toLowerCase();
 
@@ -972,13 +1000,11 @@
             atualizarTexto('nomeUsuario', (usuarioLogado.nome || "Lucius Fox").toUpperCase());
             atualizarTexto('tituloPainel', "R&D e Gestão de Logística Wayne Tech");
             atualizarTexto('descPainel', "Acesso Corporativo/Projetos Especiais. Controle de protótipos e suprimentos.");
-            atualizarTexto('tituloSecaoSecundaria', "📦 Gestão de Estoque e Protótipos (Divisão de Ciências Aplicadas)");
-
+            
             exibirElemento('btnAbrirModal');
             ocultarElemento('gridViloes');
             exibirElemento('containerEstoque', 'block');
             
-            // Carrega a tabela do Lucius
             carregarTabelaEstoque();
 
         } else {
@@ -989,7 +1015,7 @@
         }
     }
 
-    // --- GERENCIAMENTO DE DADOS (LOCALSTORAGE) ---
+    // --- GERENCIAMENTO DE RECURSOS ---
 
     function obterRecursosSalvos() {
         const salvos = localStorage.getItem('wayne_recursos');
@@ -1002,11 +1028,12 @@
 
     function salvarListaRecursos(lista) {
         localStorage.setItem('wayne_recursos', JSON.stringify(lista));
-        carregarERenderizarRecursos(); // Atualiza os cards
-        carregarTabelaEstoque();       // Atualiza a tabela do Lucius
+        carregarERenderizarRecursos();
+        carregarTabelaEstoque();
     }
 
-    // RENDERIZA A TABELA DO LUCIUS FOX
+    // --- RENDERIZAÇÃO ---
+
     function carregarTabelaEstoque() {
         const corpoTabela = document.getElementById('corpoTabelaEstoque');
         if (!corpoTabela) return;
@@ -1039,7 +1066,6 @@
         });
     }
 
-    // RENDERIZA OS CARDS EM GRID
     function carregarERenderizarRecursos() {
         const grid = document.getElementById('gridRecursosWayne');
         if (!grid) return;
@@ -1067,7 +1093,7 @@
         });
     }
 
-    // --- AÇÕES DO MODAL E OPERAÇÕES ---
+    // --- OPERAÇÕES DO CRUD ---
 
     function removerRecurso(id) {
         if (confirm("Tem certeza que deseja remover este recurso do inventário?")) {
@@ -1114,7 +1140,7 @@
                 nome: nome,
                 categoria: cat,
                 desc: desc,
-                qtd: 10,
+                qtd: 5,
                 status: "Estoque Normal"
             };
             recursos.push(novoItem);
@@ -1154,34 +1180,32 @@
     }
 
     function atualizarVisaoUI() {
-    const btnToggle = document.getElementById('btnToggleVisao');
+        const btnToggle = document.getElementById('btnToggleVisao');
 
-    if (modoVigilante) {
-        if (btnToggle) {
-            btnToggle.textContent = "👁️ Mudar p/ Visão Corporativa";
-            btnToggle.classList.add('mode-vigilante');
-        }
-        // Fundo preto bem escuro tático (Batman)
-        document.body.style.background = "linear-gradient(rgba(0, 0, 0, 0.90), rgba(0, 0, 0, 0.90)), url('wayne-enterprises-wallpapers.jpg') no-repeat center center fixed";
-        document.body.style.backgroundSize = "cover";
-        
-        atualizarTexto('nomeUsuario', "BATMAN");
-        atualizarTexto('tituloPainel', "Painel de Operações Táticas - Batcaverna");
-        atualizarTexto('descPainel', "Monitoramento tático de Gotham em tempo real.");
-    } else {
-        if (btnToggle) {
-            btnToggle.textContent = "🦇 Mudar p/ Visão Vigilante";
-            btnToggle.classList.remove('mode-vigilante');
-        }
-        // Fundo escuro neutro/preto (sem tom azul)
-        document.body.style.background = "linear-gradient(rgba(10, 10, 12, 0.82), rgba(10, 10, 12, 0.82)), url('wayne-enterprises-wallpapers.jpg') no-repeat center center fixed";
-        document.body.style.backgroundSize = "cover";
+        if (modoVigilante) {
+            if (btnToggle) {
+                btnToggle.textContent = "👁️ Mudar p/ Visão Corporativa";
+                btnToggle.classList.add('mode-vigilante');
+            }
+            document.body.style.background = "linear-gradient(rgba(0, 0, 0, 0.90), rgba(0, 0, 0, 0.90)), url('wayne-enterprises-wallpapers.jpg') no-repeat center center fixed";
+            document.body.style.backgroundSize = "cover";
+            
+            atualizarTexto('nomeUsuario', "BATMAN");
+            atualizarTexto('tituloPainel', "Painel de Operações Táticas - Batcaverna");
+            atualizarTexto('descPainel', "Monitoramento tático de Gotham em tempo real.");
+        } else {
+            if (btnToggle) {
+                btnToggle.textContent = "🦇 Mudar p/ Visão Vigilante";
+                btnToggle.classList.remove('mode-vigilante');
+            }
+            document.body.style.background = "linear-gradient(rgba(10, 10, 12, 0.82), rgba(10, 10, 12, 0.82)), url('wayne-enterprises-wallpapers.jpg') no-repeat center center fixed";
+            document.body.style.backgroundSize = "cover";
 
-        atualizarTexto('nomeUsuario', "BRUCE WAYNE");
-        atualizarTexto('tituloPainel', "Wayne Enterprises - Gestão Executiva");
-        atualizarTexto('descPainel', "Visão geral dos investimentos, orçamentos de P&D e ativos corporativos.");
+            atualizarTexto('nomeUsuario', "BRUCE WAYNE");
+            atualizarTexto('tituloPainel', "Wayne Enterprises - Gestão Executiva");
+            atualizarTexto('descPainel', "Visão geral dos investimentos, orçamentos de P&D e ativos corporativos.");
+        }
     }
-}
 
     function configurarEventos() {
         const btnToggle = document.getElementById('btnToggleVisao');
