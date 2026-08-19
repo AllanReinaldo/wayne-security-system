@@ -13,19 +13,19 @@
            1. VARIÁVEIS GLORAIS E RESET
            ========================================================================== */
         :root {
-            --bg-dark: #000000;
-            --bg-card: rgba(15, 23, 42, 0.75);
-            --bg-navbar: rgba(10, 15, 25, 0.9);
-            --primary: #0284c7;
-            --primary-light: #38bdf8;
-            --primary-brand: #1ea1e1;
-            --danger: #ef4444;
-            --danger-bg: rgba(239, 68, 68, 0.15);
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --text-light: #cbd5e1;
-            --border-glow: rgba(56, 189, 248, 0.3);
-            --border-light: rgba(255, 255, 255, 0.1);
+            bg-dark: #000000;
+            bg-card: rgba(15, 23, 42, 0.75);
+            bg-navbar: rgba(10, 15, 25, 0.9);
+            primary: #0284c7;
+            primary-light: #38bdf8;
+            primary-brand: #1ea1e1;
+            danger: #ef4444;
+            danger-bg: rgba(239, 68, 68, 0.15);
+            text-main: #ffffff;
+            text-muted: #94a3b8;
+            text-light: #cbd5e1;
+            border-glow: rgba(56, 189, 248, 0.3);
+            border-light: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -1102,16 +1102,20 @@
             atualizarVisaoUI();
 
         // Validação para Lucius Fox
-        } else if (perfil.includes('lucius') || perfil.includes('gerente') || nome.includes('lucius')) {
+       } else if (perfil.includes('lucius') || perfil.includes('gerente') || nome.includes('lucius')) {
             atualizarTexto('nomeUsuario', (usuarioLogado.nome || "Lucius Fox").toUpperCase());
             atualizarTexto('tituloPainel', "R&D e Gestão de Logística Wayne Tech");
             atualizarTexto('descPainel', "Acesso Corporativo/Projetos Especiais. Controle de protótipos e suprimentos.");
             
-            exibirElemento('btnAbrirModal'); // Exibe botão "Adicionar Recurso"
-            ocultarElemento('gridViloes');
-            exibirElemento('containerEstoque', 'block');
+            exibirElemento('btnAbrirModal');
             
+            // --- IMPORTANTE: Oculta o bloco de vilões completo e o título ---
+            ocultarElemento('gridViloes');
+            ocultarElemento('secaoViloes'); // <--- Adicione esta linha se a tag do título/seção tiver esse ID
+            
+            exibirElemento('containerEstoque', 'block');
             carregarTabelaEstoque();
+        }
 
         } else {
             atualizarTexto('nomeUsuario', (usuarioLogado.nome || "Usuário").toUpperCase());
