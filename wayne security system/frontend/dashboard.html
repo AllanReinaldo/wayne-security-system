@@ -1180,6 +1180,7 @@
     }
 
     // RENDERIZAÇÃO PROFISSIONAL: TERMINAL WAYNE TECH 
+    
     function carregarERenderizarRecursos() {
         const grid = document.getElementById('gridRecursosWayne');
         if (!grid) return;
@@ -1189,6 +1190,7 @@
         const recursos = obterRecursosSalvos();
         grid.innerHTML = '';
     
+        // Agrupa por categoria
         const categorias = {};
         recursos.forEach(item => {
             const cat = item.categoria || 'Outros';
@@ -1202,6 +1204,7 @@
         const mainWrapper = document.createElement('div');
         mainWrapper.style.cssText = 'width: 100%; display: flex; flex-direction: column; gap: 20px;';
     
+        // Barra de Navegação de Abas
         const navBar = document.createElement('div');
         navBar.style.cssText = 'width: 100%; display: flex; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid rgba(56, 189, 248, 0.25); padding-bottom: 12px;';
     
@@ -1211,6 +1214,7 @@
         nomesCategorias.forEach((nomeCategoria, index) => {
             const catId = `tab-panel-${index}`;
     
+            // Botão da Aba
             const btnTab = document.createElement('button');
             btnTab.type = 'button';
             
@@ -1224,6 +1228,7 @@
     
             btnTab.innerHTML = `📁 ${nomeCategoria.toUpperCase()} <span style="background: rgba(0,0,0,0.25); padding: 2px 7px; border-radius: 10px; font-size: 0.75rem;">${categorias[nomeCategoria].length}</span>`;
     
+            // Painel de Conteúdo
             const panel = document.createElement('div');
             panel.id = catId;
             panel.style.cssText = index === 0 ? 'display: flex; flex-direction: column; gap: 12px; width: 100%;' : 'display: none; flex-direction: column; gap: 12px; width: 100%;';
@@ -1283,6 +1288,7 @@
                 panel.appendChild(card);
             });
     
+            // Clique na Aba
             btnTab.onclick = () => {
                 navBar.querySelectorAll('button').forEach(b => {
                     b.style.background = 'rgba(15, 23, 42, 0.9)';
