@@ -524,6 +524,46 @@
             color: white;
         }
 
+        /* Container da Tabela de Estoque */
+        #containerEstoque {
+            margin-top: 30px !important; /* Cria um espaço em relação ao elemento de cima */
+            background: rgba(15, 23, 42, 0.75) !important;
+            border: 1px solid rgba(56, 189, 248, 0.2) !important;
+            border-radius: 8px !important;
+            padding: 20px !important;
+            box-sizing: border-box !important;
+            width: 100% !important;
+            clear: both !important; /* Impede que elementos flutuantes sobreponham */
+        }
+        
+        /* Esconde a seção de vilões para o Lucius Fox sem quebrar o layout */
+        #gridViloes, 
+        .secao-viloes {
+            margin-bottom: 20px;
+        }
+        
+        /* Estilo para a tabela dentro do container */
+        #containerEstoque table {
+            width: 100% !important;
+            border-collapse: collapse !important;
+            margin-top: 15px !important;
+        }
+        
+        #containerEstoque th {
+            padding: 12px 10px !important;
+            text-align: left !important;
+            font-size: 0.8rem !important;
+            color: #38bdf8 !important;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2) !important;
+        }
+        
+        #containerEstoque td {
+            padding: 12px 10px !important;
+            color: #f8fafc !important;
+            font-size: 0.85rem !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        }
+        
         /* ==========================================================================
            7. MODAL DE CADASTRO DE RECURSOS
            ========================================================================== */
@@ -1079,6 +1119,8 @@
             atualizarTexto('descPainel', "Acesso Restrito a Funcionários / Suporte Tático.");
             
             ocultarElemento('btnAbrirModal');
+            ocultarElemento('gridViloes');
+            ocultarElemento('tituloViloes');
         }
     }
 
