@@ -3,223 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wayne Tech - Login</title>
+    <title>Wayne Enterprises - Access Control</title>
     <!-- FAVICON -->
     <link rel="icon" type="image/png" href="w-azul.png">
-    <link rel="stylesheet" href="style.css">
 
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: #000000;
+            background-color: #080b11;
             color: #ffffff;
             min-height: 100vh;
-            width: 100vw;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            padding: 20px; 
-            
-            background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('wayne-enterprises-wallpapers.jpg');
+            background-image: linear-gradient(rgba(8, 11, 17, 0.88), rgba(8, 11, 17, 0.88)), url('wayne-enterprises-wallpapers.jpg');
             background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
+            background-position: center center;
             background-attachment: fixed;
+            background-size: cover;
+            padding: 20px 0;
         }
 
-        /* CARD DE LOGIN */
-        .login-card {
-            background: rgba(10, 15, 25, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            padding: 40px 35px;
+        .login-wrapper {
+            margin: auto 0;
             width: 100%;
-            max-width: 420px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 15px rgba(2, 132, 199, 0.1);
-            text-align: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        .login-card {
+            background: rgba(11, 17, 28, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 8px;
+            padding: 35px 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
         }
 
         .brand-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .brand-logo-circle {
+            width: 50px;
+            height: 50px;
+            background: #38bdf8;
+            color: #080b11;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 8px;
-        }
-
-        .logo-wayne {
-            width: 40px !important;
-            height: 40px !important;
-            max-width: 40px !important;
-            max-height: 40px !important;
-            border-radius: 50%;
-            object-fit: cover;
-            background-color: #000;
-            mix-blend-mode: multiply;
+            font-weight: 900;
+            font-size: 1.6rem;
+            margin: 0 auto 10px;
         }
 
         .brand-header h1 {
-            font-size: 1.6rem;
-            color: #1ea1e1;
-            letter-spacing: 1.5px;
+            font-size: 1.2rem;
+            color: #38bdf8;
+            letter-spacing: 2px;
             font-weight: 700;
         }
 
-        .subtitle {
-            color: #94a3b8;
-            font-size: 0.85rem;
-            margin-bottom: 28px;
-            letter-spacing: 0.5px;
+        .brand-header p {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 4px;
+            letter-spacing: 1px;
         }
 
         .form-group {
-            text-align: left;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #cbd5e1;
-            font-weight: 500;
+            margin-bottom: 6px;
+            font-weight: 600;
         }
 
         .form-group input {
             width: 100%;
-            padding: 12px 14px;
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            color: #ffffff;
-            font-size: 0.95rem;
+            padding: 10px 14px;
+            background: rgba(8, 11, 17, 0.9);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 4px;
+            color: #fff;
+            font-size: 0.9rem;
             outline: none;
-            transition: all 0.3s ease;
+            transition: border-color 0.2s ease;
         }
 
         .form-group input:focus {
-            border-color: #0284c7;
-            box-shadow: 0 0 8px rgba(2, 132, 199, 0.4);
-            background: rgba(30, 41, 59, 0.9);
+            border-color: #38bdf8;
         }
 
-        .btn-login {
+        .btn-submit {
             width: 100%;
             padding: 12px;
-            background: #0284c7;
-            color: #ffffff;
+            background: #38bdf8;
+            color: #080b11;
             border: none;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            letter-spacing: 1px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            transition: background 0.2s ease;
             margin-top: 10px;
         }
 
-        .btn-login:hover {
-            background: #0369a1;
-            box-shadow: 0 0 12px rgba(2, 132, 199, 0.4);
+        .btn-submit:hover {
+            background: #0284c7;
+            color: #ffffff;
         }
 
-        .error-message {
-            margin-top: 15px;
-            color: #ef4444;
-            font-size: 0.85rem;
-            display: none;
+        /* --- RODAPÉ --- */
+        .footer {
+            font-size: 0.8rem;
+            color: #64748b;
+            text-align: center;
+            letter-spacing: 0.5px;
         }
 
-        @media (max-width: 480px) {
-            .login-card {
-                padding: 25px 20px;
-            }
-
-            .brand-header h1 {
-                font-size: 1.3rem;
-            }
-
-            .form-group input, .btn-login {
-                padding: 10px;
-            }
+        .footer span {
+            color: #cbd5e1;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
 
-    <div class="login-card">
-        <div class="brand-header">
-            <img src="icone W.jpeg" alt="Logo Wayne Tech" class="logo-wayne">
-            <h1>WAYNE TECH</h1>
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="brand-header">
+                <div class="brand-logo-circle">W</div>
+                <h1>WAYNE ENTERPRISES</h1>
+                <p>AUTENTICAÇÃO DE SEGURANÇA</p>
+            </div>
+
+            <form onsubmit="autenticarUsuario(event)">
+                <div class="form-group">
+                    <label for="usuario">Usuário / Perfil</label>
+                    <input type="text" id="usuario" placeholder="Bruce, Alfred ou Lucius" required>
+                </div>
+                <div class="form-group">
+                    <label for="senha">Chave de Acesso</label>
+                    <input type="password" id="senha" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit">ENTRAR NO SISTEMA</button>
+            </form>
         </div>
-        <p class="subtitle">Sistema de Gerenciamento de Segurança</p>
-
-        <form id="formLogin">
-            <div class="form-group">
-                <label for="email">E-mail de Acesso</label>
-                <input type="email" id="email" required placeholder="ex: bruce@wayne.com">
-            </div>
-
-            <div class="form-group">
-                <label for="senha">Chave de Segurança (Senha)</label>
-                <input type="password" id="senha" required placeholder="••••••••">
-            </div>
-
-            <button type="submit" class="btn-login" id="btnSubmit">AUTENTICAR</button>
-            <div class="error-message" id="msgErro"></div>
-        </form>
     </div>
 
+    <!-- RODAPÉ DA PÁGINA -->
+    <footer class="footer">
+        Desenvolvido por: <span>Allan Reinaldo</span>
+    </footer>
+
     <script>
-        const API_URL = 'https://wayne-tech-api.onrender.com/api';
+        function autenticarUsuario(event) {
+            event.preventDefault();
+            
+            const usuarioInput = document.getElementById('usuario').value.trim();
+            
+            // Salva as informações do usuário no localStorage/sessionStorage
+            const dadosUsuario = {
+                nome: usuarioInput,
+                perfil: usuarioInput.toLowerCase()
+            };
 
-        document.getElementById('formLogin').addEventListener('submit', async (e) => {
-            e.preventDefault();
+            localStorage.setItem('usuario', JSON.stringify(dadosUsuario));
+            sessionStorage.setItem('usuarioLogado', JSON.stringify(dadosUsuario));
 
-            const email = document.getElementById('email').value.trim();
-            const senha = document.getElementById('senha').value.trim();
-            const btn = document.getElementById('btnSubmit');
-            const msgErro = document.getElementById('msgErro');
-
-            btn.disabled = true;
-            btn.textContent = 'AUTENTICANDO...';
-            msgErro.style.display = 'none';
-
-            try {
-                const response = await fetch(`${API_URL}/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, senha })
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    localStorage.setItem('token', data.token || data.accessToken);
-                    localStorage.setItem('usuario', JSON.stringify(data.usuario || data.user || data));
-                    
-                    window.location.href = 'dashboard.html';
-                } else {
-                    msgErro.textContent = data.erro || data.mensagem || 'Credenciais inválidas.';
-                    msgErro.style.display = 'block';
-                }
-            } catch (error) {
-                console.error('Erro de Login:', error);
-                msgErro.textContent = 'Erro ao conectar ao servidor.';
-                msgErro.style.display = 'block';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'AUTENTICAR';
-            }
-        });
+            // Redireciona para o Dashboard
+            window.location.href = "dashboard.html";
+        }
     </script>
 </body>
 </html>
