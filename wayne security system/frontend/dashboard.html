@@ -507,12 +507,19 @@
         }
     }
 
-    // VERIFICA SE O USUÁRIO ATUAL É O ALFRED
+    // VERIFICAÇÕES DE PERFIL
     function ehAlfred() {
         const usuario = obterUsuarioSessao();
         const nome = usuario.nome.toLowerCase();
         const perfil = usuario.perfil.toLowerCase();
         return nome.includes('alfred') || perfil.includes('alfred');
+    }
+
+    function ehLucius() {
+        const usuario = obterUsuarioSessao();
+        const nome = usuario.nome.toLowerCase();
+        const perfil = usuario.perfil.toLowerCase();
+        return nome.includes('lucius') || perfil.includes('lucius');
     }
 
     // PAPEL DE PAREDE DINÂMICO
@@ -561,16 +568,15 @@
         }
 
         const usuarioApenasLeitura = ehAlfred();
+        const usuarioSemExclusao = ehLucius();
 
         itensFiltrados.forEach(item => {
             const card = document.createElement('div');
             card.className = 'resource-card';
 
-            // Se for o Alfred, exibe apenas a tag de status sem os botões de ação
-            const acoesHTML = usuarioApenasLeitura ? '' : `
-                <button class="btn-edit" onclick="editarItem(${item.id})">✏️ Editar</button>
-                <button class="btn-delete" onclick="excluirItem(${item.id})">🗑️</button>
-            `;
+            // Define os botões dinamicamente com base nas permissões
+            let btnEditar = (!usuarioApenasLeitura) ? `<button class="btn-edit" onclick="editarItem(${item.id})">✏️ Editar</button>` : '';
+            let btnExcluir = (!usuarioApenasLeitura && !usuarioSemExclusao) ? `<button class="btn-delete" onclick="excluirItem(${item.id})">🗑️</button>` : '';
 
             card.innerHTML = `
                 <div class="resource-info">
@@ -579,7 +585,8 @@
                 </div>
                 <div class="resource-actions">
                     <span class="status-tag ${item.statusClass}">${item.status}</span>
-                    ${acoesHTML}
+                    ${btnEditar}
+                    ${btnExcluir}
                 </div>
             `;
             container.appendChild(card);
@@ -667,7 +674,10 @@
     }
 
     function excluirItem(id) {
-        if (ehAlfred()) return;
+        if (ehAlfred() || ehLucius()) {
+            alert('Acesso negado: Seu perfil não possui permissão para excluir recursos.');
+            return;
+        }
 
         if (confirm("Tem certeza que deseja remover este recurso do inventário?")) {
             bancoDeDados = bancoDeDados.filter(item => item.id !== id);
