@@ -291,7 +291,7 @@
             <span>WAYNE TECH</span>
         </div>
         <div class="user-menu">
-            <span class="user-name">BRUCE WAYNE</span>
+            <span class="user-name" id="nomeUsuario">BRUCE WAYNE</span>
             <button class="btn-logout" onclick="logout()">SAIR</button>
         </div>
     </nav>
@@ -453,7 +453,7 @@
         elemento.classList.add('active');
         renderizarLista(categoria);
     }
-
+    
     // 5. AÇÕES DOS BOTÕES
     function editarItem(id) {
         alert(`Editar recurso ID: ${id}`);
@@ -474,9 +474,20 @@
         window.location.href = "index.html";
     }
 
-    // 6. INICIALIZAÇÃO
+    // 6. ATUALIZA O NOME DO CABEÇALHO CONFORME O LOGIN
+    function atualizarNomeUsuarioHeader() {
+        const usuarioSalvo = JSON.parse(sessionStorage.getItem('usuarioLogado')) || { nome: 'BRUCE WAYNE' };
+        const elNome = document.getElementById('nomeUsuario');
+        
+        if (elNome && usuarioSalvo.nome) {
+            elNome.textContent = usuarioSalvo.nome.toUpperCase();
+        }
+    }
+        
+    // 7. INICIALIZAÇÃO
     window.onload = () => {
         aplicarPapelDeParedePorPerfil();
+        atualizarNomeUsuarioHeader();
         renderizarLista('armadura');
     };
 </script>
