@@ -30,7 +30,7 @@ O sistema possui 3 níveis de acesso pré-cadastrados:
 | :---                  | :---              | :---        | :---           | :---                                               |
 | **Bruce Wayne**       | `bruce@wayne.com` | `batman123` | **Admin**      | Acesso total: Visualizar, Criar e Excluir recursos |
 | **Lucius Fox**        | `fox@wayne.com`   | `tech123`   | **Gerente**    | Visualizar e Criar novos recursos                  |
-| **Alfred Pennyworth** | `alfred@wayne.com`| `tea123`    | **Funcionário**| Apenas visualização de recursos                                                   |
+| **Alfred Pennyworth** | `alfred@wayne.com`| `tea123`    | **Funcionário**| Apenas visualização de recursos                    |
 
 ---
 
