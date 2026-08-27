@@ -383,7 +383,7 @@
             <span>➕</span> Adicionar Recurso
         </button>
 
-        <!-- TITLE DA SEÇÃO -->
+        <!-- TITULO DA SEÇÃO -->
         <h3 class="section-title">
             🛡️ Equipamentos e Tecnologia Wayne Tech
         </h3>
@@ -492,18 +492,29 @@
                             localStorage.getItem('usuarioLogado') || 
                             sessionStorage.getItem('usuarioLogado');
         
-        if (!dadosSalvos) return { nome: 'BRUCE WAYNE', perfil: 'bruce' };
+            if (!dadosSalvos) return { nome: 'BRUCE WAYNE', perfil: 'bruce' };
         
-        try {
+            try {
             const parsed = JSON.parse(dadosSalvos);
             if (typeof parsed === 'object' && parsed !== null) {
-                const nomeEncontrado = parsed.nome || parsed.name || parsed.usuario || parsed.user || (parsed.email ? parsed.email.split('@')[0] : 'BRUCE WAYNE');
+                let nomeEncontrado = parsed.nome || parsed.name || parsed.usuario || parsed.user || 'BRUCE WAYNE';
+                
+                if (nomeEncontrado.includes('@')) {
+                    nomeEncontrado = nomeEncontrado.split('@')[0];
+                }
+    
                 const perfilEncontrado = parsed.perfil || parsed.role || nomeEncontrado;
                 return { nome: nomeEncontrado, perfil: perfilEncontrado };
             }
-            return { nome: String(parsed), perfil: String(parsed) };
+            
+            let stringSimples = String(parsed);
+            if (stringSimples.includes('@')) stringSimples = stringSimples.split('@')[0];
+            return { nome: stringSimples, perfil: String(parsed) };
+    
         } catch (e) {
-            return { nome: dadosSalvos, perfil: dadosSalvos };
+            let fallback = dadosSalvos;
+            if (fallback.includes('@')) fallback = fallback.split('@')[0];
+            return { nome: fallback, perfil: dadosSalvos };
         }
     }
 
