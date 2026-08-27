@@ -509,25 +509,21 @@
     
         const entradaLimpa = entrada.toLowerCase().trim();
     
-        // Mapeamento de nomes completos
-        let nomeFormatado = 'BRUCE WAYNE';
-        let perfil = entradaLimpa;
-    
-        if (entradaLimpa.includes('alfred')) {
-            nomeFormatado = 'ALFRED PENNYWORTH';
-            perfil = 'alfred';
-        } else if (entradaLimpa.includes('lucius')) {
-            nomeFormatado = 'LUCIUS FOX';
-            perfil = 'lucius';
-        } else if (entradaLimpa.includes('bruce') || entradaLimpa.includes('batman')) {
-            nomeFormatado = 'BRUCE WAYNE';
-            perfil = 'bruce';
-        } else {
-            // Fallback para nomes não mapeados
-            nomeFormatado = entrada.split('@')[0].toUpperCase();
+            if (entradaLimpa.includes('lucius') || entradaLimpa.includes('fox')) {
+            return { nome: 'LUCIUS FOX', perfil: 'lucius' };
+        }
+        
+        if (entradaLimpa.includes('alfred') || entradaLimpa.includes('pennyworth')) {
+            return { nome: 'ALFRED PENNYWORTH', perfil: 'alfred' };
+        }
+        
+        if (entradaLimpa.includes('bruce') || entradaLimpa.includes('wayne') || entradaLimpa.includes('batman')) {
+            return { nome: 'BRUCE WAYNE', perfil: 'bruce' };
         }
     
-        return { nome: nomeFormatado, perfil: perfil };
+        // Caso seja outro usuário digitado
+        const nomeTratado = entrada.includes('@') ? entrada.split('@')[0] : entrada;
+        return { nome: nomeTratado.toUpperCase(), perfil: entradaLimpa };
     }
 
     // VERIFICAÇÕES DE PERFIL
