@@ -492,30 +492,42 @@
                             localStorage.getItem('usuarioLogado') || 
                             sessionStorage.getItem('usuarioLogado');
         
-            if (!dadosSalvos) return { nome: 'BRUCE WAYNE', perfil: 'bruce wayne' };
+        if (!dadosSalvos) return { nome: 'BRUCE WAYNE', perfil: 'bruce' };
         
-            try {
+        let entrada = '';
+    
+        try {
             const parsed = JSON.parse(dadosSalvos);
             if (typeof parsed === 'object' && parsed !== null) {
-                let nomeEncontrado = parsed.nome || parsed.name || parsed.usuario || parsed.user || 'BRUCE WAYNE';
-                
-                if (nomeEncontrado.includes('@')) {
-                    nomeEncontrado = nomeEncontrado.split('@')[0];
-                }
-    
-                const perfilEncontrado = parsed.perfil || parsed.role || nomeEncontrado;
-                return { nome: nomeEncontrado, perfil: perfilEncontrado };
+                entrada = parsed.nome || parsed.name || parsed.usuario || parsed.user || 'BRUCE WAYNE';
+            } else {
+                entrada = String(parsed);
             }
-            
-            let stringSimples = String(parsed);
-            if (stringSimples.includes('@')) stringSimples = stringSimples.split('@')[0];
-            return { nome: stringSimples, perfil: String(parsed) };
-    
         } catch (e) {
-            let fallback = dadosSalvos;
-            if (fallback.includes('@')) fallback = fallback.split('@')[0];
-            return { nome: fallback, perfil: dadosSalvos };
+            entrada = String(dadosSalvos);
         }
+    
+        const entradaLimpa = entrada.toLowerCase().trim();
+    
+        // Mapeamento de nomes completos
+        let nomeFormatado = 'BRUCE WAYNE';
+        let perfil = entradaLimpa;
+    
+        if (entradaLimpa.includes('alfred')) {
+            nomeFormatado = 'ALFRED PENNYWORTH';
+            perfil = 'alfred';
+        } else if (entradaLimpa.includes('lucius')) {
+            nomeFormatado = 'LUCIUS FOX';
+            perfil = 'lucius';
+        } else if (entradaLimpa.includes('bruce') || entradaLimpa.includes('batman')) {
+            nomeFormatado = 'BRUCE WAYNE';
+            perfil = 'bruce';
+        } else {
+            // Fallback para nomes não mapeados
+            nomeFormatado = entrada.split('@')[0].toUpperCase();
+        }
+    
+        return { nome: nomeFormatado, perfil: perfil };
     }
 
     // VERIFICAÇÕES DE PERFIL
