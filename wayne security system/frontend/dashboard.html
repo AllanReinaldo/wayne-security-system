@@ -283,6 +283,79 @@
             background: #dc2626;
             color: #ffffff;
         }
+
+        /* --- MODAL ESTILIZADO --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #0f172a;
+            border: 1px solid #38bdf8;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 450px;
+            padding: 24px;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+        }
+
+        .modal-content h3 {
+            color: #38bdf8;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            background: #080b11;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 4px;
+            color: #fff;
+            font-size: 0.85rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: #cbd5e1;
+            border: 1px solid #64748b;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-save {
+            background: #38bdf8;
+            color: #0f172a;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -306,7 +379,7 @@
         </div>
 
         <!-- BOTAO ADICIONAR RECURSO -->
-        <button class="btn-add-resource" onclick="adicionarRecurso()">
+        <button class="btn-add-resource" onclick="abrirModal()">
             <span>➕</span> Adicionar Recurso
         </button>
 
@@ -317,20 +390,20 @@
 
         <!-- ABAS DE CATEGORIA -->
         <div class="tabs-container">
-            <button class="tab-btn active" onclick="filtrarCategoria('armadura', this)">
-                📁 ARMADURA <span class="badge-count" id="count-armadura">6</span>
+            <button class="tab-btn active" data-categoria="armadura" onclick="filtrarCategoria('armadura', this)">
+                📁 ARMADURA <span class="badge-count" id="count-armadura">0</span>
             </button>
-            <button class="tab-btn" onclick="filtrarCategoria('gadgets', this)">
-                📁 GADGETS <span class="badge-count">5</span>
+            <button class="tab-btn" data-categoria="gadgets" onclick="filtrarCategoria('gadgets', this)">
+                📁 GADGETS <span class="badge-count" id="count-gadgets">0</span>
             </button>
-            <button class="tab-btn" onclick="filtrarCategoria('consumiveis', this)">
-                📁 CONSUMÍVEIS <span class="badge-count">3</span>
+            <button class="tab-btn" data-categoria="consumiveis" onclick="filtrarCategoria('consumiveis', this)">
+                📁 CONSUMÍVEIS <span class="badge-count" id="count-consumiveis">0</span>
             </button>
-            <button class="tab-btn" onclick="filtrarCategoria('veiculos', this)">
-                📁 VEÍCULOS <span class="badge-count">4</span>
+            <button class="tab-btn" data-categoria="veiculos" onclick="filtrarCategoria('veiculos', this)">
+                📁 VEÍCULOS <span class="badge-count" id="count-veiculos">0</span>
             </button>
-            <button class="tab-btn" onclick="filtrarCategoria('base', this)">
-                📁 DISPOSITIVOS DE SEGURANÇA <span class="badge-count">3</span>
+            <button class="tab-btn" data-categoria="base" onclick="filtrarCategoria('base', this)">
+                📁 DISPOSITIVOS DE SEGURANÇA <span class="badge-count" id="count-base">0</span>
             </button>
         </div>
 
@@ -339,210 +412,95 @@
         </div>
     </div>
 
+    <!-- MODAL DE CADASTRO / EDIÇÃO -->
+    <div class="modal-overlay" id="modalRecurso">
+        <div class="modal-content">
+            <h3 id="modalTitulo">Adicionar Recurso</h3>
+            <form id="formRecurso" onsubmit="salvarRecurso(event)">
+                <input type="hidden" id="recursoId">
+                <div class="form-group">
+                    <label>Nome do Recurso</label>
+                    <input type="text" id="nomeRecurso" required>
+                </div>
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <select id="categoriaRecurso" required>
+                        <option value="armadura">Armadura</option>
+                        <option value="gadgets">Gadgets</option>
+                        <option value="consumiveis">Consumíveis</option>
+                        <option value="veiculos">Veículos</option>
+                        <option value="base">Dispositivos de Segurança</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="statusRecurso" required>
+                        <option value="ESTOQUE NORMAL|status-normal">Estoque Normal</option>
+                        <option value="EM MANUTENÇÃO|status-manutencao">Em Manutenção</option>
+                        <option value="CRÍTICO / BAIXO|status-critico">Crítico / Baixo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="descRecurso" rows="3" required></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+                    <button type="submit" class="btn-save">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-    // 1. BANCO DE DADOS
-    const bancoDeDados = [
-       // --- ARMADURAS & VESTUÁRIO ---
-        {
-            id: 1,
-            categoria: "armadura",
-            nome: "Capuz (Máscara Tática)",
-            desc: "Visor com Modo Detetive (sonar, visão térmica, raio-X e análise forense) e rádio criptografado.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        },
-        {
-            id: 2,
-            categoria: "armadura",
-            nome: "Malha Corporal (Blindagem Flexível)",
-            desc: "Camadas de Kevlar, titânio líquido e cerâmica composta contra tiros e lâminas.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        },
-        {
-            id: 3,
-            categoria: "armadura",
-            nome: "Capa com Memória de Forma",
-            desc: "Polímero sensível a impulsos elétricos das luvas que se rígida para planar.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        },
-        {
-            id: 4,
-            categoria: "armadura",
-            nome: "Luvas e Braçadeiras Táticas",
-            desc: "Lâminas laterais triplas, fibras de micro-sucção e geradores de choque.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        },
-        {
-            id: 5,
-            categoria: "armadura",
-            nome: "Mech-Suit (Anti-Superman)",
-            desc: "Exoesqueleto com titânio, poeira de Kryptonita e manoplas de radiação solar vermelha.",
-            status: "EM MANUTENÇÃO",
-            statusClass: "status-manutencao"
-        },
-        {
-            id: 6,
-            categoria: "armadura",
-            nome: "Hellbat Armor",
-            desc: "Forjada na estrela solar pela Liga da Justiça; concede voo e força de nível divino.",
-            status: "CRÍTICO / BAIXO",
-            statusClass: "status-critico"
-        },
-    
-        // --- GADGETS ---
-        {
-            id: 7,
-            categoria: "gadgets",
-            nome: "Batarangs Padrão & Explosivos",
-            desc: "Lâminas de arremesso aerodinâmicas de precisão e variantes com carga explosiva programável.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        },
-        {
-            id: 8,
-            categoria: "gadgets",
-            nome: "Grapnel Gun (Arma de Gancho)",
-            desc: "Disparador de cabo de aço trançado de alta resistência com sistema de retração ultra-rápido.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        },
-        {
-            id: 9,
-            categoria: "gadgets",
-            nome: "Gel Explosivo com Aplicador",
-            desc: "Composto químico para demolição controlada acionado por controle remoto.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        },
-        {
-            id: 10,
-            categoria: "gadgets",
-            nome: "Secador de Circuitos (Disruptor)",
-            desc: "Dispositivo de PEM focalizado para desativar armas de fogo, câmeras e minas à distância.",
-            status: "EM MANUTENÇÃO",
-            statusClass: "status-manutencao"
-        },
-        {
-            id: 11,
-            categoria: "gadgets",
-            nome: "Lançador de Linha (Line Launcher)",
-            desc: "Cria tirolesas instantâneas entre duas superfícies para travessia horizontal.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        },
-    
-        // --- CONSUMÍVEIS ---
-        {
-            id: 12,
-            categoria: "consumiveis",
-            nome: "Capsulas de Fumaça Tática",
-            desc: "Granadas de fumaça densa para fuga rápida e ocultação visual no combate.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        },
-        {
-            id: 13,
-            categoria: "consumiveis",
-            nome: "Antídoto de Toxina do Medo & Coringa",
-            desc: "Injetores automáticos de amplo espectro sintético para neutralização de agentes químicos.",
-            status: "CRÍTICO / BAIXO",
-            statusClass: "status-critico"
-        },
-        {
-            id: 14,
-            categoria: "consumiveis",
-            nome: "Kits Médicos de Trauma Fast-Act",
-            desc: "Espuma hemostática, analgésicos concentrados e sutura rápida para campo.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        },
-    
-        // --- VEÍCULOS ---
-        {
-            id: 15,
-            categoria: "veiculos",
-            nome: "Batmóvel (Tank Mode / Tumbler)",
-            desc: "Veículo blindado urbano com metralhadoras frontais, canhão de 60mm e propulsor a jato.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        },
-        {
-            id: 16,
-            categoria: "veiculos",
-            nome: "Batpod (Bat-Moto)",
-            desc: "Unidade de fuga de duas rodas destacável com motores nos cubos e canhões duplos.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        },
-        {
-            id: 17,
-            categoria: "veiculos",
-            nome: "Batwing (Caça Tático)",
-            desc: "Aeronave de decolagem vertical (VTOL) com camuflagem stealth e armamento pesado.",
-            status: "EM MANUTENÇÃO",
-            statusClass: "status-manutencao"
-        },
-        {
-            id: 18,
-            categoria: "veiculos",
-            nome: "Batboat / Bat-Sub",
-            desc: "Embarcação subaquática de alta velocidade para patrulha na baía de Gotham.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        },
-    
-        // --- DISPOSITIVOS DE SEGURANÇA ---
-        {
-            id: 19,
-            categoria: "base",
-            nome: "Supercomputador da Batcaverna",
-            desc: "Mainframe quântico conectado à rede de vigilância global, satélites e arquivos de Gotham.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        },
-        {
-            id: 20,
-            categoria: "base",
-            nome: "Sistema de Defesa Perimetral Sonar",
-            desc: "Rede de emissores de frequência para incapacitar invasores e guiar morcegos da caverna.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        },
-        {
-            id: 21,
-            categoria: "base",
-            nome: "Plataforma de Suporte de Carga Rápida",
-            desc: "Elevadores e plataformas hidráulicas para manutenção e armamento do Batmóvel.",
-            status: "ESTOQUE NORMAL",
-            statusClass: "status-normal"
-        }
+    // 1. BANCO DE DADOS INICIAL
+    const dadosIniciais = [
+        { id: 1, categoria: "armadura", nome: "Capuz (Máscara Tática)", desc: "Visor com Modo Detetive e rádio criptografado.", status: "ESTOQUE NORMAL", statusClass: "status-normal" },
+        { id: 2, categoria: "armadura", nome: "Malha Corporal (Blindagem Flexível)", desc: "Camadas de Kevlar e titânio líquido.", status: "ESTOQUE NORMAL", statusClass: "status-normal" },
+        { id: 3, categoria: "armadura", nome: "Capa com Memória de Forma", desc: "Polímero que se rígida para planar.", status: "ESTOQUE NORMAL", statusClass: "status-normal" },
+        { id: 4, categoria: "armadura", nome: "Luvas e Braçadeiras Táticas", desc: "Lâminas laterais e geradores de choque.", status: "ESTOQUE NORMAL", statusClass: "status-normal" },
+        { id: 5, categoria: "armadura", nome: "Mech-Suit (Anti-Superman)", desc: "Exoesqueleto com titânio e poeira de Kryptonita.", status: "EM MANUTENÇÃO", statusClass: "status-manutencao" },
+        { id: 6, categoria: "armadura", nome: "Hellbat Armor", desc: "Forjada na estrela solar pela Liga da Justiça.", status: "CRÍTICO / BAIXO", statusClass: "status-critico" },
+        { id: 7, categoria: "gadgets", nome: "Batarangs Padrão & Explosivos", desc: "Lâminas de arremesso aerodinâmicas.", status: "ESTOQUE NORMAL", statusClass: "status-normal" },
+        { id: 8, categoria: "gadgets", nome: "Grapnel Gun (Arma de Gancho)", desc: "Disparador de cabo de aço trançado.", status: "ESTOQUE NORMAL", statusClass: "status-normal" },
+        { id: 9, categoria: "gadgets", nome: "Gel Explosivo com Aplicador", desc: "Composto químico para demolição controlada.", status: "ESTOQUE NORMAL", statusClass: "status-normal" },
+        { id: 10, categoria: "gadgets", nome: "Secador de Circuitos (Disruptor)", desc: "Dispositivo de PEM focalizado.", status: "EM MANUTENÇÃO", statusClass: "status-manutencao" },
+        { id: 11, categoria: "gadgets", nome: "Lançador de Linha (Line Launcher)", desc: "Cria tirolesas instantâneas.", status: "ESTOQUE NORMAL", statusClass: "status-normal" },
+        { id: 12, categoria: "consumiveis", nome: "Capsulas de Fumaça Tática", desc: "Granadas de fumaça densa para fuga rápida.", status: "ESTOQUE NORMAL", statusClass: "status-normal" },
+        { id: 13, categoria: "consumiveis", nome: "Antídoto de Toxina do Medo & Coringa", desc: "Injetores automáticos de amplo espectro.", status: "CRÍTICO / BAIXO", statusClass: "status-critico" },
+        { id: 14, categoria: "consumiveis", nome: "Kits Médicos de Trauma Fast-Act", desc: "Espuma hemostática e analgésicos.", status: "ESTOQUE NORMAL", statusClass: "status-normal" },
+        { id: 15, categoria: "veiculos", nome: "Batmóvel (Tank Mode / Tumbler)", desc: "Veículo blindado urbano com canhão de 60mm.", status: "ESTOQUE NORMAL", statusClass: "status-normal" },
+        { id: 16, categoria: "veiculos", nome: "Batpod (Bat-Moto)", desc: "Unidade de fuga de duas rodas destacável.", status: "ESTOQUE NORMAL", statusClass: "status-normal" },
+        { id: 17, categoria: "veiculos", nome: "Batwing (Caça Tático)", desc: "Aeronave VTOL com camuflagem stealth.", status: "EM MANUTENÇÃO", statusClass: "status-manutencao" },
+        { id: 18, categoria: "veiculos", nome: "Batboat / Bat-Sub", desc: "Embarcação subaquática de alta velocidade.", status: "ESTOQUE NORMAL", statusClass: "status-normal" },
+        { id: 19, categoria: "base", nome: "Supercomputador da Batcaverna", desc: "Mainframe quântico conectado à rede de vigilância.", status: "ESTOQUE NORMAL", statusClass: "status-normal" },
+        { id: 20, categoria: "base", nome: "Sistema de Defesa Perimetral Sonar", desc: "Rede de emissores para incapacitar invasores.", status: "ESTOQUE NORMAL", statusClass: "status-normal" },
+        { id: 21, categoria: "base", nome: "Plataforma de Suporte de Carga Rápida", desc: "Elevadores hidráulicos para manutenção.", status: "ESTOQUE NORMAL", statusClass: "status-normal" }
     ];
 
-    // RECUPERA OS DADOS DO USUÁRIO VINDOS DA API (localStorage)
+    // CARREGAMENTO DO LOCALSTORAGE
+    let bancoDeDados = JSON.parse(localStorage.getItem('wayne_inventario')) || dadosIniciais;
+    let categoriaAtual = 'armadura';
+
+    function salvarStorage() {
+        localStorage.setItem('wayne_inventario', JSON.stringify(bancoDeDados));
+        atualizarContadores();
+    }
+
+    // OBTER SESSÃO DO USUÁRIO
     function obterUsuarioSessao() {
-        // 1. Busca primeiro no localStorage (onde a API do index salva)
-        // 2. Se não achar, tenta no sessionStorage por compatibilidade
         const dadosSalvos = localStorage.getItem('usuario') || 
                             localStorage.getItem('usuarioLogado') || 
                             sessionStorage.getItem('usuarioLogado');
-    
+        
         if (!dadosSalvos) return { nome: 'BRUCE WAYNE', perfil: 'bruce' };
-    
+        
         try {
             const parsed = JSON.parse(dadosSalvos);
-            
             if (typeof parsed === 'object' && parsed !== null) {
-                // Captura o nome retornado pela API (ajusta para campos comuns como nome, name, email ou usuario)
                 const nomeEncontrado = parsed.nome || parsed.name || parsed.usuario || parsed.user || (parsed.email ? parsed.email.split('@')[0] : 'BRUCE WAYNE');
                 const perfilEncontrado = parsed.perfil || parsed.role || nomeEncontrado;
-    
-                return {
-                    nome: nomeEncontrado,
-                    perfil: perfilEncontrado
-                };
+                return { nome: nomeEncontrado, perfil: perfilEncontrado };
             }
             return { nome: String(parsed), perfil: String(parsed) };
         } catch (e) {
@@ -550,12 +508,11 @@
         }
     }
 
-    // 2. APLICA O PAPEL DE PAREDE EM TELA CHEIA
+    // PAPEL DE PAREDE DINÂMICO
     function aplicarPapelDeParedePorPerfil() {
         const usuario = obterUsuarioSessao();
         const perfil = usuario.perfil.toLowerCase();
         const nome = usuario.nome.toLowerCase();
-
         const urlLogo = 'wayne-enterprises-wallpapers.jpg';
 
         document.body.style.backgroundRepeat = "no-repeat";
@@ -572,8 +529,19 @@
         }
     }
 
-    // 3. RENDERIZAR LISTA
-    function renderizarLista(categoria = 'armadura') {
+    // ATUALIZA BADGES DAS ABAS
+    function atualizarContadores() {
+        const categorias = ['armadura', 'gadgets', 'consumiveis', 'veiculos', 'base'];
+        categorias.forEach(cat => {
+            const count = bancoDeDados.filter(item => item.categoria === cat).length;
+            const el = document.getElementById(`count-${cat}`);
+            if (el) el.textContent = count;
+        });
+    }
+
+    // RENDERIZAR LISTA DE CARDS
+    function renderizarLista(categoria = categoriaAtual) {
+        categoriaAtual = categoria;
         const container = document.getElementById('listaRecursos');
         if (!container) return;
         container.innerHTML = '';
@@ -603,26 +571,86 @@
         });
     }
 
-    // 4. TROCA DE ABAS
+    // TROCA DE ABAS
     function filtrarCategoria(categoria, elemento) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         elemento.classList.add('active');
         renderizarLista(categoria);
     }
 
-    // 5. AÇÕES DOS BOTÕES
+    // OPERAÇÕES DO MODAL (CRIAR / EDITAR)
+    function abrirModal(item = null) {
+        const modal = document.getElementById('modalRecurso');
+        const titulo = document.getElementById('modalTitulo');
+        
+        if (item) {
+            titulo.textContent = 'Editar Recurso';
+            document.getElementById('recursoId').value = item.id;
+            document.getElementById('nomeRecurso').value = item.nome;
+            document.getElementById('categoriaRecurso').value = item.categoria;
+            document.getElementById('statusRecurso').value = `${item.status}|${item.statusClass}`;
+            document.getElementById('descRecurso').value = item.desc;
+        } else {
+            titulo.textContent = 'Adicionar Recurso';
+            document.getElementById('formRecurso').reset();
+            document.getElementById('recursoId').value = '';
+            document.getElementById('categoriaRecurso').value = categoriaAtual;
+        }
+        modal.style.display = 'flex';
+    }
+
+    function fecharModal() {
+        document.getElementById('modalRecurso').style.display = 'none';
+    }
+
+    function salvarRecurso(event) {
+        event.preventDefault();
+        const id = document.getElementById('recursoId').value;
+        const nome = document.getElementById('nomeRecurso').value;
+        const categoria = document.getElementById('categoriaRecurso').value;
+        const [status, statusClass] = document.getElementById('statusRecurso').value.split('|');
+        const desc = document.getElementById('descRecurso').value;
+
+        if (id) {
+            const index = bancoDeDados.findIndex(item => item.id == id);
+            if (index !== -1) {
+                bancoDeDados[index] = { id: Number(id), categoria, nome, desc, status, statusClass };
+            }
+        } else {
+            const novoItem = {
+                id: Date.now(),
+                categoria,
+                nome,
+                desc,
+                status,
+                statusClass
+            };
+            bancoDeDados.push(novoItem);
+        }
+
+        salvarStorage();
+        fecharModal();
+
+        // Ativa a aba da categoria do item cadastrado/alterado
+        const abaAlvo = document.querySelector(`.tab-btn[data-categoria="${categoria}"]`);
+        if (abaAlvo) {
+            filtrarCategoria(categoria, abaAlvo);
+        } else {
+            renderizarLista(categoriaAtual);
+        }
+    }
+
     function editarItem(id) {
-        alert(`Editar recurso ID: ${id}`);
+        const item = bancoDeDados.find(item => item.id === id);
+        if (item) abrirModal(item);
     }
 
     function excluirItem(id) {
         if(confirm("Tem certeza que deseja remover este recurso do inventário?")) {
-            alert(`Recurso ${id} removido.`);
+            bancoDeDados = bancoDeDados.filter(item => item.id !== id);
+            salvarStorage();
+            renderizarLista(categoriaAtual);
         }
-    }
-
-    function adicionarRecurso() {
-        alert("Abre modal para novo recurso.");
     }
 
     function logout() {
@@ -630,7 +658,6 @@
         window.location.href = "index.html";
     }
 
-    // 6. ATUALIZA O NOME DO CABEÇALHO CONFORME O LOGIN
     function atualizarNomeUsuarioHeader() {
         const elNome = document.getElementById('nomeUsuario');
         if (!elNome) return;
@@ -639,10 +666,11 @@
         elNome.textContent = usuario.nome.toUpperCase();
     }
 
-    // 7. INICIALIZAÇÃO
+    // INICIALIZAÇÃO
     window.onload = () => {
         atualizarNomeUsuarioHeader();
         aplicarPapelDeParedePorPerfil();
+        atualizarContadores();
         renderizarLista('armadura');
     };
 </script>
