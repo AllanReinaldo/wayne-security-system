@@ -389,22 +389,32 @@
         }
     ];
 
-    // FUNÇÃO AUXILIAR: RECUPERA DADOS DO USUÁRIO LOGADO
+    // RECUPERA OS DADOS DO USUÁRIO VINDOS DA API (localStorage)
     function obterUsuarioSessao() {
-        const dadosSessao = sessionStorage.getItem('usuarioLogado');
-        if (!dadosSessao) return { nome: 'BRUCE WAYNE', perfil: 'bruce' };
-
+        // 1. Busca primeiro no localStorage (onde a API do index salva)
+        // 2. Se não achar, tenta no sessionStorage por compatibilidade
+        const dadosSalvos = localStorage.getItem('usuario') || 
+                            localStorage.getItem('usuarioLogado') || 
+                            sessionStorage.getItem('usuarioLogado');
+    
+        if (!dadosSalvos) return { nome: 'BRUCE WAYNE', perfil: 'bruce' };
+    
         try {
-            const parsed = JSON.parse(dadosSessao);
+            const parsed = JSON.parse(dadosSalvos);
+            
             if (typeof parsed === 'object' && parsed !== null) {
+                // Captura o nome retornado pela API (ajusta para campos comuns como nome, name, email ou usuario)
+                const nomeEncontrado = parsed.nome || parsed.name || parsed.usuario || parsed.user || (parsed.email ? parsed.email.split('@')[0] : 'BRUCE WAYNE');
+                const perfilEncontrado = parsed.perfil || parsed.role || nomeEncontrado;
+    
                 return {
-                    nome: parsed.nome || parsed.usuario || parsed.user || 'BRUCE WAYNE',
-                    perfil: parsed.perfil || parsed.role || parsed.nome || 'bruce'
+                    nome: nomeEncontrado,
+                    perfil: perfilEncontrado
                 };
             }
             return { nome: String(parsed), perfil: String(parsed) };
         } catch (e) {
-            return { nome: dadosSessao, perfil: dadosSessao };
+            return { nome: dadosSalvos, perfil: dadosSalvos };
         }
     }
 
