@@ -333,123 +333,150 @@
 
         <!-- LISTA DE CARDS DA CATEGORIA ATIVA -->
         <div class="resource-list" id="listaRecursos">
-            <!-- Renderizado dinamicamente via JS -->
         </div>
     </div>
 
     <script>
-        // Dados fiéis à captura de tela para a aba ARMADURA
-        const bancoDeDados = [
-            {
-                id: 1,
-                categoria: "armadura",
-                nome: "Capuz (Máscara Tática)",
-                desc: "Visor com Modo Detetive (sonar, visão térmica, raio-X e análise forense) e rádio criptografado.",
-                status: "ESTOQUE NORMAL",
-                statusClass: "status-normal"
-            },
-            {
-                id: 2,
-                categoria: "armadura",
-                nome: "Malha Corporal (Blindagem Flexível)",
-                desc: "Camadas de Kevlar, titânio líquido e cerâmica composta contra tiros e lâminas.",
-                status: "ESTOQUE NORMAL",
-                statusClass: "status-normal"
-            },
-            {
-                id: 3,
-                categoria: "armadura",
-                nome: "Capa com Memória de Forma",
-                desc: "Polímero sensível a impulsos elétricos das luvas que se rígida para planar.",
-                status: "ESTOQUE NORMAL",
-                statusClass: "status-normal"
-            },
-            {
-                id: 4,
-                categoria: "armadura",
-                nome: "Luvas e Braçadeiras Táticas",
-                desc: "Lâminas laterais triplas, fibras de micro-sucção e geradores de choque.",
-                status: "ESTOQUE NORMAL",
-                statusClass: "status-normal"
-            },
-            {
-                id: 5,
-                categoria: "armadura",
-                nome: "Mech-Suit (Anti-Superman)",
-                desc: "Exoesqueleto com titânio, poeira de Kryptonita e manoplas de radiação solar vermelha.",
-                status: "EM MANUTENÇÃO",
-                statusClass: "status-manutencao"
-            },
-            {
-                id: 6,
-                categoria: "armadura",
-                nome: "Hellbat Armor",
-                desc: "Forjada na estrela solar pela Liga da Justiça; concede voo e força de nível divino.",
-                status: "CRÍTICO / BAIXO",
-                statusClass: "status-critico"
-            }
-        ];
+    // 1. BANCO DE DADOS
+    const bancoDeDados = [
+        {
+            id: 1,
+            categoria: "armadura",
+            nome: "Capuz (Máscara Tática)",
+            desc: "Visor com Modo Detetive (sonar, visão térmica, raio-X e análise forense) e rádio criptografado.",
+            status: "ESTOQUE NORMAL",
+            statusClass: "status-normal"
+        },
+        {
+            id: 2,
+            categoria: "armadura",
+            nome: "Malha Corporal (Blindagem Flexível)",
+            desc: "Camadas de Kevlar, titânio líquido e cerâmica composta contra tiros e lâminas.",
+            status: "ESTOQUE NORMAL",
+            statusClass: "status-normal"
+        },
+        {
+            id: 3,
+            categoria: "armadura",
+            nome: "Capa com Memória de Forma",
+            desc: "Polímero sensível a impulsos elétricos das luvas que se rígida para planar.",
+            status: "ESTOQUE NORMAL",
+            statusClass: "status-normal"
+        },
+        {
+            id: 4,
+            categoria: "armadura",
+            nome: "Luvas e Braçadeiras Táticas",
+            desc: "Lâminas laterais triplas, fibras de micro-sucção e geradores de choque.",
+            status: "ESTOQUE NORMAL",
+            statusClass: "status-normal"
+        },
+        {
+            id: 5,
+            categoria: "armadura",
+            nome: "Mech-Suit (Anti-Superman)",
+            desc: "Exoesqueleto com titânio, poeira de Kryptonita e manoplas de radiação solar vermelha.",
+            status: "EM MANUTENÇÃO",
+            statusClass: "status-manutencao"
+        },
+        {
+            id: 6,
+            categoria: "armadura",
+            nome: "Hellbat Armor",
+            desc: "Forjada na estrela solar pela Liga da Justiça; concede voo e força de nível divino.",
+            status: "CRÍTICO / BAIXO",
+            statusClass: "status-critico"
+        }
+    ];
 
-        // Função para renderizar os cards na tela
-        function renderizarLista(categoria = 'armadura') {
-            const container = document.getElementById('listaRecursos');
-            container.innerHTML = '';
+    // 2. APLICAR PAPEL DE PAREDE POR PERFIL
+    function aplicarPapelDeParedePorPerfil() {
+        // Recupera o usuário salvo na sessão (ou usa Bruce Wayne como padrão)
+        const usuarioSalvo = JSON.parse(sessionStorage.getItem('usuarioLogado')) || { nome: 'BRUCE WAYNE', perfil: 'bruce' };
+        const perfil = (usuarioSalvo.perfil || "").toLowerCase();
+        const nome = (usuarioSalvo.nome || "").toLowerCase();
 
-            const itensFiltrados = bancoDeDados.filter(item => item.categoria === categoria);
+        // Caminho da imagem da marca d'água (ajuste a extensão se necessário)
+        const urlLogo = 'logo-wayne-enterprises.png';
 
-            if (itensFiltrados.length === 0) {
-                container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem;">Nenhum recurso cadastrado nesta categoria.</p>';
-                return;
-            }
+        if (perfil.includes('bruce') || nome.includes('bruce')) {
+            document.body.style.background = `linear-gradient(rgba(8, 11, 17, 0.88), rgba(8, 11, 17, 0.88)), url('${urlLogo}') no-repeat center center fixed`;
+            document.body.style.backgroundSize = "70%";
+        } else if (perfil.includes('lucius') || nome.includes('lucius')) {
+            document.body.style.background = `linear-gradient(rgba(10, 15, 26, 0.85), rgba(10, 15, 26, 0.85)), url('${urlLogo}') no-repeat center center fixed`;
+            document.body.style.backgroundSize = "65%";
+        } else if (perfil.includes('alfred') || nome.includes('alfred')) {
+            document.body.style.background = `linear-gradient(rgba(15, 15, 20, 0.90), rgba(15, 15, 20, 0.90)), url('${urlLogo}') no-repeat center center fixed`;
+            document.body.style.backgroundSize = "60%";
+        } else {
+            document.body.style.background = `linear-gradient(rgba(8, 11, 17, 0.85), rgba(8, 11, 17, 0.85)), url('${urlLogo}') no-repeat center center fixed`;
+            document.body.style.backgroundSize = "70%";
+        }
+    }
 
-            itensFiltrados.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'resource-card';
-                card.innerHTML = `
-                    <div class="resource-info">
-                        <h4>${item.nome}</h4>
-                        <p>${item.desc}</p>
-                    </div>
-                    <div class="resource-actions">
-                        <span class="status-tag ${item.statusClass}">${item.status}</span>
-                        <button class="btn-edit" onclick="editarItem(${item.id})">✏️ Editar</button>
-                        <button class="btn-delete" onclick="excluirItem(${item.id})">🗑️</button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+    // 3. RENDERIZAR LISTA
+    function renderizarLista(categoria = 'armadura') {
+        const container = document.getElementById('listaRecursos');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const itensFiltrados = bancoDeDados.filter(item => item.categoria === categoria);
+
+        if (itensFiltrados.length === 0) {
+            container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem;">Nenhum recurso cadastrado nesta categoria.</p>';
+            return;
         }
 
-        // Troca de Abas
-        function filtrarCategoria(categoria, elemento) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            elemento.classList.add('active');
-            renderizarLista(categoria);
-        }
+        itensFiltrados.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'resource-card';
+            card.innerHTML = `
+                <div class="resource-info">
+                    <h4>${item.nome}</h4>
+                    <p>${item.desc}</p>
+                </div>
+                <div class="resource-actions">
+                    <span class="status-tag ${item.statusClass}">${item.status}</span>
+                    <button class="btn-edit" onclick="editarItem(${item.id})">✏️ Editar</button>
+                    <button class="btn-delete" onclick="excluirItem(${item.id})">🗑️</button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
 
-        // Ações dos Botões
-        function editarItem(id) {
-            alert(`Editar recurso ID: ${id}`);
-        }
+    // 4. TROCA DE ABAS
+    function filtrarCategoria(categoria, elemento) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        elemento.classList.add('active');
+        renderizarLista(categoria);
+    }
 
-        function excluirItem(id) {
-            if(confirm("Tem certeza que deseja remover este recurso do inventário?")) {
-                alert(`Recurso ${id} removido.`);
-            }
-        }
+    // 5. AÇÕES DOS BOTÕES
+    function editarItem(id) {
+        alert(`Editar recurso ID: ${id}`);
+    }
 
-        function adicionarRecurso() {
-            alert("Abre modal para novo recurso.");
+    function excluirItem(id) {
+        if(confirm("Tem certeza que deseja remover este recurso do inventário?")) {
+            alert(`Recurso ${id} removido.`);
         }
+    }
 
-        function logout() {
-            window.location.href = "index.html";
-        }
+    function adicionarRecurso() {
+        alert("Abre modal para novo recurso.");
+    }
 
-        // Inicializa com a aba Armadura carregada
-        window.onload = () => {
-            renderizarLista('armadura');
-        };
-    </script>
+    function logout() {
+        sessionStorage.clear();
+        window.location.href = "index.html";
+    }
+
+    // 6. INICIALIZAÇÃO
+    window.onload = () => {
+        aplicarPapelDeParedePorPerfil();
+        renderizarLista('armadura');
+    };
+</script>
 </body>
 </html>
