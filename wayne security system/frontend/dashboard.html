@@ -389,28 +389,30 @@
         }
     ];
 
-    // 2. APLICAR PAPEL DE PAREDE POR PERFIL
+    // 2. APLICA O PAPEL DE PAREDE EM TELA CHEIA
     function aplicarPapelDeParedePorPerfil() {
-        // Recupera o usuário salvo na sessão (ou usa Bruce Wayne como padrão)
         const usuarioSalvo = JSON.parse(sessionStorage.getItem('usuarioLogado')) || { nome: 'BRUCE WAYNE', perfil: 'bruce' };
         const perfil = (usuarioSalvo.perfil || "").toLowerCase();
         const nome = (usuarioSalvo.nome || "").toLowerCase();
-
-        // Caminho da imagem da marca d'água (ajuste a extensão se necessário)
+    
         const urlLogo = 'wayne-enterprises-wallpapers.jpg';
-
+    
+        // Definições de fundo comum a todos
+        document.body.style.backgroundRepeat = "no-repeat";
+        document.body.style.backgroundPosition = "center center";
+        document.body.style.backgroundAttachment = "fixed";
+        
+        // COVER faz a imagem esticar e preencher toda a largura e altura da tela
+        document.body.style.backgroundSize = "cover"; 
+    
         if (perfil.includes('bruce') || nome.includes('bruce')) {
-            document.body.style.background = `linear-gradient(rgba(8, 11, 17, 0.88), rgba(8, 11, 17, 0.88)), url('${urlLogo}') no-repeat center center fixed`;
-            document.body.style.backgroundSize = "70%";
+            document.body.style.backgroundImage = `linear-gradient(rgba(8, 11, 17, 0.88), rgba(8, 11, 17, 0.88)), url('${urlLogo}')`;
         } else if (perfil.includes('lucius') || nome.includes('lucius')) {
-            document.body.style.background = `linear-gradient(rgba(10, 15, 26, 0.85), rgba(10, 15, 26, 0.85)), url('${urlLogo}') no-repeat center center fixed`;
-            document.body.style.backgroundSize = "65%";
+            document.body.style.backgroundImage = `linear-gradient(rgba(10, 15, 26, 0.85), rgba(10, 15, 26, 0.85)), url('${urlLogo}')`;
         } else if (perfil.includes('alfred') || nome.includes('alfred')) {
-            document.body.style.background = `linear-gradient(rgba(15, 15, 20, 0.90), rgba(15, 15, 20, 0.90)), url('${urlLogo}') no-repeat center center fixed`;
-            document.body.style.backgroundSize = "60%";
+            document.body.style.backgroundImage = `linear-gradient(rgba(15, 15, 20, 0.90), rgba(15, 15, 20, 0.90)), url('${urlLogo}')`;
         } else {
-            document.body.style.background = `linear-gradient(rgba(8, 11, 17, 0.85), rgba(8, 11, 17, 0.85)), url('${urlLogo}') no-repeat center center fixed`;
-            document.body.style.backgroundSize = "70%";
+            document.body.style.backgroundImage = `linear-gradient(rgba(8, 11, 17, 0.85), rgba(8, 11, 17, 0.85)), url('${urlLogo}')`;
         }
     }
 
