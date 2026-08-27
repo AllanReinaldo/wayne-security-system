@@ -1,24 +1,23 @@
 # Wayne Enterprises Security System
 
-Sistema Full Stack de gerenciamento de recursos e controle de acesso desenvolvido para as Indústrias Wayne. 
-O sistema conta com autenticação segura via JWT, controle de acesso baseado em funções (RBAC), painel de 
-métricas e CRUD completo de recursos.
+Um sistema web de gerenciamento de inventário e controle de acesso desenvolvido para as Indústrias Wayne, permitindo o controle estratégico de equipamentos, armaduras, veículos e dispositivos de segurança. 
+---
+## Funcionalidades
+
+* Autenticação Dinâmica:** Identificação automática do perfil e exibição do nome completo formatado.
+* Gestão de Recursos (CRUD):** Cadastro, edição e acompanhamento de status de equipamentos Wayne Tech.
+* Controle de Permissões em Tempo Real:** Ocultação e bloqueio de botões (Adicionar/Excluir) de acordo com o perfil logado.
+* Persistência de Dados Local:** Utilização de `localStorage` para salvar o estado do inventário e das sessões ativas.
+* Interface Temática:** Background e estilização visual ajustados dinamicamente para cada perfil.
 
 ---
-
 ## Tecnologias Utilizadas
 
-### **Backend**
-* **Python 3**
-* **Flask**              (Microframework web)
-* **Flask-JWT-Extended** (Autenticação via tokens JWT)
-* **Flask-CORS**         (Integração segura com o Frontend)
-* **Werkzeug**           (Criptografia de senhas com HASH)
-
-### **Frontend**
-* **HTML5**             (Estrutura semântica)
-* **CSS3**              (Estilização em modo escuro com CSS Grid e Flexbox)
-* **JavaScript (ES6+)** (Consumo da API REST via Fetch API)
+* HTML5:** Estrutura semântica e acessível.
+* CSS3:** Layouts em Flexbox, Grid e variáveis visuais com tema Dark/Wayne Enterprises.
+* JavaScript (ES6+):** Manipulação de DOM, regras de negócios e gerenciamento de armazenamento local.
+* Git & GitHub:** Controle de versão e hospedagem de código fonte.
+* Vercel & Render:** Plataformas de hospedagem e deploy contínuo.
 
 ---
 
@@ -33,11 +32,3 @@ O sistema possui 3 níveis de acesso pré-cadastrados:
 | **Alfred Pennyworth** | `alfred@wayne.com`| `tea123`    | **Funcionário**| Apenas visualização de recursos                    |
 
 ---
-
-## Como Executar o Projeto
-
-### **1. Executando o Backend**
-
-1. Abra o terminal na pasta `backend`:
-   ```bash
-   cd backend
