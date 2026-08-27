@@ -389,30 +389,44 @@
         }
     ];
 
+    // FUNÇÃO AUXILIAR: RECUPERA DADOS DO USUÁRIO LOGADO
+    function obterUsuarioSessao() {
+        const dadosSessao = sessionStorage.getItem('usuarioLogado');
+        if (!dadosSessao) return { nome: 'BRUCE WAYNE', perfil: 'bruce' };
+
+        try {
+            const parsed = JSON.parse(dadosSessao);
+            if (typeof parsed === 'object' && parsed !== null) {
+                return {
+                    nome: parsed.nome || parsed.usuario || parsed.user || 'BRUCE WAYNE',
+                    perfil: parsed.perfil || parsed.role || parsed.nome || 'bruce'
+                };
+            }
+            return { nome: String(parsed), perfil: String(parsed) };
+        } catch (e) {
+            return { nome: dadosSessao, perfil: dadosSessao };
+        }
+    }
+
     // 2. APLICA O PAPEL DE PAREDE EM TELA CHEIA
     function aplicarPapelDeParedePorPerfil() {
-        const usuarioSalvo = JSON.parse(sessionStorage.getItem('usuarioLogado')) || { nome: 'BRUCE WAYNE', perfil: 'bruce' };
-        const perfil = (usuarioSalvo.perfil || "").toLowerCase();
-        const nome = (usuarioSalvo.nome || "").toLowerCase();
-    
+        const usuario = obterUsuarioSessao();
+        const perfil = usuario.perfil.toLowerCase();
+        const nome = usuario.nome.toLowerCase();
+
         const urlLogo = 'wayne-enterprises-wallpapers.jpg';
-    
-        // Definições de fundo comum a todos
+
         document.body.style.backgroundRepeat = "no-repeat";
         document.body.style.backgroundPosition = "center center";
         document.body.style.backgroundAttachment = "fixed";
-        
-        // COVER faz a imagem esticar e preencher toda a largura e altura da tela
-        document.body.style.backgroundSize = "cover"; 
-    
-        if (perfil.includes('bruce') || nome.includes('bruce')) {
-            document.body.style.backgroundImage = `linear-gradient(rgba(8, 11, 17, 0.88), rgba(8, 11, 17, 0.88)), url('${urlLogo}')`;
-        } else if (perfil.includes('lucius') || nome.includes('lucius')) {
+        document.body.style.backgroundSize = "cover";
+
+        if (perfil.includes('lucius') || nome.includes('lucius')) {
             document.body.style.backgroundImage = `linear-gradient(rgba(10, 15, 26, 0.85), rgba(10, 15, 26, 0.85)), url('${urlLogo}')`;
         } else if (perfil.includes('alfred') || nome.includes('alfred')) {
             document.body.style.backgroundImage = `linear-gradient(rgba(15, 15, 20, 0.90), rgba(15, 15, 20, 0.90)), url('${urlLogo}')`;
         } else {
-            document.body.style.backgroundImage = `linear-gradient(rgba(8, 11, 17, 0.85), rgba(8, 11, 17, 0.85)), url('${urlLogo}')`;
+            document.body.style.backgroundImage = `linear-gradient(rgba(8, 11, 17, 0.88), rgba(8, 11, 17, 0.88)), url('${urlLogo}')`;
         }
     }
 
@@ -453,7 +467,7 @@
         elemento.classList.add('active');
         renderizarLista(categoria);
     }
-    
+
     // 5. AÇÕES DOS BOTÕES
     function editarItem(id) {
         alert(`Editar recurso ID: ${id}`);
@@ -476,18 +490,17 @@
 
     // 6. ATUALIZA O NOME DO CABEÇALHO CONFORME O LOGIN
     function atualizarNomeUsuarioHeader() {
-        const usuarioSalvo = JSON.parse(sessionStorage.getItem('usuarioLogado')) || { nome: 'BRUCE WAYNE' };
         const elNome = document.getElementById('nomeUsuario');
-        
-        if (elNome && usuarioSalvo.nome) {
-            elNome.textContent = usuarioSalvo.nome.toUpperCase();
-        }
+        if (!elNome) return;
+
+        const usuario = obterUsuarioSessao();
+        elNome.textContent = usuario.nome.toUpperCase();
     }
-        
+
     // 7. INICIALIZAÇÃO
     window.onload = () => {
-        aplicarPapelDeParedePorPerfil();
         atualizarNomeUsuarioHeader();
+        aplicarPapelDeParedePorPerfil();
         renderizarLista('armadura');
     };
 </script>
